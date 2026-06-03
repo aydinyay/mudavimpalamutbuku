@@ -1,0 +1,65 @@
+name: Deploy — mudavimpalamutbuku.com
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu çek
+        uses: actions/checkout@v4
+
+      - name: PHP kur
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, mbstring, pdo_mysql, zip
+
+      - name: Composer bağımlılıkları
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Node.js kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: NPM bağımlılıkları
+        run: npm ci
+
+      - name: Assets derle
+        run: npm run build
+
+      - name: Laravel uygulamasını yükle (web dışı dizin)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.mudavimpalamutbuku.com
+          username: deploy@mudavimpalamutbuku.com
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /mudavimpalamutbuku/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/public/**
+            **/.env
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/storage/framework/views/**
+
+      - name: Public klasörünü web root'a yükle
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.mudavimpalamutbuku.com
+          username: deploy@mudavimpalamutbuku.com
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./public/
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/storage/**
