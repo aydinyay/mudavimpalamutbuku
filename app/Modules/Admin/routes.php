@@ -1,0 +1,50 @@
+<?php
+
+use App\Modules\Admin\Controllers\DashboardController;
+use App\Modules\Menu\Controllers\Admin\CategoryController;
+use App\Modules\Menu\Controllers\Admin\MenuItemController;
+use App\Modules\QrCode\Controllers\Admin\QrCodeController;
+use App\Modules\Reservation\Controllers\Admin\ReservationController as AdminReservationController;
+use App\Modules\TablePlan\Controllers\Admin\TableController;
+use Illuminate\Support\Facades\Route;
+
+Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/ayarlar', [DashboardController::class, 'settings'])->name('settings');
+    Route::post('/ayarlar', [DashboardController::class, 'updateSettings'])->name('settings.update');
+
+    // Reservations
+    Route::resource('rezervasyonlar', AdminReservationController::class, [
+        'as' => 'reservations',
+        'parameters' => ['rezervasyonlar' => 'reservation'],
+    ]);
+    Route::post('rezervasyonlar/{reservation}/durum', [AdminReservationController::class, 'updateStatus'])
+        ->name('reservations.status');
+
+    // Table plan
+    Route::resource('masalar', TableController::class, [
+        'as' => 'tables',
+        'parameters' => ['masalar' => 'table'],
+    ]);
+    Route::post('masalar/{table}/pozisyon', [TableController::class, 'updatePosition'])
+        ->name('tables.position');
+
+    // Menu categories
+    Route::resource('menu/kategoriler', CategoryController::class, [
+        'as'         => 'menu.categories',
+        'parameters' => ['kategoriler' => 'category'],
+    ]);
+
+    // Menu items
+    Route::resource('menu/urunler', MenuItemController::class, [
+        'as'         => 'menu.items',
+        'parameters' => ['urunler' => 'item'],
+    ]);
+    Route::post('menu/urunler/{item}/musait', [MenuItemController::class, 'toggleAvailable'])
+        ->name('menu.items.toggle');
+
+    // QR codes
+    Route::get('qr-kodlar', [QrCodeController::class, 'index'])->name('qrcodes.index');
+    Route::post('qr-kodlar/{table}/uret', [QrCodeController::class, 'generate'])->name('qrcodes.generate');
+    Route::get('qr-kodlar/yazdir', [QrCodeController::class, 'printSheet'])->name('qrcodes.print');
+});

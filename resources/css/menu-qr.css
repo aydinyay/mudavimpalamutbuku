@@ -1,0 +1,216 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+    --color-sea:   #1a7fa8;
+    --color-coral: #c95d3f;
+    --color-dark:  #1e2023;
+    --color-light: #f8f5ef;
+    --color-sand:  #e8d5b0;
+}
+
+body {
+    background: var(--color-light);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding-bottom: 80px;
+}
+
+/* QR Menu header */
+.qr-header {
+    background: var(--color-dark);
+    color: #fff;
+    padding: 1rem 1rem 0.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.qr-header .restaurant-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.qr-header .table-badge {
+    background: var(--color-coral);
+    color: #fff;
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Category nav pills */
+.category-nav {
+    background: #fff;
+    padding: 0.5rem 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid #e5e5e5;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.category-nav::-webkit-scrollbar { display: none; }
+
+.category-nav .nav-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    margin: 0 4px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: #f0f0f0;
+    color: var(--color-dark);
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.category-nav .nav-pill.active,
+.category-nav .nav-pill:hover {
+    background: var(--color-sea);
+    color: #fff;
+}
+
+/* Menu item card */
+.menu-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    transition: box-shadow 0.15s;
+}
+
+.menu-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.menu-card .menu-card-img {
+    width: 100px;
+    min-width: 100px;
+    object-fit: cover;
+}
+
+.menu-card .menu-card-body {
+    padding: 0.85rem 1rem;
+    flex: 1;
+}
+
+.menu-card .item-name {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    color: var(--color-dark);
+}
+
+.menu-card .item-description {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.menu-card .item-price {
+    font-weight: 700;
+    color: var(--color-coral);
+    font-size: 1rem;
+}
+
+.menu-card .item-badges .badge {
+    font-size: 0.7rem;
+    margin-right: 4px;
+}
+
+/* Badges */
+.badge-seasonal   { background: #e8a020; }
+.badge-featured   { background: var(--color-coral); }
+.badge-vegetarian { background: #4caf50; }
+.badge-vegan      { background: #2e7d32; }
+.badge-gf         { background: #7b1fa2; }
+.badge-unavailable { background: #9e9e9e; }
+
+/* Allergen filter */
+.allergen-filter {
+    background: #fff;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.allergen-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 0.75rem;
+    background: #f0f0f0;
+    color: #555;
+    cursor: pointer;
+    margin: 2px;
+    border: 1px solid transparent;
+    user-select: none;
+}
+
+.allergen-chip.active-exclude {
+    background: #fce4ec;
+    color: #c62828;
+    border-color: #c62828;
+}
+
+/* Locale & call waiter bar */
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-dark);
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 200;
+}
+
+.bottom-bar .locale-btn {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: transparent;
+    cursor: pointer;
+}
+
+.bottom-bar .locale-btn.active {
+    background: var(--color-sea);
+    color: #fff;
+    border-color: var(--color-sea);
+}
+
+.call-waiter-btn {
+    background: var(--color-coral);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Category section */
+.category-section {
+    padding: 1rem 0 0.5rem;
+}
+
+.category-section h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-sea);
+    padding: 0 0.5rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}

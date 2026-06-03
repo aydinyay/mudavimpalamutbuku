@@ -1,0 +1,152 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+    --color-sea:    #1a7fa8;
+    --color-sand:   #e8d5b0;
+    --color-olive:  #5a6e2c;
+    --color-coral:  #c95d3f;
+    --color-dark:   #1e2023;
+    --color-light:  #f8f5ef;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--color-light);
+    color: var(--color-dark);
+}
+
+/* Navbar */
+.navbar-mudavim {
+    background: rgba(30, 32, 35, 0.92);
+    backdrop-filter: blur(8px);
+}
+
+.navbar-mudavim .navbar-brand {
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--color-sand) !important;
+}
+
+.navbar-mudavim .nav-link {
+    color: rgba(255,255,255,0.85) !important;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.navbar-mudavim .nav-link:hover {
+    color: var(--color-sand) !important;
+}
+
+/* Hero */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    background: linear-gradient(135deg, #0d4f6e 0%, #1a7fa8 40%, #2ea887 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/images/restaurant/hero-bg.jpg') center/cover no-repeat;
+    opacity: 0.35;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #fff;
+}
+
+.hero-content h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    margin-bottom: 1rem;
+}
+
+.hero-content .tagline {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-sea);
+    margin-bottom: 0.5rem;
+}
+
+.section-divider {
+    width: 60px;
+    height: 3px;
+    background: var(--color-coral);
+    margin: 0 auto 2rem;
+}
+
+/* Season banner */
+.season-banner {
+    background: var(--color-coral);
+    color: #fff;
+    text-align: center;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Footer */
+.footer-mudavim {
+    background: var(--color-dark);
+    color: rgba(255,255,255,0.8);
+    padding: 3rem 0 1.5rem;
+}
+
+.footer-mudavim a {
+    color: var(--color-sand);
+    text-decoration: none;
+}
+
+.footer-mudavim a:hover {
+    color: #fff;
+}
+
+/* Locale switcher */
+.locale-switcher .btn {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+/* Whatsapp floating button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 999;
+    background: #25d366;
+    color: #fff;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    color: #fff;
+}
