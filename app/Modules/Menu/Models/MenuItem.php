@@ -43,19 +43,19 @@ class MenuItem extends Model
         return $this->belongsToMany(Allergen::class, 'menu_item_allergens');
     }
 
-    public function translation(string $locale = null): ?MenuItemTranslation
+    public function translation(?string $locale = null): ?MenuItemTranslation
     {
         $locale = $locale ?? app()->getLocale();
         return $this->translations->firstWhere('locale', $locale)
             ?? $this->translations->firstWhere('locale', 'tr');
     }
 
-    public function name(string $locale = null): string
+    public function name(?string $locale = null): string
     {
         return $this->translation($locale)?->name ?? '';
     }
 
-    public function description(string $locale = null): string
+    public function description(?string $locale = null): string
     {
         return $this->translation($locale)?->description ?? '';
     }

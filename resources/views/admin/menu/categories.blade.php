@@ -13,11 +13,11 @@
 <div class="card border-0 shadow-sm">
     <div class="card-body p-0">
         <table class="table table-mudavim mb-0">
-            <thead><tr><th>Sıra</th><th>Emoji</th><th>TR</th><th>EN</th><th>DE</th><th>Ürün</th><th>Aktif</th><th></th></tr></thead>
-            <tbody>
+            <thead><tr><th style="width:32px;"></th><th>Emoji</th><th>TR</th><th>EN</th><th>DE</th><th>Ürün</th><th>Aktif</th><th></th></tr></thead>
+            <tbody id="sortable-categories">
                 @foreach($categories as $cat)
-                <tr>
-                    <td>{{ $cat->sort_order }}</td>
+                <tr data-id="{{ $cat->id }}">
+                    <td><i class="bi bi-grip-vertical drag-handle text-muted" style="cursor:grab;"></i></td>
                     <td>{{ $cat->icon_emoji }}</td>
                     <td>{{ $cat->name_tr }}</td>
                     <td class="text-muted">{{ $cat->name_en }}</td>

@@ -16,7 +16,7 @@ class Allergen extends Model
         return $this->belongsToMany(MenuItem::class, 'menu_item_allergens');
     }
 
-    public function name(string $locale = null): string
+    public function name(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
         return $this->{"name_{$locale}"} ?? $this->name_tr;

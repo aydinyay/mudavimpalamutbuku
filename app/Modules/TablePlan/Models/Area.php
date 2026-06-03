@@ -25,7 +25,7 @@ class Area extends Model
         return $this->hasMany(Lounger::class);
     }
 
-    public function name(string $locale = null): string
+    public function name(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
         return $this->{"name_{$locale}"} ?? $this->name_tr;

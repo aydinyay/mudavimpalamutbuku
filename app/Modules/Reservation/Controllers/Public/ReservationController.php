@@ -20,20 +20,20 @@ class ReservationController extends Controller
     public function checkAvailability(Request $request)
     {
         $request->validate([
-            'date'        => 'required|date|after_or_equal:today',
-            'time'        => 'required|date_format:H:i',
-            'guest_count' => 'required|integer|min:1|max:20',
-            'type'        => 'in:table,lounger',
+            'reservation_date' => 'required|date|after_or_equal:today',
+            'arrival_time'     => 'required|date_format:H:i',
+            'guest_count'      => 'required|integer|min:1|max:20',
         ]);
 
         $tables = $this->availability->availableTables(
-            $request->date,
-            $request->time,
+            $request->reservation_date,
+            $request->arrival_time,
             $request->integer('guest_count'),
         );
 
         return response()->json([
             'available' => $tables->isNotEmpty(),
+            'table_id'  => $tables->first()?->id,
             'tables'    => $tables->map(fn($t) => [
                 'id'         => $t->id,
                 'label'      => $t->table_number,

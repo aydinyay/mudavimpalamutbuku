@@ -23,7 +23,7 @@ class MenuCategory extends Model
         return $this->hasMany(MenuItem::class, 'category_id');
     }
 
-    public function name(string $locale = null): string
+    public function name(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
         return $this->{"name_{$locale}"} ?? $this->name_tr;

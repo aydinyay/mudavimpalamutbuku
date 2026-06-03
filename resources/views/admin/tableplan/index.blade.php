@@ -24,21 +24,24 @@
         <span class="text-muted small">{{ $area->tables->count() }} masa</span>
     </div>
     <div class="card-body">
-        {{-- Visual plan --}}
+        {{-- Visual plan (drag-drop) --}}
         <div class="position-relative border rounded mb-3"
-             style="width:100%;height:200px;overflow:hidden;background:#f0f4f0;"
+             style="width:100%;height:240px;overflow:hidden;background:linear-gradient(135deg,#e8f4f0,#d0e8e0);"
              data-area-id="{{ $area->id }}">
             @foreach($area->tables as $table)
-            <div class="position-absolute d-flex align-items-center justify-content-center fw-700"
-                 style="left:{{ $table->pos_x }}px;top:{{ $table->pos_y }}px;
-                        width:{{ $table->width_px }}px;height:{{ $table->height_px }}px;
+            <div class="table-plan-draggable position-absolute d-flex align-items-center justify-content-center fw-700"
+                 data-table-id="{{ $table->id }}"
+                 data-x="{{ $table->pos_x }}"
+                 data-y="{{ $table->pos_y }}"
+                 style="width:{{ $table->width_px ?? 56 }}px;height:{{ $table->height_px ?? 56 }}px;
                         background:var(--color-sea);color:#fff;
                         border-radius:{{ $table->shape === 'round' ? '50%' : '8px' }};
-                        font-size:0.8rem;cursor:pointer;"
+                        font-size:0.8rem;cursor:grab;user-select:none;touch-action:none;"
                  title="{{ $table->table_number }} — maks {{ $table->seats_max }} kişi">
                 {{ $table->table_number }}
             </div>
             @endforeach
+            <small class="position-absolute text-muted" style="bottom:4px;right:8px;font-size:0.65rem;">Masaları sürükleyerek yerleştir</small>
         </div>
 
         {{-- Table list --}}

@@ -26,7 +26,7 @@ Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function (
         'as' => 'tables',
         'parameters' => ['masalar' => 'table'],
     ]);
-    Route::post('masalar/{table}/pozisyon', [TableController::class, 'updatePosition'])
+    Route::patch('masalar/{table}/pozisyon', [TableController::class, 'updatePosition'])
         ->name('tables.position');
 
     // Menu categories
@@ -40,8 +40,10 @@ Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function (
         'as'         => 'menu.items',
         'parameters' => ['urunler' => 'item'],
     ]);
-    Route::post('menu/urunler/{item}/musait', [MenuItemController::class, 'toggleAvailable'])
+    Route::patch('menu/urunler/{item}/toggle-available', [MenuItemController::class, 'toggleAvailable'])
         ->name('menu.items.toggle');
+    Route::post('menu/kategoriler/sirala', [CategoryController::class, 'reorder'])
+        ->name('menu.categories.reorder');
 
     // QR codes
     Route::get('qr-kodlar', [QrCodeController::class, 'index'])->name('qrcodes.index');

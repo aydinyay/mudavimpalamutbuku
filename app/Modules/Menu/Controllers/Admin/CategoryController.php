@@ -62,4 +62,13 @@ class CategoryController extends Controller
         $category->delete();
         return redirect()->route('admin.menu.categories.index')->with('success', 'Kategori silindi.');
     }
+
+    public function reorder(Request $request)
+    {
+        $order = $request->input('order', []);
+        foreach ($order as $index => $id) {
+            MenuCategory::where('id', $id)->update(['sort_order' => $index]);
+        }
+        return response()->json(['ok' => true]);
+    }
 }
