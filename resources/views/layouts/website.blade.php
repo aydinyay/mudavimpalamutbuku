@@ -31,7 +31,7 @@
 <nav class="navbar navbar-expand-lg navbar-mudavim fixed-top">
     <div class="container">
         <a class="navbar-brand" href="{{ app()->getLocale() === 'tr' ? url('/') : url(app()->getLocale() . '/') }}">
-            Müdavim
+            <img src="{{ asset('images/logo-light.png') }}" alt="Müdavim Restaurant" style="height:36px;width:auto;">
         </a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
             <i class="bi bi-list text-white fs-4"></i>
@@ -72,7 +72,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-4">
-                <h5 style="color:#e8d5b0;font-weight:700;">Müdavim Restaurant</h5>
+                <img src="{{ asset('images/logo-light.png') }}" alt="Müdavim Restaurant" style="height:56px;width:auto;opacity:0.9;margin-bottom:8px;display:block;">
                 <p class="small opacity-75">{{ config('restaurant.tagline.' . app()->getLocale()) }}</p>
                 <div class="d-flex gap-3 mt-3">
                     <a href="{{ config('restaurant.social.instagram') }}" target="_blank"><i class="bi bi-instagram fs-5"></i></a>
