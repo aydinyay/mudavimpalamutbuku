@@ -18,7 +18,7 @@
 {{-- Sticky header --}}
 <div class="qr-header">
     <div class="d-flex justify-content-between align-items-center">
-        <span class="restaurant-name">Müdavim</span>
+        <img src="{{ asset('images/logo-light.png') }}" alt="Müdavim" style="height:30px;width:auto;">
         @isset($tableName)
             <span class="table-badge">{{ $tableName }}</span>
         @endisset

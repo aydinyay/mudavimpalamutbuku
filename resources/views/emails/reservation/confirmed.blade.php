@@ -27,8 +27,8 @@
 <body>
 <div class="wrapper">
   <div class="header">
-    <h1>🌊 Müdavim Restaurant</h1>
-    <p>Palamutbükü, Datça</p>
+    <img src="{{ asset('images/logo-light.png') }}" alt="Müdavim Restaurant" style="height:56px;width:auto;display:block;margin:0 auto 8px;">
+    <p style="margin:0;color:#a8d8d0;font-size:13px;">Palamutbükü, Datça</p>
   </div>
   <div class="body">
     <div class="greeting">Merhaba {{ $reservation->guest_name }},</div>
