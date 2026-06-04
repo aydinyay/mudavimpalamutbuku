@@ -2,154 +2,113 @@
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
 :root {
-    --color-sea:   #1a7fa8;
-    --color-coral: #c95d3f;
-    --color-dark:  #1e2023;
-    --color-light: #f8f5ef;
-    --color-sand:  #e8d5b0;
+    --color-sea:    #1a7fa8;
+    --color-coral:  #c95d3f;
+    --color-dark:   #1c1c1c;
+    --color-cream:  #faf8f4;
+    --color-sand:   #e8d5b0;
+    --color-gold:   #7a5c1e;
+    --color-rule:   #d6c9b0;
+    --font-serif:   'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-sans:    'Inter', 'Segoe UI', system-ui, sans-serif;
 }
+
+* { box-sizing: border-box; }
 
 body {
-    background: var(--color-light);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    padding-bottom: 80px;
+    background: var(--color-cream);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    color: var(--color-dark);
+    padding-bottom: 72px;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* QR Menu header */
+/* ── Header ───────────────────────────────────────────── */
 .qr-header {
     background: var(--color-dark);
     color: #fff;
-    padding: 1rem 1rem 0.75rem;
+    padding: 0.9rem 1.25rem;
     position: sticky;
     top: 0;
     z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .qr-header .restaurant-name {
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .qr-header .table-badge {
-    background: var(--color-coral);
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
     color: #fff;
-    border-radius: 8px;
-    padding: 2px 10px;
-    font-size: 0.8rem;
-    font-weight: 600;
+    border-radius: 6px;
+    padding: 3px 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
-/* Category nav pills */
+/* ── Category nav ─────────────────────────────────────── */
 .category-nav {
     background: #fff;
-    padding: 0.5rem 0;
+    padding: 0.6rem 0.75rem;
     overflow-x: auto;
     white-space: nowrap;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid var(--color-rule);
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
 }
-
 .category-nav::-webkit-scrollbar { display: none; }
 
 .category-nav .nav-pill {
     display: inline-block;
-    padding: 6px 14px;
-    margin: 0 4px;
+    padding: 5px 14px;
+    margin: 0 3px;
     border-radius: 20px;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     font-weight: 500;
-    background: #f0f0f0;
-    color: var(--color-dark);
+    letter-spacing: 0.3px;
+    background: transparent;
+    color: #666;
     text-decoration: none;
-    transition: background 0.15s;
+    border: 1px solid #ddd;
+    transition: all 0.15s;
 }
 
 .category-nav .nav-pill.active,
 .category-nav .nav-pill:hover {
-    background: var(--color-sea);
+    background: var(--color-dark);
     color: #fff;
+    border-color: var(--color-dark);
 }
 
-/* Menu item card */
-.menu-card {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    margin-bottom: 0.75rem;
-    overflow: hidden;
-    display: flex;
-    align-items: stretch;
-    transition: box-shadow 0.15s;
-}
-
-.menu-card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-}
-
-.menu-card .menu-card-img {
-    width: 100px;
-    min-width: 100px;
-    object-fit: cover;
-}
-
-.menu-card .menu-card-body {
-    padding: 0.85rem 1rem;
-    flex: 1;
-}
-
-.menu-card .item-name {
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 0.2rem;
-    color: var(--color-dark);
-}
-
-.menu-card .item-description {
-    font-size: 0.8rem;
-    color: #666;
-    margin-bottom: 0.5rem;
-    line-height: 1.4;
-}
-
-.menu-card .item-price {
-    font-weight: 700;
-    color: var(--color-coral);
-    font-size: 1rem;
-}
-
-.menu-card .item-badges .badge {
-    font-size: 0.7rem;
-    margin-right: 4px;
-}
-
-/* Badges */
-.badge-seasonal   { background: #e8a020; }
-.badge-featured   { background: var(--color-coral); }
-.badge-vegetarian { background: #4caf50; }
-.badge-vegan      { background: #2e7d32; }
-.badge-gf         { background: #7b1fa2; }
-.badge-unavailable { background: #9e9e9e; }
-
-/* Allergen filter */
+/* ── Allergen filter ──────────────────────────────────── */
 .allergen-filter {
     background: #fff;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #e5e5e5;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--color-rule);
 }
 
 .allergen-chip {
     display: inline-block;
-    padding: 4px 10px;
-    border-radius: 14px;
-    font-size: 0.75rem;
-    background: #f0f0f0;
-    color: #555;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.73rem;
+    background: #f2ede6;
+    color: #666;
     cursor: pointer;
     margin: 2px;
     border: 1px solid transparent;
     user-select: none;
+    transition: all 0.15s;
 }
 
 .allergen-chip.active-exclude {
@@ -158,59 +117,207 @@ body {
     border-color: #c62828;
 }
 
-/* Locale & call waiter bar */
+/* ── Main content wrapper ─────────────────────────────── */
+.menu-wrapper {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 1.25rem 1rem;
+}
+
+/* ── Category section ─────────────────────────────────── */
+.category-section {
+    margin-top: 2.75rem;
+}
+
+.category-section:first-child {
+    margin-top: 1.75rem;
+}
+
+/* Ornamental header: ——— CATEGORY NAME ——— */
+.category-heading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.category-heading::before,
+.category-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--color-rule), transparent);
+}
+
+.category-heading h2 {
+    font-family: var(--font-serif);
+    font-size: 0.72rem;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    white-space: nowrap;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* ── Menu item row ────────────────────────────────────── */
+.menu-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid #ede8e0;
+    transition: opacity 0.15s;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item.unavailable {
+    opacity: 0.4;
+}
+
+/* Thumbnail (shown when image exists) */
+.menu-item-thumb {
+    width: 68px;
+    height: 68px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+/* Text block */
+.menu-item-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.menu-item-top {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.menu-item-name {
+    font-family: var(--font-serif);
+    font-size: 0.97rem;
+    font-weight: 500;
+    color: var(--color-dark);
+    line-height: 1.35;
+    flex-shrink: 0;
+}
+
+/* Dotted leader line */
+.menu-item-dots {
+    flex: 1;
+    border-bottom: 1px dotted #c8b898;
+    margin-bottom: 3px;
+    min-width: 12px;
+}
+
+.menu-item-price {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--color-gold);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.menu-item-price.price-ask {
+    font-style: italic;
+    font-size: 0.82rem;
+    color: #888;
+}
+
+.menu-item-price-eur {
+    font-size: 0.72rem;
+    color: #aaa;
+    text-align: right;
+    margin-top: 1px;
+}
+
+.menu-item-description {
+    font-size: 0.78rem;
+    color: #888;
+    font-style: italic;
+    margin-top: 0.25rem;
+    line-height: 1.45;
+}
+
+/* Badges */
+.menu-item-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 0.35rem;
+}
+
+.menu-badge {
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.badge-seasonal    { background: #f5e6c8; color: #8a5e00; }
+.badge-featured    { background: #fdecea; color: #b71c1c; }
+.badge-vegetarian  { background: #e8f5e9; color: #2e7d32; }
+.badge-vegan       { background: #e8f5e9; color: #1b5e20; }
+.badge-gf          { background: #ede7f6; color: #4527a0; }
+.badge-unavailable { background: #f5f5f5; color: #9e9e9e; }
+
+/* ── Bottom bar ───────────────────────────────────────── */
 .bottom-bar {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     background: var(--color-dark);
-    padding: 0.5rem 1rem;
+    padding: 0.55rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 200;
+    border-top: 1px solid rgba(255,255,255,0.06);
 }
 
 .bottom-bar .locale-btn {
-    color: rgba(255,255,255,0.7);
-    font-size: 0.8rem;
-    padding: 4px 8px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.55);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 9px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2);
     background: transparent;
     cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
 }
 
 .bottom-bar .locale-btn.active {
-    background: var(--color-sea);
+    background: rgba(255,255,255,0.12);
     color: #fff;
-    border-color: var(--color-sea);
+    border-color: rgba(255,255,255,0.4);
 }
 
 .call-waiter-btn {
-    background: var(--color-coral);
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 6px 16px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 18px;
+    padding: 5px 16px;
+    font-size: 0.78rem;
+    font-weight: 500;
     cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: all 0.15s;
 }
 
-/* Category section */
-.category-section {
-    padding: 1rem 0 0.5rem;
-}
-
-.category-section h2 {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--color-sea);
-    padding: 0 0.5rem;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+.call-waiter-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
 }
