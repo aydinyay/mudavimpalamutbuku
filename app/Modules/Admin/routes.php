@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Admin\Controllers\DashboardController;
+use App\Modules\Admin\Controllers\ServerToolsController;
 use App\Modules\Menu\Controllers\Admin\CategoryController;
 use App\Modules\Menu\Controllers\Admin\MenuItemController;
 use App\Modules\QrCode\Controllers\Admin\QrCodeController;
@@ -49,4 +50,11 @@ Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function (
     Route::get('qr-kodlar', [QrCodeController::class, 'index'])->name('qrcodes.index');
     Route::post('qr-kodlar/{table}/uret', [QrCodeController::class, 'generate'])->name('qrcodes.generate');
     Route::get('qr-kodlar/yazdir', [QrCodeController::class, 'printSheet'])->name('qrcodes.print');
+
+    // Server tools
+    Route::get('sunucu-araclari', [ServerToolsController::class, 'index'])->name('server-tools.index');
+    Route::post('sunucu-araclari/cache', [ServerToolsController::class, 'clearCache'])->name('server-tools.cache');
+    Route::post('sunucu-araclari/migrate', [ServerToolsController::class, 'migrate'])->name('server-tools.migrate');
+    Route::post('sunucu-araclari/mail', [ServerToolsController::class, 'testMail'])->name('server-tools.mail');
+    Route::get('sunucu-araclari/sysinfo', [ServerToolsController::class, 'sysInfo'])->name('server-tools.sysinfo');
 });
