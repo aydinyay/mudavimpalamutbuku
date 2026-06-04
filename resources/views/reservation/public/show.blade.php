@@ -37,7 +37,7 @@
                             <dt class="col-5 text-muted">Tarih</dt>
                             <dd class="col-7">{{ $reservation->reservation_date->format('d.m.Y') }}</dd>
                             <dt class="col-5 text-muted">Saat</dt>
-                            <dd class="col-7">{{ $reservation->arrival_time }}</dd>
+                            <dd class="col-7">{{ substr($reservation->arrival_time, 0, 5) }}</dd>
                             <dt class="col-5 text-muted">Kişi Sayısı</dt>
                             <dd class="col-7">{{ $reservation->guest_count }}</dd>
                             @if($reservation->table)
