@@ -12,9 +12,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    @vite(['resources/js/menu-qr.js'])
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:158px}
 :root{
   --c-bg:#fafaf8;
   --c-white:#ffffff;
@@ -281,5 +281,101 @@ body{background:var(--c-bg);color:var(--c-dark);font-family:var(--font-sans);fon
     </button>
 </div>
 
+<script>
+(function(){
+  var HEADER_OFFSET = 158;
+
+  // ── Category nav: smooth scroll with offset ──────────────────────────────
+  document.querySelectorAll('.nav-pill[href^="#"]').forEach(function(pill){
+    pill.addEventListener('click', function(e){
+      e.preventDefault();
+      var target = document.querySelector(pill.getAttribute('href'));
+      if(target){
+        var top = target.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+        window.scrollTo({top: top, behavior: 'smooth'});
+      }
+    });
+  });
+
+  // ── Search ───────────────────────────────────────────────────────────────
+  var searchInput = document.getElementById('menuSearch');
+  var noResults   = document.getElementById('noResults');
+  if(searchInput){
+    searchInput.addEventListener('input', function(){
+      var q = searchInput.value.trim().toLowerCase();
+      var anyVisible = false;
+      document.querySelectorAll('.category-section').forEach(function(section){
+        var sectionHasMatch = false;
+        section.querySelectorAll('.menu-item').forEach(function(item){
+          var name  = (item.dataset.name || '');
+          var match = !q || name.includes(q);
+          item.classList.toggle('search-hidden', !match);
+          if(match) sectionHasMatch = true;
+        });
+        section.classList.toggle('search-hidden', !sectionHasMatch);
+        if(sectionHasMatch) anyVisible = true;
+      });
+      if(noResults) noResults.style.display = (anyVisible || !q) ? 'none' : 'block';
+    });
+  }
+
+  // ── Allergen filter ───────────────────────────────────────────────────────
+  var excluded = new Set(JSON.parse(localStorage.getItem('excludedAllergens') || '[]'));
+  function applyAllergens(){
+    document.querySelectorAll('.menu-item[data-allergens]').forEach(function(card){
+      var allergens = JSON.parse(card.dataset.allergens || '[]');
+      card.style.display = allergens.some(function(a){ return excluded.has(a); }) ? 'none' : '';
+    });
+    document.querySelectorAll('.allergen-chip').forEach(function(chip){
+      chip.classList.toggle('active-exclude', excluded.has(chip.dataset.allergen));
+    });
+    localStorage.setItem('excludedAllergens', JSON.stringify(Array.from(excluded)));
+  }
+  document.querySelectorAll('.allergen-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      var a = chip.dataset.allergen;
+      excluded.has(a) ? excluded.delete(a) : excluded.add(a);
+      applyAllergens();
+    });
+  });
+  applyAllergens();
+
+  // ── Nav pill active highlight on scroll ───────────────────────────────────
+  var sections = Array.from(document.querySelectorAll('.category-section[id]'));
+  var navPills  = document.querySelectorAll('.category-nav .nav-pill');
+  function onScroll(){
+    var scrollY = window.scrollY + HEADER_OFFSET + 20;
+    var current = sections[0];
+    sections.forEach(function(s){
+      if(s.offsetTop <= scrollY) current = s;
+    });
+    if(current){
+      navPills.forEach(function(p){ p.classList.remove('active'); });
+      var active = document.querySelector('.nav-pill[href="#'+current.id+'"]');
+      if(active){
+        active.classList.add('active');
+        active.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+      }
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // ── Language switcher ──────────────────────────────────────────────────────
+  document.querySelectorAll('.locale-btn[data-locale]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var locale    = btn.dataset.locale;
+      var tableCode = document.body.dataset.tableCode || '';
+      var base      = tableCode ? '/menu/masa/'+tableCode : '/menu';
+      var url       = locale === 'tr' ? base : '/'+locale+base;
+      window.location.href = url;
+    });
+  });
+
+  // ── QR scan counter ────────────────────────────────────────────────────────
+  var scanMeta = document.querySelector('meta[name="qr-uuid"]');
+  if(scanMeta) fetch('/api/qr-scan/'+scanMeta.content, {method:'POST'}).catch(function(){});
+})();
+</script>
 </body>
 </html>
