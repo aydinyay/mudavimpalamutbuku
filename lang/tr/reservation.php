@@ -25,6 +25,6 @@ return [
     'cancellation_reason'=> 'İptal Nedeni',
     'no_availability'   => 'Seçilen tarih ve saatte uygun masa bulunmamaktadır.',
     'success_message'   => 'Rezervasyonunuz alındı! Onay SMS\'i gönderilecektir.',
-    'sms_confirmation'  => 'Merhaba :name, Müdavim Şef Restaurant rezervasyonunuz :date tarihinde saat :time için onaylandı. Rezervasyon No: :uuid',
-    'sms_reminder'      => 'Hatırlatma: Müdavim Şef Restaurant\'taki rezervasyonunuz yarın :time\'de. Bizi tercih ettiğiniz için teşekkürler!',
+    'sms_confirmation'  => 'Merhaba :name, Müdavim Restaurant rezervasyonunuz :date tarihinde saat :time için onaylandı. Rezervasyon No: :uuid',
+    'sms_reminder'      => 'Hatırlatma: Müdavim Restaurant\'taki rezervasyonunuz yarın :time\'de. Bizi tercih ettiğiniz için teşekkürler!',
 ];

@@ -7,7 +7,7 @@
 {{-- Hero --}}
 <section class="hero-section">
     <div class="hero-content">
-        <h1>Müdavim Şef Restaurant</h1>
+        <h1>Müdavim Restaurant</h1>
         <p class="tagline">{{ config('restaurant.tagline.' . app()->getLocale()) }}</p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
             <a href="{{ route('reservation.public.create') }}"

@@ -103,7 +103,7 @@ class ReservationController extends Controller
         try {
             $smsSent = app(SmsService::class)->send(
                 $reservation->guest_phone,
-                "Mudavim Sef Restaurant: Rezervasyonunuz alindi. {$date} {$time}, {$reservation->guest_count} kisi. Rez No: {$rezNo}"
+                "Mudavim Restaurant: Rezervasyonunuz alindi. {$date} {$time}, {$reservation->guest_count} kisi. Rez No: {$rezNo}"
             );
         } catch (\Throwable) {}
         session()->flash('sms_sent', $smsSent);

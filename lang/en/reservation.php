@@ -25,6 +25,6 @@ return [
     'cancellation_reason'=> 'Reason for Cancellation',
     'no_availability'   => 'No tables available for the selected date and time.',
     'success_message'   => 'Your reservation has been received! A confirmation SMS will be sent.',
-    'sms_confirmation'  => 'Hello :name, your reservation at Müdavim Şef Restaurant on :date at :time is confirmed. Reservation ID: :uuid',
-    'sms_reminder'      => 'Reminder: Your reservation at Müdavim Şef Restaurant is tomorrow at :time. We look forward to seeing you!',
+    'sms_confirmation'  => 'Hello :name, your reservation at Müdavim Restaurant on :date at :time is confirmed. Reservation ID: :uuid',
+    'sms_reminder'      => 'Reminder: Your reservation at Müdavim Restaurant is tomorrow at :time. We look forward to seeing you!',
 ];
