@@ -28,7 +28,7 @@
 <div class="wrapper">
   <div class="header">
     <h1>🌊 Müdavim Şef Restaurant</h1>
-    <p>Palamut Bükü, Datça</p>
+    <p>Palamutbükü, Datça</p>
   </div>
   <div class="body">
     <div class="greeting">Merhaba {{ $reservation->guest_name }},</div>
@@ -72,7 +72,7 @@
     </div>
   </div>
   <div class="footer">
-    <p>Müdavim Şef Restaurant &bull; Palamut Bükü, Datça</p>
+    <p>Müdavim Şef Restaurant &bull; Palamutbükü, Datça</p>
     <p><a href="https://mudavimpalamutbuku.com">mudavimpalamutbuku.com</a></p>
   </div>
 </div>
