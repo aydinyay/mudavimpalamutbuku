@@ -39,21 +39,31 @@
 @endif
 @endisset
 
+{{-- Search bar --}}
+<div class="menu-search-bar">
+    <div class="position-relative">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" id="menuSearch" placeholder="{{ __('menu.search_placeholder') }}" autocomplete="off">
+    </div>
+</div>
+
 {{-- Category quick nav --}}
 @isset($categories)
 <div class="category-nav">
     @foreach($categories as $cat)
         <a class="nav-pill" href="#cat-{{ $cat->id }}">
-            {{ $cat->icon_emoji }} {{ $cat->{'name_' . app()->getLocale()} }}
+            {{ $cat->{'name_' . app()->getLocale()} }}
         </a>
     @endforeach
 </div>
 @endisset
 
 {{-- Main content --}}
-<div class="container-fluid px-2 py-2">
+<div class="container-fluid px-0">
     @yield('content')
 </div>
+
+<div class="no-results" id="noResults">{{ __('menu.no_results') }}</div>
 
 {{-- Bottom bar: locale + call waiter --}}
 <div class="bottom-bar">

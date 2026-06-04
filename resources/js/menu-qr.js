@@ -1,12 +1,37 @@
 import 'bootstrap';
 
+// ── Search ───────────────────────────────────────────────────────────────────
+const searchInput = document.getElementById('menuSearch');
+const noResults   = document.getElementById('noResults');
+
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        const q = searchInput.value.trim().toLowerCase();
+        let anyVisible = false;
+
+        document.querySelectorAll('.category-section').forEach(section => {
+            let sectionHasMatch = false;
+            section.querySelectorAll('.menu-item').forEach(item => {
+                const name = item.dataset.name || '';
+                const match = !q || name.includes(q);
+                item.classList.toggle('search-hidden', !match);
+                if (match) sectionHasMatch = true;
+            });
+            section.classList.toggle('search-hidden', !sectionHasMatch);
+            if (sectionHasMatch) anyVisible = true;
+        });
+
+        if (noResults) noResults.style.display = anyVisible || !q ? 'none' : 'block';
+    });
+}
+
 // ── Allergen filter ──────────────────────────────────────────────────────────
 const excludedAllergens = new Set(
     JSON.parse(localStorage.getItem('excludedAllergens') || '[]')
 );
 
 function applyAllergenFilter() {
-    document.querySelectorAll('.menu-card[data-allergens]').forEach(card => {
+    document.querySelectorAll('.menu-item[data-allergens]').forEach(card => {
         const allergens = JSON.parse(card.dataset.allergens || '[]');
         const blocked   = allergens.some(a => excludedAllergens.has(a));
         card.style.display = blocked ? 'none' : '';

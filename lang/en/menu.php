@@ -12,6 +12,8 @@ return [
     'filter_allergens' => 'Filter by Allergen',
     'all_items'     => 'All Items',
     'price'         => 'Price',
+    'search_placeholder' => 'Search menu...',
+    'no_results'    => 'No results found.',
     'call_waiter'   => 'Call Waiter',
     'scan_to_order' => 'Scan to order',
 ];

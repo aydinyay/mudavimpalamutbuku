@@ -12,6 +12,8 @@ return [
     'filter_allergens' => 'Nach Allergen filtern',
     'all_items'     => 'Alle Gerichte',
     'price'         => 'Preis',
+    'search_placeholder' => 'Speisekarte durchsuchen...',
+    'no_results'    => 'Keine Ergebnisse gefunden.',
     'call_waiter'   => 'Kellner rufen',
     'scan_to_order' => 'Zum Bestellen scannen',
 ];
