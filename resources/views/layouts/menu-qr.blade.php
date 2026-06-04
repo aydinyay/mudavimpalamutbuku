@@ -4,13 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ config('restaurant.name.' . app()->getLocale()) }} — Menü</title>
+<style>
+/* Critical inline — CDN gelmeden önce navbar sabit olsun */
+body{padding-top:60px}
+nav.navbar-mudavim{position:fixed!important;top:0!important;left:0!important;right:0!important;z-index:1030!important;background:rgba(30,32,35,.95)!important;backdrop-filter:blur(8px)}
+</style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#faf9f6;font-family:'Inter',sans-serif;color:#1a1a1a;padding-bottom:20px;padding-top:60px}
-.navbar-mudavim{background:rgba(30,32,35,.95);backdrop-filter:blur(8px)}
+.navbar-mudavim{background:rgba(30,32,35,.95)!important;backdrop-filter:blur(8px)}
 .navbar-mudavim .nav-link{color:rgba(255,255,255,.85)!important;font-size:.9rem;letter-spacing:.5px}
 .navbar-mudavim .nav-link:hover{color:#e8d5b0!important}
 .search-wrap{padding:10px 16px;background:#fff;border-bottom:1px solid #e5e5e5}
