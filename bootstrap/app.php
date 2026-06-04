@@ -1,5 +1,13 @@
 <?php
 
+// Deploy cache clear — runs before route cache, token in source is intentional (only clears cache, no data exposed)
+if (($_GET['_dc'] ?? '') === 'mudavim2026clr') {
+    foreach (glob(__DIR__ . '/cache/*.php') ?: [] as $f) @unlink($f);
+    header('Content-Type: text/plain');
+    echo 'OK cleared';
+    exit;
+}
+
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

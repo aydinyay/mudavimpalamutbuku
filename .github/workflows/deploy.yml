@@ -63,3 +63,37 @@ jobs:
           exclude: |
             **/.git*
             **/storage/**
+
+      - name: Cache temizle
+        run: |
+          sleep 5
+          RESULT=$(curl -s "https://mudavimpalamutbuku.com/?_dc=mudavim2026clr")
+          echo "Cache temizle yaniti: ${RESULT}"
+          echo "${RESULT}" | grep -q "^OK" || echo "UYARI: bootstrap/app.php henuz aktif degil"
+
+  deploy-vendor:
+    name: Vendor yukle (sadece composer.lock degisince)
+    runs-on: ubuntu-latest
+    if: contains(join(github.event.commits.*.modified, ','), 'composer.lock') || contains(join(github.event.commits.*.added, ','), 'composer.lock')
+
+    steps:
+      - name: Kodu cek
+        uses: actions/checkout@v4
+
+      - name: PHP kur
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: gd, mbstring, pdo_mysql, zip
+
+      - name: Composer bagimliliklar
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Vendor yukle
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.mudavimpalamutbuku.com
+          username: deploy@mudavimpalamutbuku.com
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./vendor/
+          server-dir: /mudavimpalamutbuku/vendor/
