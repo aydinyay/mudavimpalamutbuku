@@ -205,9 +205,6 @@ body{background:var(--c-bg);color:var(--c-dark);font-family:var(--font-sans);fon
 .nav-pill.active{background:var(--c-accent);color:#fff;border-color:var(--c-accent)}
 .allergen-chip.active-exclude{background:var(--c-accent);color:#fff;border-color:var(--c-accent)}
 
-/* ─── Scroll & touch ─────────────────────────── */
-html,body{overflow-x:hidden;overflow-y:auto;touch-action:pan-y}
-
 /* ─── d-flex utilities (no Bootstrap dep) ─── */
 .d-flex{display:flex}
 .align-items-center{align-items:center}
@@ -288,19 +285,7 @@ html,body{overflow-x:hidden;overflow-y:auto;touch-action:pan-y}
 (function(){
   var HEADER_OFFSET = 158;
 
-  // ── Category nav: scroll with offset ────────────────────────────────────
-  document.querySelectorAll('.nav-pill[href^="#"]').forEach(function(pill){
-    pill.addEventListener('click', function(e){
-      e.preventDefault();
-      var id     = pill.getAttribute('href').slice(1);
-      var target = document.getElementById(id);
-      if(!target) return;
-      var pageTop = target.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop);
-      var dest    = pageTop - HEADER_OFFSET;
-      try { window.scroll({top: dest, left: 0, behavior: 'smooth'}); }
-      catch(ex) { window.scrollTo(0, dest); }
-    });
-  });
+  // ── Category nav: native anchor scroll, CSS scroll-padding-top handles offset
 
   // ── Search ───────────────────────────────────────────────────────────────
   var searchInput = document.getElementById('menuSearch');
