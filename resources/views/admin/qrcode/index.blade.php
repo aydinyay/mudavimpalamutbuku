@@ -27,7 +27,7 @@
         <table class="table table-hover mb-0" style="font-size:.88rem;">
             <thead class="table-light">
                 <tr>
-                    <th class="ps-4" style="width:56px;">QR</th>
+                    <th class="ps-4" style="width:110px;">QR</th>
                     <th>Masa</th>
                     <th>Durum</th>
                     <th>Tarama</th>
@@ -39,12 +39,15 @@
             <tr class="align-middle">
                 <td class="ps-4">
                     @if($table->qrCode && $table->qrCode->svg_content)
-                        <div style="width:40px;height:40px;overflow:hidden;border-radius:4px;border:1px solid #e0e0e0;">
-                            {!! $table->qrCode->svg_content !!}
+                        <div style="width:90px;height:90px;border-radius:6px;border:1px solid #e0e0e0;overflow:hidden;background:#fff;">
+                            <div style="width:90px;height:90px;display:flex;align-items:center;justify-content:center;">
+                                {!! preg_replace('/<svg([^>]*)>/i', '<svg$1 width="90" height="90" style="display:block;">', $table->qrCode->svg_content) !!}
+                            </div>
                         </div>
                     @else
-                        <div style="width:40px;height:40px;background:#f5f5f5;border-radius:4px;border:1px solid #e0e0e0;display:flex;align-items:center;justify-content:center;">
-                            <i class="bi bi-qr-code text-muted" style="font-size:.9rem;"></i>
+                        <div style="width:90px;height:90px;background:#f5f5f5;border-radius:6px;border:1px solid #e0e0e0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
+                            <i class="bi bi-qr-code text-muted" style="font-size:1.4rem;"></i>
+                            <span style="font-size:.6rem;color:#aaa;">Yok</span>
                         </div>
                     @endif
                 </td>
