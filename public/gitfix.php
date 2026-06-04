@@ -61,6 +61,14 @@ if (($_GET['action'] ?? '') === 'log') {
     exit;
 }
 
+// Self-update — POST: t, action=self-update, c=base64content
+// Gitfix.php'yi kendisi günceller (public_html yolu __FILE__ üzerinden otomatik)
+if (($_POST['action'] ?? '') === 'self-update' && isset($_POST['c'])) {
+    $result = file_put_contents(__FILE__, base64_decode($_POST['c']));
+    echo $result !== false ? "SELF_UPDATED" : "FAIL";
+    exit;
+}
+
 // Vendor zip çıkar — POST: t, action=vendor-extract, zip=<file>
 if (($_POST['action'] ?? '') === 'vendor-extract' && isset($_FILES['zip'])) {
     header('Content-Type: text/plain');

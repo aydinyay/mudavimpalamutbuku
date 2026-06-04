@@ -33,7 +33,20 @@ jobs:
       - name: NPM bağımlılıkları ve build
         run: npm ci && npm run build
 
-      - name: Değişen dosyaları yükle
+      - name: Public klasörünü web root'a yükle (FTP)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.mudavimpalamutbuku.com
+          username: deploy@mudavimpalamutbuku.com
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./public/
+          server-dir: /public_html/
+          state-name: .ftp-state-public-v1
+          exclude: |
+            **/.git*
+            **/storage/**
+
+      - name: App dosyalarını yükle (gitfix.php POST)
         run: |
           HOOK="https://mudavimpalamutbuku.com/gitfix.php"
           TOKEN="mud2026Xk9mP"
@@ -48,42 +61,30 @@ jobs:
             echo "Deploy aralığı: $BEFORE → ${{ github.sha }}"
           fi
 
-          echo "Deploy edilecek dosyalar:"
-          echo "$FILES"
-
           FAIL=0
           for FILE in $FILES; do
             # Atlanacaklar
-            [[ "$FILE" == .github/* ]]         && continue
-            [[ "$FILE" == node_modules/* ]]    && continue
-            [[ "$FILE" == vendor/* ]]          && continue
-            [[ "$FILE" == storage/logs/* ]]    && continue
-            [[ "$FILE" == storage/framework/cache/* ]] && continue
+            [[ "$FILE" == .github/* ]]          && continue
+            [[ "$FILE" == public/* ]]            && continue
+            [[ "$FILE" == node_modules/* ]]      && continue
+            [[ "$FILE" == vendor/* ]]            && continue
+            [[ "$FILE" == storage/logs/* ]]      && continue
+            [[ "$FILE" == storage/framework/cache/* ]]    && continue
             [[ "$FILE" == storage/framework/sessions/* ]] && continue
-            [[ "$FILE" == .env ]]              && continue
+            [[ "$FILE" == .env ]]                && continue
 
             [ -f "$FILE" ] || continue
-
-            # public/ → /public_html/ (root=web, public/ öneki çıkar)
-            if [[ "$FILE" == public/* ]]; then
-              REMOTE="${FILE#public/}"
-              ROOT_PARAM="web"
-            else
-              REMOTE="$FILE"
-              ROOT_PARAM="app"
-            fi
 
             TMPFILE=$(mktemp)
             base64 -w 0 "$FILE" > "$TMPFILE"
             RESP=$(curl -sf --max-time 120 --connect-timeout 30 --retry 2 --retry-delay 5 \
               -X POST "$HOOK" \
               -F "t=$TOKEN" \
-              -F "root=$ROOT_PARAM" \
-              -F "p=$REMOTE" \
+              -F "p=$FILE" \
               -F "c=<$TMPFILE" 2>&1) \
               || { echo "WARN: $FILE yüklenemedi (resp=$RESP)"; FAIL=$((FAIL+1)); rm -f "$TMPFILE"; continue; }
             rm -f "$TMPFILE"
-            echo "OK: $FILE → $RESP"
+            echo "OK: $FILE"
           done
 
           if [ $FAIL -gt 0 ]; then
