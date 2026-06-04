@@ -43,7 +43,7 @@ class ServerToolsController extends Controller
         $to = request('email', config('mail.from.address'));
         try {
             \Illuminate\Support\Facades\Mail::raw(
-                'Mudavim Palamut Bükü — SMTP test maili. Gönderen: ' . config('mail.from.address'),
+                'Mudavim Palamutbükü — SMTP test maili. Gönderen: ' . config('mail.from.address'),
                 fn ($m) => $m->to($to)->subject('SMTP Mail Testi — ' . now()->format('H:i:s'))
             );
             return response()->json(['status' => 'ok', 'message' => "$to adresine mail gönderildi."]);

@@ -2,17 +2,17 @@
 
 return [
     'name' => [
-        'tr' => 'Müdavim Şef Restaurant',
-        'en' => 'Müdavim Şef Restaurant',
-        'de' => 'Müdavim Şef Restaurant',
+        'tr' => 'Müdavim Restaurant',
+        'en' => 'Müdavim Restaurant',
+        'de' => 'Müdavim Restaurant',
     ],
     'tagline' => [
         'tr' => 'Palamutbükü\'nde Denize Sıfır Akdeniz Mutfağı',
         'en' => 'Mediterranean Cuisine at the Water\'s Edge in Palamutbükü',
         'de' => 'Mediterrane Küche direkt am Meer in Palamutbükü',
     ],
-    'phone'     => '0505 185 10 20',
-    'whatsapp'  => '+905051851020',
+    'phone'     => '0554 442 77 48',
+    'whatsapp'  => '+905544427748',
     'email'     => '',
     'address'   => [
         'tr' => 'Cumalı Mahallesi, Palamutbükü Sokak No:50, 48900 Datça / Muğla',

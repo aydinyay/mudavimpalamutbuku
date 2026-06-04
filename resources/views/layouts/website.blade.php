@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', __('common.site_name')) — Müdavim Şef Restaurant</title>
+    <title>@yield('title', __('common.site_name')) — Müdavim Restaurant</title>
     <meta name="description" content="@yield('meta_description', config('restaurant.tagline.' . app()->getLocale()))">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -31,7 +31,7 @@
 <nav class="navbar navbar-expand-lg navbar-mudavim fixed-top">
     <div class="container">
         <a class="navbar-brand" href="{{ app()->getLocale() === 'tr' ? url('/') : url(app()->getLocale() . '/') }}">
-            Müdavim Şef
+            Müdavim
         </a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
             <i class="bi bi-list text-white fs-4"></i>
@@ -72,7 +72,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-4">
-                <h5 style="color:#e8d5b0;font-weight:700;">Müdavim Şef Restaurant</h5>
+                <h5 style="color:#e8d5b0;font-weight:700;">Müdavim Restaurant</h5>
                 <p class="small opacity-75">{{ config('restaurant.tagline.' . app()->getLocale()) }}</p>
                 <div class="d-flex gap-3 mt-3">
                     <a href="{{ config('restaurant.social.instagram') }}" target="_blank"><i class="bi bi-instagram fs-5"></i></a>
@@ -104,7 +104,7 @@
         </div>
         <hr class="mt-4" style="border-color:rgba(255,255,255,0.1);">
         <p class="text-center small opacity-50 mb-0">
-            &copy; {{ date('Y') }} Müdavim Şef Restaurant. {{ __('common.footer_rights') }}
+            &copy; {{ date('Y') }} Müdavim Restaurant. {{ __('common.footer_rights') }}
         </p>
     </div>
 </footer>

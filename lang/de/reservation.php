@@ -25,6 +25,6 @@ return [
     'cancellation_reason'=> 'Stornierungsgrund',
     'no_availability'   => 'Keine Tische für das gewählte Datum und Uhrzeit verfügbar.',
     'success_message'   => 'Ihre Reservierung wurde aufgenommen! Eine Bestätigungs-SMS wird gesendet.',
-    'sms_confirmation'  => 'Hallo :name, Ihre Reservierung im Müdavim Şef Restaurant am :date um :time wurde bestätigt. Reservierungs-Nr.: :uuid',
-    'sms_reminder'      => 'Erinnerung: Ihre Reservierung im Müdavim Şef Restaurant ist morgen um :time. Wir freuen uns auf Sie!',
+    'sms_confirmation'  => 'Hallo :name, Ihre Reservierung im Müdavim Restaurant am :date um :time wurde bestätigt. Reservierungs-Nr.: :uuid',
+    'sms_reminder'      => 'Erinnerung: Ihre Reservierung im Müdavim Restaurant ist morgen um :time. Wir freuen uns auf Sie!',
 ];

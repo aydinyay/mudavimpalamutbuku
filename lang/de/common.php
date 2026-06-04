@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'site_name'     => 'Müdavim Şef Restaurant',
+    'site_name'     => 'Müdavim Restaurant',
     'nav_home'      => 'Startseite',
     'nav_menu'      => 'Speisekarte',
     'nav_about'     => 'Über uns',

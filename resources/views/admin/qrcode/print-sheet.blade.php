@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>QR Kodlar — Müdavim Şef</title>
+    <title>QR Kodlar — Müdavim</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 10px; }
         h1 { font-size: 16px; text-align: center; margin-bottom: 20px; }
@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-    <h1>Müdavim Şef Restaurant — Masa QR Kodları</h1>
+    <h1>Müdavim Restaurant — Masa QR Kodları</h1>
     <div class="grid">
         @foreach($tables as $table)
         <div class="qr-item">

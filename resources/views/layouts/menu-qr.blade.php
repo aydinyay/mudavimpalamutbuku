@@ -15,7 +15,7 @@
 {{-- Sticky header --}}
 <div class="qr-header">
     <div class="d-flex justify-content-between align-items-center">
-        <span class="restaurant-name">Müdavim Şef</span>
+        <span class="restaurant-name">Müdavim</span>
         @isset($tableName)
             <span class="table-badge">{{ $tableName }}</span>
         @endisset

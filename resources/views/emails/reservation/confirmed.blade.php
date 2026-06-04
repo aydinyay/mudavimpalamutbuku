@@ -27,7 +27,7 @@
 <body>
 <div class="wrapper">
   <div class="header">
-    <h1>🌊 Müdavim Şef Restaurant</h1>
+    <h1>🌊 Müdavim Restaurant</h1>
     <p>Palamutbükü, Datça</p>
   </div>
   <div class="body">
@@ -72,7 +72,7 @@
     </div>
   </div>
   <div class="footer">
-    <p>Müdavim Şef Restaurant &bull; Palamutbükü, Datça</p>
+    <p>Müdavim Restaurant &bull; Palamutbükü, Datça</p>
     <p><a href="https://mudavimpalamutbuku.com">mudavimpalamutbuku.com</a></p>
   </div>
 </div>

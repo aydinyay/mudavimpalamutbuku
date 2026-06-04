@@ -18,7 +18,7 @@ class ReservationConfirmed extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Rezervasyon Alındı — Müdavim Şef Restaurant',
+            subject: 'Rezervasyon Alındı — Müdavim Restaurant',
         );
     }
 

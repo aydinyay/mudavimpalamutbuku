@@ -10,14 +10,14 @@ class RestaurantSeeder extends Seeder
     public function run(): void
     {
         RestaurantSetting::updateOrCreate(['id' => 1], [
-            'name_tr'      => 'Müdavim Şef Restaurant',
-            'name_en'      => 'Müdavim Şef Restaurant',
-            'name_de'      => 'Müdavim Şef Restaurant',
+            'name_tr'      => 'Müdavim Restaurant',
+            'name_en'      => 'Müdavim Restaurant',
+            'name_de'      => 'Müdavim Restaurant',
             'tagline_tr'   => 'Palamutbükü\'nde Denize Sıfır Akdeniz Mutfağı',
             'tagline_en'   => 'Mediterranean Cuisine at the Water\'s Edge',
             'tagline_de'   => 'Mediterrane Küche direkt am Meer',
-            'phone'        => '0505 185 10 20',
-            'whatsapp'     => '+905051851020',
+            'phone'        => '0554 442 77 48',
+            'whatsapp'     => '+905544427748',
             'address_tr'   => 'Cumalı Mahallesi, Palamutbükü Sokak No:50, 48900 Datça / Muğla',
             'address_en'   => 'Cumalı Mah., Palamutbükü Sokak No:50, 48900 Datça / Muğla, Turkey',
             'address_de'   => 'Cumalı Mah., Palamutbükü Sokak No:50, 48900 Datça / Muğla, Türkei',

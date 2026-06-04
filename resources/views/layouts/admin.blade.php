@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Yönetim Paneli') — Müdavim Şef</title>
+    <title>@yield('title', 'Yönetim Paneli') — Müdavim</title>
     @vite(['resources/css/admin.css', 'resources/js/admin.js'])
     @stack('styles')
 </head>
@@ -13,7 +13,7 @@
 {{-- Sidebar --}}
 <aside class="admin-sidebar">
     <div class="sidebar-brand">
-        Müdavim Şef
+        Müdavim
         <small>YÖNETİM PANELİ</small>
     </div>
     <nav class="sidebar-nav">
