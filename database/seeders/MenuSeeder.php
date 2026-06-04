@@ -57,6 +57,30 @@ class MenuSeeder extends Seeder
             'name_tr' => 'İçecekler', 'name_en' => 'Drinks', 'name_de' => 'Getränke',
             'icon_emoji' => '🥤', 'sort_order' => 9,
         ]);
+        $sogukIcecekler = MenuCategory::updateOrCreate(['slug' => 'soguk-icecekler'], [
+            'name_tr' => 'Soğuk İçecekler', 'name_en' => 'Cold Drinks', 'name_de' => 'Kalte Getränke',
+            'icon_emoji' => '🧃', 'sort_order' => 9,
+        ]);
+        $biralar = MenuCategory::updateOrCreate(['slug' => 'biralar'], [
+            'name_tr' => 'Biralar', 'name_en' => 'Beers', 'name_de' => 'Biere',
+            'icon_emoji' => '🍺', 'sort_order' => 10,
+        ]);
+        $raki = MenuCategory::updateOrCreate(['slug' => 'raki'], [
+            'name_tr' => 'Rakı', 'name_en' => 'Raki', 'name_de' => 'Raki',
+            'icon_emoji' => '🥃', 'sort_order' => 11,
+        ]);
+        $sarap = MenuCategory::updateOrCreate(['slug' => 'sarap'], [
+            'name_tr' => 'Şarap', 'name_en' => 'Wine', 'name_de' => 'Wein',
+            'icon_emoji' => '🍷', 'sort_order' => 12,
+        ]);
+        $import = MenuCategory::updateOrCreate(['slug' => 'import-icecekler'], [
+            'name_tr' => 'İthal İçecekler', 'name_en' => 'Import Drinks', 'name_de' => 'Import-Getränke',
+            'icon_emoji' => '🍸', 'sort_order' => 13,
+        ]);
+        $sicakIcecekler = MenuCategory::updateOrCreate(['slug' => 'sicak-icecekler'], [
+            'name_tr' => 'Sıcak İçecekler', 'name_en' => 'Hot Drinks', 'name_de' => 'Heiße Getränke',
+            'icon_emoji' => '☕', 'sort_order' => 14,
+        ]);
 
         // ── Ürünler ──────────────────────────────────────────────────────────
         $items = [
@@ -271,52 +295,77 @@ class MenuSeeder extends Seeder
              'de' => ['name' => 'Kürbisdessert', 'description' => ''],
              'allergens' => [$dairy]],
 
-            // İçecekler
-            ['category' => $icecekler, 'data' => ['price' => 150, 'sort_order' => 1],
-             'tr' => ['name' => 'Gazlı İçecek', 'description' => ''],
-             'en' => ['name' => 'Soft Drink', 'description' => ''],
-             'de' => ['name' => 'Softdrink', 'description' => ''],
-             'allergens' => []],
-            ['category' => $icecekler, 'data' => ['price' => 150, 'sort_order' => 2],
-             'tr' => ['name' => 'Meyve Suyu', 'description' => ''],
-             'en' => ['name' => 'Fruit Juice', 'description' => ''],
-             'de' => ['name' => 'Fruchtsaft', 'description' => ''],
-             'allergens' => []],
-            ['category' => $icecekler, 'data' => ['price' => 120, 'sort_order' => 3],
-             'tr' => ['name' => 'Ayran', 'description' => ''],
-             'en' => ['name' => 'Ayran', 'description' => ''],
-             'de' => ['name' => 'Ayran', 'description' => ''],
-             'allergens' => [$dairy]],
-            ['category' => $icecekler, 'data' => ['price' => 90, 'sort_order' => 4],
-             'tr' => ['name' => 'Soda', 'description' => ''],
-             'en' => ['name' => 'Soda', 'description' => ''],
-             'de' => ['name' => 'Soda', 'description' => ''],
-             'allergens' => []],
-            ['category' => $icecekler, 'data' => ['price' => 100, 'sort_order' => 5],
-             'tr' => ['name' => 'Su', 'description' => ''],
-             'en' => ['name' => 'Water', 'description' => ''],
-             'de' => ['name' => 'Wasser', 'description' => ''],
-             'allergens' => []],
-            ['category' => $icecekler, 'data' => ['price' => 300, 'sort_order' => 6],
-             'tr' => ['name' => 'Bira', 'description' => 'Tuborg Malt / Filtresiz'],
-             'en' => ['name' => 'Beer', 'description' => 'Tuborg Malt / Unfiltered'],
-             'de' => ['name' => 'Bier', 'description' => 'Tuborg Malt / Ungefiltert'],
-             'allergens' => [$gluten]],
-            ['category' => $icecekler, 'data' => ['price' => 60, 'sort_order' => 7],
-             'tr' => ['name' => 'Çay', 'description' => ''],
-             'en' => ['name' => 'Tea', 'description' => ''],
-             'de' => ['name' => 'Tee', 'description' => ''],
-             'allergens' => []],
-            ['category' => $icecekler, 'data' => ['price' => 150, 'sort_order' => 8],
-             'tr' => ['name' => 'Türk Kahvesi', 'description' => ''],
-             'en' => ['name' => 'Turkish Coffee', 'description' => ''],
-             'de' => ['name' => 'Türkischer Kaffee', 'description' => ''],
-             'allergens' => []],
-            ['category' => $icecekler, 'data' => ['price' => 200, 'sort_order' => 9],
-             'tr' => ['name' => 'Americano', 'description' => ''],
-             'en' => ['name' => 'Americano', 'description' => ''],
-             'de' => ['name' => 'Americano', 'description' => ''],
-             'allergens' => []],
+            // Soğuk İçecekler
+            ['category' => $sogukIcecekler, 'data' => ['price' => 150, 'sort_order' => 1],
+             'tr' => ['name' => 'Gazlı İçecek', 'description' => ''], 'en' => ['name' => 'Soft Drink', 'description' => ''], 'de' => ['name' => 'Softdrink', 'description' => ''], 'allergens' => []],
+            ['category' => $sogukIcecekler, 'data' => ['price' => 150, 'sort_order' => 2],
+             'tr' => ['name' => 'Meyve Suyu', 'description' => ''], 'en' => ['name' => 'Fruit Juice', 'description' => ''], 'de' => ['name' => 'Fruchtsaft', 'description' => ''], 'allergens' => []],
+            ['category' => $sogukIcecekler, 'data' => ['price' => 150, 'sort_order' => 3],
+             'tr' => ['name' => 'Soğuk Çay', 'description' => ''], 'en' => ['name' => 'Iced Tea', 'description' => ''], 'de' => ['name' => 'Eistee', 'description' => ''], 'allergens' => []],
+            ['category' => $sogukIcecekler, 'data' => ['price' => 90, 'sort_order' => 4],
+             'tr' => ['name' => 'Soda', 'description' => ''], 'en' => ['name' => 'Soda', 'description' => ''], 'de' => ['name' => 'Soda', 'description' => ''], 'allergens' => []],
+            ['category' => $sogukIcecekler, 'data' => ['price' => 140, 'sort_order' => 5],
+             'tr' => ['name' => 'Şalgam', 'description' => ''], 'en' => ['name' => 'Turnip Juice', 'description' => ''], 'de' => ['name' => 'Rübensaft', 'description' => ''], 'allergens' => []],
+            ['category' => $sogukIcecekler, 'data' => ['price' => 120, 'sort_order' => 6],
+             'tr' => ['name' => 'Ayran', 'description' => ''], 'en' => ['name' => 'Ayran', 'description' => ''], 'de' => ['name' => 'Ayran', 'description' => ''], 'allergens' => [$dairy]],
+            ['category' => $sogukIcecekler, 'data' => ['price' => 100, 'sort_order' => 7],
+             'tr' => ['name' => 'Su', 'description' => ''], 'en' => ['name' => 'Water', 'description' => ''], 'de' => ['name' => 'Wasser', 'description' => ''], 'allergens' => []],
+
+            // Biralar
+            ['category' => $biralar, 'data' => ['price' => 300, 'sort_order' => 1],
+             'tr' => ['name' => 'Tuborg Malt', 'description' => ''], 'en' => ['name' => 'Tuborg Malt', 'description' => ''], 'de' => ['name' => 'Tuborg Malt', 'description' => ''], 'allergens' => [$gluten]],
+            ['category' => $biralar, 'data' => ['price' => 300, 'sort_order' => 2],
+             'tr' => ['name' => 'Tuborg Filtresiz', 'description' => ''], 'en' => ['name' => 'Tuborg Unfiltered', 'description' => ''], 'de' => ['name' => 'Tuborg Ungefiltert', 'description' => ''], 'allergens' => [$gluten]],
+            ['category' => $biralar, 'data' => ['price' => 350, 'sort_order' => 3],
+             'tr' => ['name' => 'Carlsberg', 'description' => ''], 'en' => ['name' => 'Carlsberg', 'description' => ''], 'de' => ['name' => 'Carlsberg', 'description' => ''], 'allergens' => [$gluten]],
+            ['category' => $biralar, 'data' => ['price' => 350, 'sort_order' => 4],
+             'tr' => ['name' => 'Corona', 'description' => ''], 'en' => ['name' => 'Corona', 'description' => ''], 'de' => ['name' => 'Corona', 'description' => ''], 'allergens' => [$gluten]],
+
+            // Rakı
+            ['category' => $raki, 'data' => ['price' => 500, 'sort_order' => 1],
+             'tr' => ['name' => 'Rakı Tek', 'description' => ''], 'en' => ['name' => 'Raki Single', 'description' => ''], 'de' => ['name' => 'Raki Einfach', 'description' => ''], 'allergens' => []],
+            ['category' => $raki, 'data' => ['price' => 600, 'sort_order' => 2],
+             'tr' => ['name' => 'Rakı Double', 'description' => ''], 'en' => ['name' => 'Raki Double', 'description' => ''], 'de' => ['name' => 'Raki Doppelt', 'description' => ''], 'allergens' => []],
+            ['category' => $raki, 'data' => ['price' => 1500, 'sort_order' => 3],
+             'tr' => ['name' => 'Rakı Şişe 20cl', 'description' => ''], 'en' => ['name' => 'Raki Bottle 20cl', 'description' => ''], 'de' => ['name' => 'Raki Flasche 20cl', 'description' => ''], 'allergens' => []],
+            ['category' => $raki, 'data' => ['price' => 2500, 'sort_order' => 4],
+             'tr' => ['name' => 'Rakı Şişe 35cl', 'description' => ''], 'en' => ['name' => 'Raki Bottle 35cl', 'description' => ''], 'de' => ['name' => 'Raki Flasche 35cl', 'description' => ''], 'allergens' => []],
+            ['category' => $raki, 'data' => ['price' => 3750, 'sort_order' => 5],
+             'tr' => ['name' => 'Rakı Şişe 70cl', 'description' => ''], 'en' => ['name' => 'Raki Bottle 70cl', 'description' => ''], 'de' => ['name' => 'Raki Flasche 70cl', 'description' => ''], 'allergens' => []],
+
+            // Şarap
+            ['category' => $sarap, 'data' => ['price' => 650, 'sort_order' => 1],
+             'tr' => ['name' => 'Beyaz Şarap Kadeh', 'description' => ''], 'en' => ['name' => 'White Wine Glass', 'description' => ''], 'de' => ['name' => 'Weißwein Glas', 'description' => ''], 'allergens' => [$molluscs]],
+            ['category' => $sarap, 'data' => ['price' => 650, 'sort_order' => 2],
+             'tr' => ['name' => 'Kırmızı Şarap Kadeh', 'description' => ''], 'en' => ['name' => 'Red Wine Glass', 'description' => ''], 'de' => ['name' => 'Rotwein Glas', 'description' => ''], 'allergens' => [$molluscs]],
+            ['category' => $sarap, 'data' => ['price' => 2100, 'sort_order' => 3],
+             'tr' => ['name' => 'Beyaz Şarap Şişe (Yerli)', 'description' => ''], 'en' => ['name' => 'White Wine Bottle (Local)', 'description' => ''], 'de' => ['name' => 'Weißwein Flasche (Lokal)', 'description' => ''], 'allergens' => [$molluscs]],
+            ['category' => $sarap, 'data' => ['price' => 2100, 'sort_order' => 4],
+             'tr' => ['name' => 'Kırmızı Şarap Şişe (Yerli)', 'description' => ''], 'en' => ['name' => 'Red Wine Bottle (Local)', 'description' => ''], 'de' => ['name' => 'Rotwein Flasche (Lokal)', 'description' => ''], 'allergens' => [$molluscs]],
+            ['category' => $sarap, 'data' => ['price' => 3900, 'sort_order' => 5],
+             'tr' => ['name' => 'Beyaz Şarap Şişe (İthal)', 'description' => ''], 'en' => ['name' => 'White Wine Bottle (Import)', 'description' => ''], 'de' => ['name' => 'Weißwein Flasche (Import)', 'description' => ''], 'allergens' => [$molluscs]],
+            ['category' => $sarap, 'data' => ['price' => 3900, 'sort_order' => 6],
+             'tr' => ['name' => 'Kırmızı Şarap Şişe (İthal)', 'description' => ''], 'en' => ['name' => 'Red Wine Bottle (Import)', 'description' => ''], 'de' => ['name' => 'Rotwein Flasche (Import)', 'description' => ''], 'allergens' => [$molluscs]],
+
+            // İthal İçecekler
+            ['category' => $import, 'data' => ['price' => 700, 'sort_order' => 1],
+             'tr' => ['name' => "Gordon's Gin", 'description' => ''], 'en' => ['name' => "Gordon's Gin", 'description' => ''], 'de' => ['name' => "Gordon's Gin", 'description' => ''], 'allergens' => []],
+            ['category' => $import, 'data' => ['price' => 800, 'sort_order' => 2],
+             'tr' => ['name' => 'Chivas Regal', 'description' => ''], 'en' => ['name' => 'Chivas Regal', 'description' => ''], 'de' => ['name' => 'Chivas Regal', 'description' => ''], 'allergens' => []],
+            ['category' => $import, 'data' => ['price' => 700, 'sort_order' => 3],
+             'tr' => ['name' => 'Smirnoff Votka', 'description' => ''], 'en' => ['name' => 'Smirnoff Vodka', 'description' => ''], 'de' => ['name' => 'Smirnoff Wodka', 'description' => ''], 'allergens' => []],
+            ['category' => $import, 'data' => ['price' => 800, 'sort_order' => 4],
+             'tr' => ['name' => 'Aperol Spritz', 'description' => ''], 'en' => ['name' => 'Aperol Spritz', 'description' => ''], 'de' => ['name' => 'Aperol Spritz', 'description' => ''], 'allergens' => []],
+
+            // Sıcak İçecekler
+            ['category' => $sicakIcecekler, 'data' => ['price' => 150, 'sort_order' => 1],
+             'tr' => ['name' => 'Türk Kahvesi', 'description' => ''], 'en' => ['name' => 'Turkish Coffee', 'description' => ''], 'de' => ['name' => 'Türkischer Kaffee', 'description' => ''], 'allergens' => []],
+            ['category' => $sicakIcecekler, 'data' => ['price' => 200, 'sort_order' => 2],
+             'tr' => ['name' => 'Americano', 'description' => ''], 'en' => ['name' => 'Americano', 'description' => ''], 'de' => ['name' => 'Americano', 'description' => ''], 'allergens' => []],
+            ['category' => $sicakIcecekler, 'data' => ['price' => 180, 'sort_order' => 3],
+             'tr' => ['name' => 'Espresso', 'description' => ''], 'en' => ['name' => 'Espresso', 'description' => ''], 'de' => ['name' => 'Espresso', 'description' => ''], 'allergens' => []],
+            ['category' => $sicakIcecekler, 'data' => ['price' => 60, 'sort_order' => 4],
+             'tr' => ['name' => 'Çay', 'description' => ''], 'en' => ['name' => 'Tea', 'description' => ''], 'de' => ['name' => 'Tee', 'description' => ''], 'allergens' => []],
         ];
 
         foreach ($items as $spec) {
