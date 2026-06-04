@@ -15,13 +15,25 @@
                     @else
                         <i class="bi bi-check-circle fs-1 mb-3 d-block" style="color:var(--color-sea);"></i>
                         <h4 class="fw-700">Rezervasyonunuz Alındı</h4>
-                        <p class="text-muted small mb-4">Onay SMS'i gönderilecektir.</p>
+                        @if(session('sms_sent') === true)
+                            <p class="small mb-4" style="color:var(--color-sea);">
+                                <i class="bi bi-phone-fill"></i> Onay SMS'i gönderildi.
+                            </p>
+                        @elseif(session('sms_sent') === false)
+                            <p class="text-muted small mb-4">
+                                <i class="bi bi-phone"></i> SMS gönderilemedi — rezervasyonunuz kayıt altında.
+                            </p>
+                        @else
+                            <p class="text-muted small mb-4">Onay SMS'i gönderilecektir.</p>
+                        @endif
                     @endif
 
                     <div class="bg-light rounded-3 p-3 text-start mt-4">
                         <dl class="row mb-0 small">
                             <dt class="col-5 text-muted">Ad</dt>
                             <dd class="col-7">{{ $reservation->guest_name }}</dd>
+                            <dt class="col-5 text-muted">Telefon</dt>
+                            <dd class="col-7">{{ $reservation->guest_phone }}</dd>
                             <dt class="col-5 text-muted">Tarih</dt>
                             <dd class="col-7">{{ $reservation->reservation_date->format('d.m.Y') }}</dd>
                             <dt class="col-5 text-muted">Saat</dt>

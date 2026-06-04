@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class SmsService
@@ -24,20 +23,20 @@ class SmsService
             return false;
         }
 
-        $params = [
-            'kno'      => $kno,
-            'kul_ad'   => $username,
-            'sifre'    => $password,
-            'gonderen' => config('services.sms.originator', 'MUDAVIM'),
-            'mesaj'    => $message,
-            'numaralar'=> $phone,
-            'tur'      => 'Turkce',
-        ];
+        // HTTP kullanılıyor — toplusmsyolla.com SSL DH key uyumsuzluğu nedeniyle
+        $url = 'http://www.toplusmsyolla.com/smsgonder1N.php?' . http_build_query([
+            'kno'       => $kno,
+            'kul_ad'    => $username,
+            'sifre'     => $password,
+            'gonderen'  => config('services.sms.originator', 'MUDAVIM'),
+            'mesaj'     => $message,
+            'numaralar' => $phone,
+            'tur'       => 'Turkce',
+        ]);
 
         try {
-            $response = Http::timeout(15)->withoutVerifying()
-                ->get('https://www.toplusmsyolla.com/smsgonder1N.php', $params);
-            $body = trim($response->body());
+            $ctx  = stream_context_create(['http' => ['timeout' => 15]]);
+            $body = trim((string) file_get_contents($url, false, $ctx));
             Log::info("SMS [{$phone}]: {$body}");
             if (str_starts_with($body, '1:')) return true;
             Log::warning("SMS başarısız [{$phone}]: {$body}");
