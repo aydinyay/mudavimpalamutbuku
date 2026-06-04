@@ -52,6 +52,14 @@ body{background:#faf9f6;font-family:'Inter',sans-serif;color:#1a1a1a;padding-bot
                     </a>
                 </li>
             </ul>
+            <div class="locale-switcher ms-lg-3 mt-2 mt-lg-0 d-flex gap-1">
+                @foreach(['tr','en','de'] as $loc)
+                    <a href="{{ $loc === 'tr' ? url('/menu') : url($loc.'/menu') }}"
+                       class="btn btn-sm {{ app()->getLocale() === $loc ? 'btn-light' : 'btn-outline-light' }}">
+                        {{ strtoupper($loc) }}
+                    </a>
+                @endforeach
+            </div>
         </div>
     </div>
 </nav>
