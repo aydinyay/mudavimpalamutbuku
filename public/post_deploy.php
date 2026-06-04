@@ -1,28 +1,42 @@
 <?php
-// Güvenlik tokeni — çalıştırdıktan sonra bu dosyayı SİL
 if (($_GET['token'] ?? '') !== 'mudavim2024deploy') {
     die('Yetkisiz erişim.');
 }
 
-define('LARAVEL_START', microtime(true));
-require '/home/mudavimp/mudavimpalamutbuku/vendor/autoload.php';
-
-$app = require_once '/home/mudavimp/mudavimpalamutbuku/bootstrap/app.php';
-$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
-
-$commands = [
-    'migrate --force',
-    'db:seed --force',
-    'config:cache',
-    'route:cache',
-    'view:cache',
-];
-
 echo '<pre>';
-foreach ($commands as $cmd) {
-    echo "\n▶ php artisan $cmd\n";
-    $status = $kernel->call($cmd);
-    echo "  Çıkış kodu: $status\n";
+
+try {
+    define('LARAVEL_START', microtime(true));
+    require '/home/mudavimp/mudavimpalamutbuku/vendor/autoload.php';
+    echo "✅ autoload OK\n";
+
+    $app = require_once '/home/mudavimp/mudavimpalamutbuku/bootstrap/app.php';
+    echo "✅ app bootstrap OK\n";
+
+    $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+    echo "✅ kernel OK\n";
+
+    $commands = [
+        ['migrate', ['--force' => true]],
+        ['db:seed', ['--force' => true]],
+        ['config:cache', []],
+        ['route:cache', []],
+        ['view:cache', []],
+    ];
+
+    foreach ($commands as [$cmd, $args]) {
+        echo "\n▶ php artisan $cmd\n";
+        ob_start();
+        $status = $kernel->call($cmd, $args);
+        $output = ob_get_clean();
+        echo $output;
+        echo "  Çıkış: $status\n";
+    }
+
+    echo "\n✅ Tamamlandı! Bu dosyayı public_html'den SİL.\n";
+} catch (\Throwable $e) {
+    echo "\n❌ HATA: " . $e->getMessage() . "\n";
+    echo "Dosya: " . $e->getFile() . ":" . $e->getLine() . "\n";
 }
-echo "\n✅ Tamamlandı. Bu dosyayı public_html'den SİL!\n";
+
 echo '</pre>';
