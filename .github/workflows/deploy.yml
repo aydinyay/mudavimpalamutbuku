@@ -41,6 +41,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
           server-dir: /mudavimpalamutbuku/
+          state-name: .ftp-state-app-v6
           exclude: |
             **/.git*
             **/.git*/**
