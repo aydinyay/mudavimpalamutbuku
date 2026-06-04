@@ -3,10 +3,12 @@
 namespace App\Modules\Reservation\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Reservation\Mail\ReservationAdminNotification;
+use App\Modules\Reservation\Mail\ReservationConfirmed;
 use App\Modules\Reservation\Models\Reservation;
 use App\Modules\Reservation\Services\AvailabilityService;
-use App\Modules\TablePlan\Models\Area;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -76,6 +78,20 @@ class ReservationController extends Controller
         }
 
         $reservation = Reservation::create($data);
+
+        // Misafir onay maili (e-posta verdiyse)
+        if ($reservation->guest_email) {
+            try {
+                Mail::to($reservation->guest_email)
+                    ->send(new ReservationConfirmed($reservation));
+            } catch (\Throwable) {}
+        }
+
+        // Admin bildirim maili
+        try {
+            Mail::to(config('mail.from.address'))
+                ->send(new ReservationAdminNotification($reservation));
+        } catch (\Throwable) {}
 
         return redirect()->route('reservation.public.show', $reservation->reservation_uuid)
             ->with('success', __('reservation.success_message'));
