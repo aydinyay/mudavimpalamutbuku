@@ -94,15 +94,19 @@ class ReservationController extends Controller
                 ->send(new ReservationAdminNotification($reservation));
         } catch (\Throwable) {}
 
+        $date = \Carbon\Carbon::parse($reservation->reservation_date)->format('d.m.Y');
+        $time = substr($reservation->arrival_time, 0, 5);
+        $rezNo = strtoupper(substr($reservation->reservation_uuid, 0, 8));
+
         // Misafir SMS bildirimi
+        $smsSent = false;
         try {
-            $date = \Carbon\Carbon::parse($reservation->reservation_date)->format('d.m.Y');
-            $time = substr($reservation->arrival_time, 0, 5);
-            app(SmsService::class)->send(
+            $smsSent = app(SmsService::class)->send(
                 $reservation->guest_phone,
-                "Mudavim Sef Restaurant: Rezervasyonunuz alindi. {$date} {$time}, {$reservation->guest_count} kisi. Detay: " . url('/rezervasyon/' . $reservation->reservation_uuid)
+                "Mudavim Sef Restaurant: Rezervasyonunuz alindi. {$date} {$time}, {$reservation->guest_count} kisi. Rez No: {$rezNo}"
             );
         } catch (\Throwable) {}
+        session()->flash('sms_sent', $smsSent);
 
         // Admin SMS bildirimi
         $notifyPhone = config('services.sms.notify_phone');
@@ -110,7 +114,7 @@ class ReservationController extends Controller
             try {
                 app(SmsService::class)->send(
                     $notifyPhone,
-                    "Yeni rezervasyon: {$reservation->guest_name}, {$reservation->guest_count} kisi, {$date} {$time}"
+                    "Yeni rezervasyon: {$reservation->guest_name}, {$reservation->guest_count} kisi, {$date} {$time}. Rez: {$rezNo}"
                 );
             } catch (\Throwable) {}
         }
