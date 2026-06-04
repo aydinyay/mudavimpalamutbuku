@@ -99,6 +99,27 @@ if (($_GET['action'] ?? '') === 'routes') {
     exit;
 }
 
+// Mail testi — ?action=mailtest&to=email
+if (($_GET['action'] ?? '') === 'mailtest') {
+    header('Content-Type: text/plain; charset=utf-8');
+    define('LARAVEL_START', microtime(true));
+    require $appRoot . '/vendor/autoload.php';
+    $app    = require_once $appRoot . '/bootstrap/app.php';
+    $kernel = $app->make(\Illuminate\Contracts\Console\Kernel::class);
+    $kernel->bootstrap();
+    $to = $_GET['to'] ?? 'aydinyay@gmail.com';
+    try {
+        \Illuminate\Support\Facades\Mail::raw(
+            'Mudavim SMTP test. Zaman: ' . date('H:i:s'),
+            fn($m) => $m->to($to)->subject('SMTP Test — mudavimpalamutbuku.com')
+        );
+        echo "MAIL_OK: $to adresine gonderildi";
+    } catch (\Throwable $e) {
+        echo "MAIL_ERROR: " . $e->getMessage();
+    }
+    exit;
+}
+
 // Her çağrıda cache temizle
 @unlink("$appRoot/bootstrap/cache/routes-v7.php");
 @unlink("$appRoot/bootstrap/cache/config.php");
