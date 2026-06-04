@@ -69,9 +69,9 @@ jobs:
       - name: Cache temizle
         run: |
           sleep 5
-          RESULT=$(curl -s "https://mudavimpalamutbuku.com/?_dc=mudavim2026clr")
+          RESULT=$(curl -s "https://mudavimpalamutbuku.com/gitfix.php?t=mud2026Xk9mP")
           echo "Cache temizle yaniti: ${RESULT}"
-          echo "${RESULT}" | grep -q "^OK" || echo "UYARI: bootstrap/app.php henuz aktif degil"
+          echo "${RESULT}" | grep -q "CACHE_CLEARED" && echo "OK" || echo "UYARI: gitfix henuz aktif degil"
 
   deploy-vendor:
     name: Vendor yukle (sadece composer.lock degisince)
