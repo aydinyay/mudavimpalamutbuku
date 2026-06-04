@@ -15,32 +15,60 @@ Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function (
     Route::post('/ayarlar', [DashboardController::class, 'updateSettings'])->name('settings.update');
 
     // Reservations
-    Route::resource('rezervasyonlar', AdminReservationController::class, [
-        'as' => 'reservations',
-        'parameters' => ['rezervasyonlar' => 'reservation'],
-    ]);
+    Route::resource('rezervasyonlar', AdminReservationController::class)
+        ->parameters(['rezervasyonlar' => 'reservation'])
+        ->names([
+            'index'   => 'reservations.index',
+            'create'  => 'reservations.create',
+            'store'   => 'reservations.store',
+            'show'    => 'reservations.show',
+            'edit'    => 'reservations.edit',
+            'update'  => 'reservations.update',
+            'destroy' => 'reservations.destroy',
+        ]);
     Route::post('rezervasyonlar/{reservation}/durum', [AdminReservationController::class, 'updateStatus'])
         ->name('reservations.status');
 
     // Table plan
-    Route::resource('masalar', TableController::class, [
-        'as' => 'tables',
-        'parameters' => ['masalar' => 'table'],
-    ]);
+    Route::resource('masalar', TableController::class)
+        ->parameters(['masalar' => 'table'])
+        ->names([
+            'index'   => 'tables.index',
+            'create'  => 'tables.create',
+            'store'   => 'tables.store',
+            'show'    => 'tables.show',
+            'edit'    => 'tables.edit',
+            'update'  => 'tables.update',
+            'destroy' => 'tables.destroy',
+        ]);
     Route::patch('masalar/{table}/pozisyon', [TableController::class, 'updatePosition'])
         ->name('tables.position');
 
     // Menu categories
-    Route::resource('menu/kategoriler', CategoryController::class, [
-        'as'         => 'menu.categories',
-        'parameters' => ['kategoriler' => 'category'],
-    ]);
+    Route::resource('menu/kategoriler', CategoryController::class)
+        ->parameters(['kategoriler' => 'category'])
+        ->names([
+            'index'   => 'menu.categories.index',
+            'create'  => 'menu.categories.create',
+            'store'   => 'menu.categories.store',
+            'show'    => 'menu.categories.show',
+            'edit'    => 'menu.categories.edit',
+            'update'  => 'menu.categories.update',
+            'destroy' => 'menu.categories.destroy',
+        ]);
 
     // Menu items
-    Route::resource('menu/urunler', MenuItemController::class, [
-        'as'         => 'menu.items',
-        'parameters' => ['urunler' => 'item'],
-    ]);
+    Route::resource('menu/urunler', MenuItemController::class)
+        ->parameters(['urunler' => 'item'])
+        ->names([
+            'index'   => 'menu.items.index',
+            'create'  => 'menu.items.create',
+            'store'   => 'menu.items.store',
+            'show'    => 'menu.items.show',
+            'edit'    => 'menu.items.edit',
+            'update'  => 'menu.items.update',
+            'destroy' => 'menu.items.destroy',
+        ]);
     Route::patch('menu/urunler/{item}/toggle-available', [MenuItemController::class, 'toggleAvailable'])
         ->name('menu.items.toggle');
     Route::post('menu/kategoriler/sirala', [CategoryController::class, 'reorder'])
