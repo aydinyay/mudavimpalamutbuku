@@ -205,6 +205,9 @@ body{background:var(--c-bg);color:var(--c-dark);font-family:var(--font-sans);fon
 .nav-pill.active{background:var(--c-accent);color:#fff;border-color:var(--c-accent)}
 .allergen-chip.active-exclude{background:var(--c-accent);color:#fff;border-color:var(--c-accent)}
 
+/* ─── Scroll & touch ─────────────────────────── */
+html,body{overflow-x:hidden;overflow-y:auto;touch-action:pan-y}
+
 /* ─── d-flex utilities (no Bootstrap dep) ─── */
 .d-flex{display:flex}
 .align-items-center{align-items:center}
@@ -285,15 +288,17 @@ body{background:var(--c-bg);color:var(--c-dark);font-family:var(--font-sans);fon
 (function(){
   var HEADER_OFFSET = 158;
 
-  // ── Category nav: smooth scroll with offset ──────────────────────────────
+  // ── Category nav: scroll with offset ────────────────────────────────────
   document.querySelectorAll('.nav-pill[href^="#"]').forEach(function(pill){
     pill.addEventListener('click', function(e){
       e.preventDefault();
-      var target = document.querySelector(pill.getAttribute('href'));
-      if(target){
-        var top = target.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
-        window.scrollTo({top: top, behavior: 'smooth'});
-      }
+      var id     = pill.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if(!target) return;
+      var pageTop = target.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop);
+      var dest    = pageTop - HEADER_OFFSET;
+      try { window.scroll({top: dest, left: 0, behavior: 'smooth'}); }
+      catch(ex) { window.scrollTo(0, dest); }
     });
   });
 
@@ -344,10 +349,12 @@ body{background:var(--c-bg);color:var(--c-dark);font-family:var(--font-sans);fon
   var sections = Array.from(document.querySelectorAll('.category-section[id]'));
   var navPills  = document.querySelectorAll('.category-nav .nav-pill');
   function onScroll(){
-    var scrollY = window.scrollY + HEADER_OFFSET + 20;
+    var scrollY = (window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0) + HEADER_OFFSET + 20;
+    var pageOffset = (window.pageYOffset || document.documentElement.scrollTop || 0);
     var current = sections[0];
     sections.forEach(function(s){
-      if(s.offsetTop <= scrollY) current = s;
+      var absTop = s.getBoundingClientRect().top + pageOffset;
+      if(absTop <= scrollY) current = s;
     });
     if(current){
       navPills.forEach(function(p){ p.classList.remove('active'); });
