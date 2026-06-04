@@ -4,12 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ config('restaurant.name.' . app()->getLocale()) }} — Menü</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#faf9f6;font-family:'Inter',sans-serif;color:#1a1a1a;padding-bottom:20px}
-.top-bar{background:#111;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
-.top-bar img{height:28px;width:auto}
+body{background:#faf9f6;font-family:'Inter',sans-serif;color:#1a1a1a;padding-bottom:20px;padding-top:60px}
+.navbar-mudavim{background:rgba(30,32,35,.95);backdrop-filter:blur(8px)}
+.navbar-mudavim .nav-link{color:rgba(255,255,255,.85)!important;font-size:.9rem;letter-spacing:.5px}
+.navbar-mudavim .nav-link:hover{color:#e8d5b0!important}
 .search-wrap{padding:10px 16px;background:#fff;border-bottom:1px solid #e5e5e5}
 .search-wrap input{width:100%;border:1px solid #ddd;border-radius:6px;padding:9px 14px;font-size:.9rem;font-family:'Inter',sans-serif;outline:none;background:#f7f7f7}
 .search-wrap input:focus{border-color:#1a6b5e;background:#fff}
@@ -28,9 +31,30 @@ body{background:#faf9f6;font-family:'Inter',sans-serif;color:#1a1a1a;padding-bot
 </head>
 <body>
 
-<div class="top-bar">
-  <img src="{{ asset('images/logo-light.png') }}" alt="Müdavim">
-</div>
+<nav class="navbar navbar-expand-lg navbar-mudavim fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ route('website.home') }}">
+            <img src="{{ asset('images/logo-light.png') }}" alt="Müdavim Restaurant" style="height:36px;width:auto;">
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <i class="bi bi-list text-white fs-4"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                <li class="nav-item"><a class="nav-link" href="{{ route('website.home') }}">{{ __('common.nav_home') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('website.about') }}">{{ __('common.nav_about') }}</a></li>
+                <li class="nav-item"><a class="nav-link active" href="{{ route('menu.public.index') }}">{{ __('common.nav_menu') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('website.contact') }}">{{ __('common.nav_contact') }}</a></li>
+                <li class="nav-item ms-lg-2">
+                    <a class="btn btn-sm" style="background:#c95d3f;color:#fff;border-radius:20px;padding:6px 16px;"
+                       href="{{ route('reservation.public.create') }}">
+                        {{ __('common.nav_reserve') }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="search-wrap">
   <input type="text" id="q" placeholder="Menüde ara..." autocomplete="off">
@@ -82,5 +106,6 @@ inp.addEventListener('input', function(){
   document.getElementById('noRes').style.display = (!q||any) ? 'none' : 'block';
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
