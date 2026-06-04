@@ -7,6 +7,7 @@ use App\Modules\Reservation\Mail\ReservationAdminNotification;
 use App\Modules\Reservation\Mail\ReservationConfirmed;
 use App\Modules\Reservation\Models\Reservation;
 use App\Modules\Reservation\Services\AvailabilityService;
+use App\Services\SmsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -92,6 +93,19 @@ class ReservationController extends Controller
             Mail::to(config('mail.from.address'))
                 ->send(new ReservationAdminNotification($reservation));
         } catch (\Throwable) {}
+
+        // Admin SMS bildirimi
+        $notifyPhone = config('services.sms.notify_phone');
+        if ($notifyPhone) {
+            try {
+                $date = \Carbon\Carbon::parse($reservation->reservation_date)->format('d.m.Y');
+                $time = substr($reservation->arrival_time, 0, 5);
+                app(SmsService::class)->send(
+                    $notifyPhone,
+                    "Yeni rezervasyon: {$reservation->guest_name}, {$reservation->guest_count} kisi, {$date} {$time}"
+                );
+            } catch (\Throwable) {}
+        }
 
         return redirect()->route('reservation.public.show', $reservation->reservation_uuid)
             ->with('success', __('reservation.success_message'));

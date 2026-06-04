@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'sms' => [
+        'kno'        => env('SMS_KNO'),
+        'username'   => env('SMS_USERNAME'),
+        'password'   => env('SMS_PASSWORD'),
+        'originator' => env('SMS_ORIGINATOR', 'MUDAVIM'),
+        'notify_phone' => env('SMS_NOTIFY_PHONE'),
+    ],
+
 ];
