@@ -11,7 +11,7 @@ class QrCode extends Model
 
     protected $fillable = [
         'qr_uuid', 'target_type', 'target_id',
-        'url', 'image_path', 'last_generated_at',
+        'url', 'image_path', 'svg_content', 'last_generated_at',
         'scan_count', 'is_active',
     ];
 

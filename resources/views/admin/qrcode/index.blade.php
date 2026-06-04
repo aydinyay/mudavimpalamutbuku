@@ -21,8 +21,8 @@
             @foreach($area->tables as $table)
             <div class="col-sm-6 col-md-4 col-lg-3">
                 <div class="border rounded p-3 text-center">
-                    @if($table->qrCode && $table->qrCode->image_path)
-                        <img src="{{ $table->qrCode->image_path }}" style="width:120px;height:120px;" alt="QR">
+                    @if($table->qrCode && $table->qrCode->svg_content)
+                        <div style="width:120px;height:120px;margin:0 auto;">{!! $table->qrCode->svg_content !!}</div>
                         <div class="small text-muted mt-1">Tarama: {{ $table->qrCode->scan_count }}</div>
                     @else
                         <div style="width:120px;height:120px;background:#f0f0f0;border-radius:8px;margin:0 auto;display:flex;align-items:center;justify-content:center;">

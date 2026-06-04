@@ -17,19 +17,13 @@ class QrCodeService
             ['url' => $url, 'is_active' => true],
         );
 
-        $dir = public_path('qr-codes');
-        if (!is_dir($dir)) mkdir($dir, 0755, true);
-
-        $filename = "table-{$table->table_code}.png";
-        $path     = "{$dir}/{$filename}";
-
-        QrCodeGenerator::format('png')
+        $svg = QrCodeGenerator::format('svg')
             ->size(400)
             ->margin(2)
-            ->generate($url, $path);
+            ->generate($url);
 
         $qr->update([
-            'image_path'       => "/qr-codes/{$filename}",
+            'svg_content'      => (string) $svg,
             'last_generated_at'=> now(),
         ]);
 

@@ -19,8 +19,8 @@
     <div class="grid">
         @foreach($tables as $table)
         <div class="qr-item">
-            @if($table->qrCode && $table->qrCode->image_path)
-                <img src="{{ public_path($table->qrCode->image_path) }}" alt="QR">
+            @if($table->qrCode && $table->qrCode->svg_content)
+                <div style="width:140px;height:140px;margin:0 auto;">{!! $table->qrCode->svg_content !!}</div>
             @else
                 <div style="width:140px;height:140px;background:#eee;margin:0 auto;display:flex;align-items:center;justify-content:center;">
                     <span style="font-size:10px;color:#999;">QR yok</span>
