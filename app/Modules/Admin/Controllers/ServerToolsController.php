@@ -40,11 +40,13 @@ class ServerToolsController extends Controller
 
     public function testMail()
     {
+        $to = request('email', config('mail.from.address'));
         try {
-            \Illuminate\Support\Facades\Mail::raw('Mudavim Palamut Bükü — test maili.', function ($m) {
-                $m->to(request('email', 'aydinyay@gmail.com'))->subject('Mail Testi');
-            });
-            return response()->json(['status' => 'ok', 'message' => 'Mail gönderildi.']);
+            \Illuminate\Support\Facades\Mail::raw(
+                'Mudavim Palamut Bükü — SMTP test maili. Gönderen: ' . config('mail.from.address'),
+                fn ($m) => $m->to($to)->subject('SMTP Mail Testi — ' . now()->format('H:i:s'))
+            );
+            return response()->json(['status' => 'ok', 'message' => "$to adresine mail gönderildi."]);
         } catch (\Throwable $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
