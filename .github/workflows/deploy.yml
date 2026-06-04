@@ -11,15 +11,18 @@ jobs:
     steps:
       - name: Kodu çek
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: PHP kur
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
           extensions: gd, mbstring, pdo_mysql, zip
+          tools: composer:v2
 
       - name: Composer bağımlılıkları
-        run: composer install --no-dev --optimize-autoloader --no-interaction
+        run: composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
       - name: Node.js kur
         uses: actions/setup-node@v4
@@ -27,75 +30,103 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: NPM bağımlılıkları
-        run: npm ci
+      - name: NPM bağımlılıkları ve build
+        run: npm ci && npm run build
 
-      - name: Assets derle
-        run: npm run build
+      - name: Değişen dosyaları yükle
+        run: |
+          HOOK="https://mudavimpalamutbuku.com/gitfix.php"
+          TOKEN="mud2026Xk9mP"
+          BEFORE="${{ github.event.before }}"
 
-      - name: Laravel uygulamasını yükle (web dışı dizin)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ftp.mudavimpalamutbuku.com
-          username: deploy@mudavimpalamutbuku.com
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
-          server-dir: /mudavimpalamutbuku/
-          state-name: .ftp-state-app-v6
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/vendor/**
-            **/public/**
-            **/.env
-            **/storage/logs/**
-            **/storage/framework/cache/**
-            **/storage/framework/sessions/**
-            **/storage/framework/views/**
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] || \
+             ! git cat-file -e "$BEFORE^{commit}" >/dev/null 2>&1; then
+            FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git ls-files)
+            echo "BEFORE erişilemiyor — son commit farkı veya tüm dosyalar"
+          else
+            FILES=$(git diff --name-only "$BEFORE" HEAD)
+            echo "Deploy aralığı: $BEFORE → ${{ github.sha }}"
+          fi
 
-      - name: Public klasörünü web root'a yükle
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ftp.mudavimpalamutbuku.com
-          username: deploy@mudavimpalamutbuku.com
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./public/
-          server-dir: /public_html/
-          exclude: |
-            **/.git*
-            **/storage/**
+          echo "Deploy edilecek dosyalar:"
+          echo "$FILES"
+
+          FAIL=0
+          for FILE in $FILES; do
+            # Atlanacaklar
+            [[ "$FILE" == .github/* ]]         && continue
+            [[ "$FILE" == node_modules/* ]]    && continue
+            [[ "$FILE" == vendor/* ]]          && continue
+            [[ "$FILE" == storage/logs/* ]]    && continue
+            [[ "$FILE" == storage/framework/cache/* ]] && continue
+            [[ "$FILE" == storage/framework/sessions/* ]] && continue
+            [[ "$FILE" == .env ]]              && continue
+
+            [ -f "$FILE" ] || continue
+
+            # public/ → /public_html/ (root=web, public/ öneki çıkar)
+            if [[ "$FILE" == public/* ]]; then
+              REMOTE="${FILE#public/}"
+              ROOT_PARAM="web"
+            else
+              REMOTE="$FILE"
+              ROOT_PARAM="app"
+            fi
+
+            TMPFILE=$(mktemp)
+            base64 -w 0 "$FILE" > "$TMPFILE"
+            RESP=$(curl -sf --max-time 120 --connect-timeout 30 --retry 2 --retry-delay 5 \
+              -X POST "$HOOK" \
+              -F "t=$TOKEN" \
+              -F "root=$ROOT_PARAM" \
+              -F "p=$REMOTE" \
+              -F "c=<$TMPFILE" 2>&1) \
+              || { echo "WARN: $FILE yüklenemedi (resp=$RESP)"; FAIL=$((FAIL+1)); rm -f "$TMPFILE"; continue; }
+            rm -f "$TMPFILE"
+            echo "OK: $FILE → $RESP"
+          done
+
+          if [ $FAIL -gt 0 ]; then
+            echo "HATA: $FAIL dosya yüklenemedi"
+            exit 1
+          fi
+
+      - name: Vendor yükle (composer.json değiştiyse)
+        run: |
+          HOOK="https://mudavimpalamutbuku.com/gitfix.php"
+          TOKEN="mud2026Xk9mP"
+          BEFORE="${{ github.event.before }}"
+
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            COMPOSER_CHANGED=true
+          elif git diff --name-only "$BEFORE" HEAD 2>/dev/null | grep -q "composer\.json"; then
+            COMPOSER_CHANGED=true
+          else
+            COMPOSER_CHANGED=false
+          fi
+
+          if [ "$COMPOSER_CHANGED" = "true" ]; then
+            echo "composer.json değişti — vendor deploy ediliyor..."
+            zip -r vendor-deploy.zip vendor/ \
+              -x "*/test/*" -x "*/tests/*" -x "*/Test/*" -x "*/Tests/*" \
+              -x "*/docs/*" -x "*/.git/*" 2>/dev/null || true
+            ZIP_SIZE=$(du -sh vendor-deploy.zip | cut -f1)
+            echo "Vendor zip boyutu: $ZIP_SIZE"
+            RESP=$(curl -sf --max-time 600 --connect-timeout 30 \
+              -X POST "$HOOK" \
+              -F "t=$TOKEN" \
+              -F "action=vendor-extract" \
+              -F "zip=@vendor-deploy.zip;type=application/zip" 2>&1) \
+              || { echo "WARN: vendor deploy başarısız: $RESP"; }
+            echo "Vendor sonuç: $RESP"
+            rm -f vendor-deploy.zip
+          else
+            echo "composer.json değişmedi — vendor atlandı."
+          fi
 
       - name: Cache temizle
         run: |
           sleep 5
           RESULT=$(curl -s "https://mudavimpalamutbuku.com/gitfix.php?t=mud2026Xk9mP")
-          echo "Cache temizle yaniti: ${RESULT}"
-          echo "${RESULT}" | grep -q "CACHE_CLEARED" && echo "OK" || echo "UYARI: gitfix henuz aktif degil"
-
-  deploy-vendor:
-    name: Vendor yukle (sadece composer.lock degisince)
-    runs-on: ubuntu-latest
-    if: contains(join(github.event.commits.*.modified, ','), 'composer.lock') || contains(join(github.event.commits.*.added, ','), 'composer.lock')
-
-    steps:
-      - name: Kodu cek
-        uses: actions/checkout@v4
-
-      - name: PHP kur
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          extensions: gd, mbstring, pdo_mysql, zip
-
-      - name: Composer bagimliliklar
-        run: composer install --no-dev --optimize-autoloader --no-interaction
-
-      - name: Vendor yukle
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ftp.mudavimpalamutbuku.com
-          username: deploy@mudavimpalamutbuku.com
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./vendor/
-          server-dir: /mudavimpalamutbuku/vendor/
+          echo "Cache temizle yanıtı: ${RESULT}"
+          echo "${RESULT}" | grep -q "CACHE_CLEARED" && echo "OK" || { echo "HATA: CACHE_CLEARED gelmedi"; exit 1; }

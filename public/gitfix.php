@@ -4,13 +4,16 @@ if (($_POST['t'] ?? $_GET['t'] ?? '') !== $token) {
     http_response_code(403); die('Forbidden');
 }
 
-$webRoot = '/home/mudavimp/mudavimpalamutbuku';
+$appRoot = '/home/mudavimp/mudavimpalamutbuku';
+$pubRoot = '/home/mudavimp/public_html';
 
-// Dosya yazma — ?p=path&c=base64content (POST)
+// Dosya yazma — POST: t, p=path, c=base64content [, root=web]
+// root=web → public_html, varsayılan → app dizini
 if (!empty($_POST['p']) && isset($_POST['c'])) {
+    $base = (($_POST['root'] ?? '') === 'web') ? $pubRoot : $appRoot;
     $path = $_POST['p'];
     if (str_contains($path, '..')) die('INVALID');
-    $full = "$webRoot/$path";
+    $full = "$base/$path";
     $dir  = dirname($full);
     if (!is_dir($dir)) mkdir($dir, 0755, true);
     $result = file_put_contents($full, base64_decode($_POST['c']));
@@ -22,7 +25,7 @@ if (!empty($_POST['p']) && isset($_POST['c'])) {
 if (($_GET['action'] ?? '') === 'readfile') {
     header('Content-Type: text/plain');
     $rel  = ltrim($_GET['f'] ?? '', '/');
-    $path = "$webRoot/$rel";
+    $path = "$appRoot/$rel";
     if (!file_exists($path)) { echo "NOT FOUND: $path"; exit; }
     echo "PATH: $path\nMTIME: " . date('Y-m-d H:i:s', filemtime($path)) . "\n---\n";
     echo file_get_contents($path);
@@ -33,8 +36,8 @@ if (($_GET['action'] ?? '') === 'readfile') {
 if (($_GET['action'] ?? '') === 'migrate') {
     header('Content-Type: text/plain');
     define('LARAVEL_START', microtime(true));
-    require $webRoot . '/vendor/autoload.php';
-    $app    = require_once $webRoot . '/bootstrap/app.php';
+    require $appRoot . '/vendor/autoload.php';
+    $app    = require_once $appRoot . '/bootstrap/app.php';
     $kernel = $app->make(\Illuminate\Contracts\Console\Kernel::class);
     $kernel->bootstrap();
     try {
@@ -51,10 +54,23 @@ if (($_GET['action'] ?? '') === 'migrate') {
 if (($_GET['action'] ?? '') === 'log') {
     header('Content-Type: text/plain; charset=utf-8');
     $lines   = (int) ($_GET['lines'] ?? 100);
-    $logFile = "$webRoot/storage/logs/laravel.log";
+    $logFile = "$appRoot/storage/logs/laravel.log";
     if (!file_exists($logFile)) { echo "Log yok: $logFile"; exit; }
     $all = file($logFile, FILE_IGNORE_NEW_LINES);
     echo implode("\n", array_slice($all, -$lines));
+    exit;
+}
+
+// Vendor zip çıkar — POST: t, action=vendor-extract, zip=<file>
+if (($_POST['action'] ?? '') === 'vendor-extract' && isset($_FILES['zip'])) {
+    header('Content-Type: text/plain');
+    $tmp = $_FILES['zip']['tmp_name'];
+    if (!$tmp || !file_exists($tmp)) { echo "NO_ZIP"; exit; }
+    $zip = new ZipArchive();
+    if ($zip->open($tmp) !== true) { echo "ZIP_OPEN_FAIL"; exit; }
+    $zip->extractTo($appRoot);
+    $zip->close();
+    echo "VENDOR_EXTRACTED";
     exit;
 }
 
@@ -62,8 +78,8 @@ if (($_GET['action'] ?? '') === 'log') {
 if (($_GET['action'] ?? '') === 'routes') {
     header('Content-Type: text/plain');
     define('LARAVEL_START', microtime(true));
-    require $webRoot . '/vendor/autoload.php';
-    $app    = require_once $webRoot . '/bootstrap/app.php';
+    require $appRoot . '/vendor/autoload.php';
+    $app    = require_once $appRoot . '/bootstrap/app.php';
     $kernel = $app->make(\Illuminate\Contracts\Console\Kernel::class);
     $kernel->bootstrap();
     foreach (\Illuminate\Support\Facades\Route::getRoutes() as $route) {
@@ -76,11 +92,11 @@ if (($_GET['action'] ?? '') === 'routes') {
 }
 
 // Her çağrıda cache temizle
-@unlink("$webRoot/bootstrap/cache/routes-v7.php");
-@unlink("$webRoot/bootstrap/cache/config.php");
-@unlink("$webRoot/bootstrap/cache/services.php");
-@unlink("$webRoot/bootstrap/cache/packages.php");
-foreach (glob("$webRoot/storage/framework/views/*.php") ?: [] as $f) {
+@unlink("$appRoot/bootstrap/cache/routes-v7.php");
+@unlink("$appRoot/bootstrap/cache/config.php");
+@unlink("$appRoot/bootstrap/cache/services.php");
+@unlink("$appRoot/bootstrap/cache/packages.php");
+foreach (glob("$appRoot/storage/framework/views/*.php") ?: [] as $f) {
     @unlink($f);
 }
 if (function_exists('opcache_reset')) opcache_reset();
