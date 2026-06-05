@@ -175,16 +175,12 @@
 
         {{-- Directions CTA --}}
         <div class="text-center mt-2 mb-2">
-            <a href="https://www.google.com/maps/dir/?api=1&destination={{ config('restaurant.coordinates.lat') }},{{ config('restaurant.coordinates.lng') }}&travelmode=driving"
+            <a href="https://maps.google.com/?q={{ config('restaurant.coordinates.lat') }},{{ config('restaurant.coordinates.lng') }}"
                target="_blank" rel="noopener"
                class="btn btn-lg"
                style="background:var(--color-sea);color:#fff;border-radius:30px;padding:14px 36px;font-weight:700;font-size:1rem;">
-                <i class="bi bi-sign-turn-right-fill me-2"></i>Google Maps ile Yol Tarifi Al
+                <i class="bi bi-map me-2"></i>Google Maps'te Aç
             </a>
-            <p class="text-muted small mt-2">
-                <i class="bi bi-info-circle me-1"></i>
-                Karayolu rotası açılır. Google Maps kimi zaman feribot önerebilir — feribo sezonluk ve sınırlı sefer sayısındadır, karayolunu tercih edin.
-            </p>
         </div>
     </div>
 </section>
@@ -296,19 +292,10 @@
         </div>
         <div class="text-center mt-3">
             <a href="https://maps.google.com/?q={{ config('restaurant.coordinates.lat') }},{{ config('restaurant.coordinates.lng') }}"
-               target="_blank" class="btn btn-outline-secondary me-2">
+               target="_blank" class="btn btn-outline-secondary">
                 <i class="bi bi-map me-1"></i>Google Maps'te Aç
             </a>
-            <a href="https://www.google.com/maps/dir/?api=1&destination={{ config('restaurant.coordinates.lat') }},{{ config('restaurant.coordinates.lng') }}&travelmode=driving"
-               target="_blank" rel="noopener"
-               class="btn" style="background:var(--color-coral);color:#fff;border-radius:20px;border:none;">
-                <i class="bi bi-car-front me-1"></i>Karayolu Tarifi Al
-            </a>
         </div>
-        <p class="text-center text-muted small mt-2">
-            <i class="bi bi-exclamation-circle me-1"></i>
-            "Yol Tarifi Al" butonu karayolu rotasını açar. Google Maps uygulamasında feribot seçeneği çıkarsa navigasyon menüsünden 🚗 Araba modunu seçin.
-        </p>
     </div>
 </section>
 
