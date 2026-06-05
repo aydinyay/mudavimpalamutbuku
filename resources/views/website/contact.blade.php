@@ -203,7 +203,7 @@
                                 <span style="font-size:1.3rem;flex-shrink:0;">🅿️</span>
                                 <div>
                                     <strong>Ücretsiz Park</strong>
-                                    <p class="text-muted small mb-0">Restorana ~50 metre mesafede açık alan park mevcuttur. Sezon doruk döneminde erken gelin.</p>
+                                    <p class="text-muted small mb-0">Restoran yakınında açık alan park mevcuttur. Sezon doruk döneminde erken gelin.</p>
                                 </div>
                             </li>
                             <li class="d-flex gap-3">
@@ -254,7 +254,7 @@
                             <li><i class="bi bi-check-circle-fill me-2"></i>Datça merkez transfer</li>
                             <li><i class="bi bi-check-circle-fill me-2"></i>Datça feribot iskelesi karşılama</li>
                             <li><i class="bi bi-check-circle-fill me-2"></i>Gece dönüşü için de organize ediyoruz</li>
-                            <li><i class="bi bi-check-circle-fill me-2"></i>4+ kişi rezervasyonlarda öncelik</li>
+                            <li><i class="bi bi-check-circle-fill me-2"></i>Grup rezervasyonlarında uygun fiyat</li>
                         </ul>
                         <div class="mt-auto d-flex flex-column gap-2">
                             <a href="https://wa.me/{{ ltrim(config('restaurant.whatsapp'),'+') }}?text={{ urlencode('Merhaba! Transfer hakkında bilgi almak istiyorum.') }}"
