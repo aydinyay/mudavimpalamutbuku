@@ -1,73 +1,81 @@
-@extends('layouts.menu-qr')
+@extends('layouts.website')
+
+@section('title', __('menu.title'))
+
+@push('styles')
+<style>
+.menu-page{max-width:700px;margin:40px auto;padding:0 16px 40px}
+.menu-search{padding:0 0 20px}
+.menu-search input{width:100%;border:1px solid #ddd;border-radius:6px;padding:10px 16px;font-size:.9rem;outline:none;background:#f7f7f7}
+.menu-search input:focus{border-color:#1a6b5e;background:#fff}
+.cat-block{margin-bottom:8px}
+.cat-title{font-family:Georgia,serif;font-size:1.2rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:24px 0 8px;border-bottom:1.5px solid #1a1a1a;margin-bottom:4px}
+.item{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid #ececec;gap:12px}
+.item:last-child{border-bottom:none}
+.item-name{font-family:Georgia,serif;font-size:1rem;font-weight:500;flex:1;line-height:1.4}
+.item-desc{font-size:.78rem;color:#777;font-style:italic;margin-top:2px}
+.item-price{font-size:.9rem;font-weight:600;color:#1a6b5e;white-space:nowrap;flex-shrink:0}
+.item-unavail{opacity:.4}
+.item.hidden{display:none}
+.cat-block.hidden{display:none}
+.no-res{text-align:center;padding:40px;color:#aaa;display:none;font-size:.9rem}
+</style>
+@endpush
 
 @section('content')
-<div class="menu-wrapper">
+<div class="menu-page">
 
-@foreach($categories as $category)
+  <div class="menu-search">
+    <input type="text" id="q" placeholder="Menüde ara..." autocomplete="off">
+  </div>
+
+  @foreach($categories as $category)
     @if($category->items->isNotEmpty())
-    <div id="cat-{{ $category->id }}" class="category-section" data-category="{{ strtolower($category->name()) }}">
-
-        <div class="category-heading">{{ $category->name() }}</div>
-
-        @foreach($category->items as $item)
-        @php
-            $desc = trim($item->description() ?? '');
-            $hasDesc = strlen($desc) > 1;
-        @endphp
-        <div class="menu-item {{ !$item->is_available ? 'unavailable' : '' }}"
-             data-name="{{ strtolower($item->name()) }}"
-             data-allergens='@json($item->allergenCodes())'>
-
-            @if($item->image_path)
-                <img src="{{ $item->image_path }}" class="menu-item-thumb" alt="{{ $item->name() }}" loading="lazy">
-            @endif
-
-            <div class="menu-item-body">
-                <div class="menu-item-top">
-                    <span class="menu-item-name">{{ $item->name() }}</span>
-                    @if($item->is_seasonal && $item->price == 0)
-                        <span class="menu-item-price price-ask">Sorunuz</span>
-                    @else
-                        <span class="menu-item-price">{{ number_format($item->price, 0, ',', '.') }} ₺</span>
-                    @endif
-                </div>
-
-                @if($item->price_eur)
-                    <div class="menu-item-price-eur">≈ €{{ number_format($item->price_eur, 0) }}</div>
-                @endif
-
-                @if($hasDesc)
-                    <div class="menu-item-description">{{ $desc }}</div>
-                @endif
-
-                @php
-                    $hasBadge = !$item->is_available || $item->is_featured || $item->is_seasonal || $item->is_vegetarian || $item->is_vegan || $item->is_gluten_free;
-                @endphp
-                @if($hasBadge)
-                <div class="menu-item-badges">
-                    @if(!$item->is_available)  <span class="menu-badge badge-unavailable">{{ __('menu.unavailable') }}</span> @endif
-                    @if($item->is_featured)    <span class="menu-badge badge-featured">{{ __('menu.featured') }}</span> @endif
-                    @if($item->is_seasonal)    <span class="menu-badge badge-seasonal">{{ __('menu.seasonal') }}</span> @endif
-                    @if($item->is_vegetarian)  <span class="menu-badge badge-vegetarian">{{ __('menu.vegetarian') }}</span> @endif
-                    @if($item->is_vegan)       <span class="menu-badge badge-vegan">{{ __('menu.vegan') }}</span> @endif
-                    @if($item->is_gluten_free) <span class="menu-badge badge-gf">Gluten Free</span> @endif
-                </div>
-                @endif
-
-                @if($item->allergens->isNotEmpty())
-                <div class="mt-1">
-                    @foreach($item->allergens as $allergen)
-                        <span class="allergen-chip" style="font-size:0.68rem;padding:2px 7px;cursor:default;">{{ $allergen->name() }}</span>
-                    @endforeach
-                </div>
-                @endif
-            </div>
+    <div class="cat-block" data-cat>
+      <div class="cat-title">{{ $category->name() }}</div>
+      @foreach($category->items as $item)
+      <div class="item {{ !$item->is_available ? 'item-unavail' : '' }}" data-name="{{ strtolower($item->name()) }}">
+        <div>
+          <div class="item-name">{{ $item->name() }}</div>
+          @if(trim($item->description() ?? '') !== '')
+            <div class="item-desc">{{ $item->description() }}</div>
+          @endif
         </div>
-        @endforeach
-
+        <div class="item-price">
+          @if($item->is_seasonal && $item->price == 0)
+            Sorunuz
+          @else
+            {{ number_format($item->price, 0, ',', '.') }} ₺
+          @endif
+        </div>
+      </div>
+      @endforeach
     </div>
     @endif
-@endforeach
+  @endforeach
 
+  <div class="no-res" id="noRes">Sonuç bulunamadı.</div>
 </div>
+
+@push('scripts')
+<script>
+var inp = document.getElementById('q');
+inp.addEventListener('input', function(){
+  var q = inp.value.trim().toLowerCase();
+  var any = false;
+  document.querySelectorAll('[data-cat]').forEach(function(cat){
+    var vis = false;
+    cat.querySelectorAll('.item').forEach(function(item){
+      var match = !q || item.dataset.name.includes(q);
+      item.classList.toggle('hidden', !match);
+      if(match) vis = true;
+    });
+    cat.classList.toggle('hidden', !vis);
+    if(vis) any = true;
+  });
+  document.getElementById('noRes').style.display = (!q||any) ? 'none' : 'block';
+});
+</script>
+@endpush
+
 @endsection
