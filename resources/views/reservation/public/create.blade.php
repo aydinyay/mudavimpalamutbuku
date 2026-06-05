@@ -142,12 +142,19 @@ document.getElementById('checkAvailability').addEventListener('click', async () 
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
         },
-        body: JSON.stringify({ date, time, guest_count: count }),
+        body: JSON.stringify({ reservation_date: date, arrival_time: time, guest_count: count }),
     });
 
-    const data = await res.json();
     const resultDiv = document.getElementById('availabilityResult');
     resultDiv.classList.remove('d-none');
+
+    if (!res.ok) {
+        document.getElementById('availableMsg').style.display = 'none';
+        document.getElementById('unavailableMsg').style.display = '';
+        return;
+    }
+
+    const data = await res.json();
 
     if (data.available) {
         document.getElementById('availableMsg').style.display = '';
