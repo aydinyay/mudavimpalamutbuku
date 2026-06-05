@@ -122,7 +122,7 @@
                             </div>
                         </div>
                         <p class="text-muted small mt-3 mb-0">
-                            Datça iskelesinden Palamutbükü ~30 dk (taksi ~150₺).
+                            Datça iskelesinden Palamutbükü ~30 dk.
                             Transfer gerekirse <a href="https://wa.me/{{ ltrim(config('restaurant.whatsapp'),'+') }}?text={{ urlencode('Feribot transferi hakkında bilgi almak istiyorum.') }}" target="_blank" style="color:var(--color-sea);">bize yazın</a>.
                         </p>
                     </div>
@@ -163,7 +163,7 @@
                             </div>
                             <div style="background:#f3e5f5;border-radius:10px;padding:10px 14px;">
                                 <div style="font-weight:600;font-size:.82rem;color:#7b3fa0;">Datça → Palamutbükü</div>
-                                <div style="font-size:.88rem;color:#555;">Sezonluk dolmuş · Yoksa taksi ~150₺</div>
+                                <div style="font-size:.88rem;color:#555;">Sezonluk dolmuş · Yoksa taksi</div>
                             </div>
                         </div>
                         <p class="text-muted small mt-3 mb-0">Toplu taşıma planınız varsa bizi önceden arayın, sizi almaya geliyoruz. 🤝</p>
