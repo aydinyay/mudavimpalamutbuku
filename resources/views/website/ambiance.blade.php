@@ -828,7 +828,7 @@ body {
                         <div class="sea-wave">
                             <i class="bi bi-water me-1"></i>
                             {{ $sea['wave_label'] }}
-                            @if($sea['wave'] > 0)· {{ $sea['wave'] }}m@endif
+                            @if($sea['wave'] > 0) · {{ $sea['wave'] }}m @endif
                         </div>
                     </div>
                 </div>
