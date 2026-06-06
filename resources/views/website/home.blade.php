@@ -1,6 +1,7 @@
 @extends('layouts.website')
 
-@section('title', __('common.nav_home'))
+@section('title', 'Ana Sayfa')
+@section('meta_description', 'Palamutbükü\'nde denize sıfır Akdeniz mutfağı. Datça\'nın incisi Palamutbükü koyunda taze deniz ürünleri, zeytinyağlı mezeler ve eşsiz Ege lezzetleri. Rezervasyon için hemen arayın.')
 
 @section('content')
 

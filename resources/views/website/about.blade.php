@@ -1,6 +1,7 @@
 @extends('layouts.website')
 
-@section('title', __('common.nav_about'))
+@section('title', 'Hakkımızda')
+@section('meta_description', 'İstanbul kurumsal hayatını bırakıp Palamutbükü\'ne yerleşen bir ekibin hikayesi. Datça\'nın ucunda, Ege\'nin en temiz koylarından birinde Akdeniz mutfağının en saf hali.')
 
 @section('content')
 <div style="padding-top:80px;"></div>

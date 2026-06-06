@@ -1,6 +1,7 @@
 @extends('layouts.website')
 
-@section('title', __('common.nav_contact'))
+@section('title', 'İletişim & Nasıl Gelinir')
+@section('meta_description', 'Müdavim Restaurant\'a nasıl gidilir? Palamutbükü Datça adres, telefon, tekne koordinatları ve ulaşım bilgileri. Rezervasyon için bize ulaşın.')
 
 @section('content')
 <div style="padding-top:80px;"></div>
