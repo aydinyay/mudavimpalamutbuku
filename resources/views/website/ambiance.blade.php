@@ -9,8 +9,6 @@
 /* ── SCROLLBAR GUTTER — navbar shift'i önler ── */
 html {
     scrollbar-gutter: stable;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 
 :root {
