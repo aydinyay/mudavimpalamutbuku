@@ -38,10 +38,23 @@
 
             function pad(n) { return String(n).padStart(2, '0'); }
 
+            function nightLabel(code, h) {
+                const isNight = h >= 21 || h < 5;
+                if (!isNight) return null;
+                if (code === 0) return 'Açık, yıldızlı gece';
+                if (code === 1) return 'Çoğunlukla açık gece';
+                if (code === 2) return 'Parçalı bulutlu gece';
+                if (code === 3) return 'Bulutlu gece';
+                return null;
+            }
+
             function weatherPart() {
                 if (!weather) return '';
+                const h    = new Date().getHours();
+                const over = nightLabel(weather.code, h);
+                const lbl  = over ?? weather.label;
                 const moon = weather.moon.split(' ').slice(1).join(' ');
-                return 'Hava ' + weather.temp + '°C · ' + weather.label + '. ' + moon + '…';
+                return 'Hava ' + weather.temp + '°C · ' + lbl + '. ' + moon + '…';
             }
 
             function timeOfDay(h) {
