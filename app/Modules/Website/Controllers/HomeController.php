@@ -26,7 +26,8 @@ class HomeController extends Controller
 
         $setting = RestaurantSetting::current();
         $weather = $this->getWeather();
-        return view('website.home', compact('featured', 'reviewSummary', 'reviews', 'setting', 'weather'));
+        $sea     = Cache::get('ambiance_data')['sea'] ?? null;
+        return view('website.home', compact('featured', 'reviewSummary', 'reviews', 'setting', 'weather', 'sea'));
     }
 
     public function about()
