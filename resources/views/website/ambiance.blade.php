@@ -759,12 +759,6 @@ body {
         <h1 class="hero-title">Şu An Müdavim'de</h1>
         <p class="hero-sub">Palamutbükü · Datça · Ege</p>
 
-        @if($spotify['is_playing'] && $spotify['now_playing'])
-        <p style="font-family:var(--serif);font-style:italic;font-size:.85rem;color:rgba(255,255,255,.5);margin:12px 0 0;letter-spacing:.06em;">
-            ♪ Müdavim'de Şu An Çalan
-        </p>
-        @endif
-
         <div class="scroll-cue" aria-hidden="true"><span></span></div>
     </section>
 
