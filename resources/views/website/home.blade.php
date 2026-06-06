@@ -45,16 +45,19 @@
                 const now  = new Date();
                 const day  = 'Günlerden ' + DAYS[now.getDay()];
                 const time = 'Saat ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-                const music = song
-                    ? ' · Dalga sesleri arasında ♪ ' + song + ' çalıyor'
-                    : '';
-                return day + ' · ' + time + music + weatherPart();
+
+                if (song) {
+                    return day + ' · ' + time + ' · Dalga sesleri arasında'
+                        + '<br>♪ ' + song + ' çalıyor'
+                        + '<br>' + weatherPart().replace(/^ · /, '');
+                }
+                return day + ' · ' + time + '<br>' + weatherPart().replace(/^ · /, '');
             }
 
             const el = document.getElementById('heroAmbient');
             let currentSong = null;
 
-            function render() { el.textContent = buildLine(currentSong); }
+            function render() { el.innerHTML = buildLine(currentSong); }
 
             async function fetchSpotify() {
                 try {
