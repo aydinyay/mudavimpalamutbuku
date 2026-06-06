@@ -1100,6 +1100,8 @@ body {
 
 </div>{{-- #page --}}
 
+@include('partials.footer')
+
 <script>
 (function () {
 'use strict';
@@ -1717,6 +1719,29 @@ function shareAmbiance() {
 }
 
 })();
+</script>
+
+{{-- WhatsApp float (layout kullanılmadığı için burada) --}}
+<a href="https://wa.me/{{ ltrim(config('restaurant.whatsapp'), '+') }}" target="_blank"
+   class="whatsapp-float" title="WhatsApp">
+    <i class="bi bi-whatsapp"></i>
+</a>
+
+{{-- sharePage fonksiyonu (navbar share butonu için) --}}
+<script>
+function sharePage(customTitle, customText, customUrl) {
+    const title = customTitle || document.title;
+    const text  = customText  || 'Müdavim Restaurant — Palamutbükü\'nde denize sıfır Akdeniz mutfağı.';
+    const url   = customUrl   || window.location.href;
+    if (navigator.share) {
+        navigator.share({ title, text, url }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(url).then(function() {
+            const btn = event?.target?.closest('button');
+            if (btn) { const o = btn.innerHTML; btn.innerHTML = '<i class="bi bi-check2"></i>'; setTimeout(() => btn.innerHTML = o, 2000); }
+        });
+    }
+}
 </script>
 </body>
 </html>
