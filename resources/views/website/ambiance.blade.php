@@ -19,20 +19,10 @@ body { background: #020610 !important; color: #fff; }
     50%      { opacity:.7; box-shadow:0 0 0 4px rgba(29,185,84,0); }
 }
 
-html {
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-body {
-    width: 100%;
-    overflow-x: hidden;
-}
-
 body {
     font-family: var(--sans);
-    background: #020610;
+    background: #020610 !important;
     color: #fff;
-    min-height: 100vh;
 }
 
 /* ── SKY ── */
