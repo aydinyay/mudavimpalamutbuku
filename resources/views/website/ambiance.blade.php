@@ -87,7 +87,7 @@ body {
 .hero-sub {
     font-family: var(--serif);
     font-style: italic;
-    font-size: clamp(.9rem, 1.8vw, 1.05rem);
+    font-size: 1rem;
     color: rgba(255,255,255,.5);
     letter-spacing: .05em;
     margin-bottom: .5rem;
@@ -96,10 +96,10 @@ body {
 .hero-ambient {
     font-family: var(--serif);
     font-style: italic;
-    font-size: clamp(.92rem, 1.8vw, 1.08rem);
+    font-size: 1.05rem;
     color: rgba(255,255,255,.72);
     letter-spacing: .03em;
-    line-height: 1.9;
+    line-height: 2;
     margin-bottom: 1.8rem;
     min-height: 2em;
 }
@@ -107,10 +107,16 @@ body {
 .hero-music-intro {
     font-family: var(--serif);
     font-style: italic;
-    font-size: clamp(.88rem, 1.6vw, 1rem);
+    font-size: .98rem;
     color: rgba(255,255,255,.5);
     letter-spacing: .04em;
     margin-bottom: 1rem;
+}
+
+@media(min-width:768px) {
+    .hero-sub       { font-size: 1.1rem; }
+    .hero-ambient   { font-size: 1.15rem; line-height: 2; }
+    .hero-music-intro { font-size: 1.05rem; }
 }
 
 .hero-song-card {
