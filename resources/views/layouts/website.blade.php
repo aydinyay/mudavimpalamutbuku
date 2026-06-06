@@ -98,7 +98,11 @@
             </div>
             <div class="col-lg-4">
                 <h6 style="color:#e8d5b0;font-weight:700;" class="mb-3">{{ __('common.address') }}</h6>
-                <p class="small opacity-75 mb-1">{{ config('restaurant.address.' . app()->getLocale()) }}</p>
+                <p class="small opacity-75 mb-1">
+                    <a href="{{ route('website.contact') }}" style="color:inherit;text-decoration:none;">
+                        {{ config('restaurant.address.' . app()->getLocale()) }}
+                    </a>
+                </p>
                 <p class="small opacity-75 mb-1">
                     <i class="bi bi-telephone-fill me-1"></i>
                     <a href="tel:{{ config('restaurant.phone') }}">{{ config('restaurant.phone') }}</a>
@@ -138,6 +142,10 @@
         </div>
         <p class="text-center small opacity-50 mb-0">
             &copy; {{ date('Y') }} Müdavim Restaurant. {{ __('common.footer_rights') }}
+        </p>
+        <p class="text-center mb-0" style="opacity:.3;font-size:.68rem;margin-top:6px;">
+            Bu site <a href="https://www.gruptalepleri.com" target="_blank" rel="noopener"
+               style="color:#c8b99a;text-decoration:none;">GrupTalepleri.com</a>'un Müdavim'e armağanıdır.
         </p>
     </div>
 </footer>
