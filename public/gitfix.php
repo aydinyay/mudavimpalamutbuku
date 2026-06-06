@@ -1,4 +1,5 @@
 <?php
+// v2
 $token = 'mud2026Xk9mP';
 if (($_POST['t'] ?? $_GET['t'] ?? '') !== $token) {
     http_response_code(403); die('Forbidden');
