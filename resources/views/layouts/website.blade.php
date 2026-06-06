@@ -142,7 +142,14 @@
                     </a>
                 </li>
                 @endif
-                <li class="nav-item ms-lg-2">
+                <li class="nav-item ms-lg-1">
+                    <button onclick="sharePage()" class="btn btn-sm btn-outline-light"
+                            style="border-radius:20px;padding:5px 12px;border-color:rgba(255,255,255,.3);"
+                            title="Paylaş">
+                        <i class="bi bi-share"></i>
+                    </button>
+                </li>
+                <li class="nav-item ms-lg-1">
                     <a class="btn btn-sm" style="background:var(--color-coral);color:#fff;border-radius:20px;padding:6px 16px;"
                        href="{{ route('reservation.public.create') }}">
                         {{ __('common.nav_reserve') }}
@@ -250,6 +257,30 @@
    class="whatsapp-float" title="WhatsApp">
     <i class="bi bi-whatsapp"></i>
 </a>
+
+{{-- Paylaşım JS --}}
+<script>
+function sharePage(customTitle, customText, customUrl) {
+    const title = customTitle || document.title;
+    const text  = customText  || 'Müdavim Restaurant — Palamutbükü\'nde denize sıfır Akdeniz mutfağı. Mutlaka görün!';
+    const url   = customUrl   || window.location.href;
+
+    if (navigator.share) {
+        navigator.share({ title, text, url }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(url).then(function() {
+            const btn = event?.target?.closest('button');
+            if (btn) {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check2"></i>';
+                setTimeout(() => btn.innerHTML = orig, 2000);
+            } else {
+                alert('Link kopyalandı: ' + url);
+            }
+        });
+    }
+}
+</script>
 
 @stack('scripts')
 </body>
