@@ -861,8 +861,21 @@ body {
                     <div class="weather-feels">Hissedilen {{ $w['feels'] }}°C</div>
                     <div class="weather-label-big">{{ $w['emoji'] }} {{ $w['label'] }}</div>
                     <div class="weather-details">
+                        @php
+                            $dirs = ['kuzeyden','kuzeydoğudan','doğudan','güneydoğudan','güneyden','güneybatıdan','batıdan','kuzeybatıdan'];
+                            $windFrom = $dirs[round($w['wind_dir'] / 45) % 8];
+                            $windDesc = match(true) {
+                                $w['wind'] < 5  => 'Hava durgun',
+                                $w['wind'] < 10 => ucfirst($windFrom) . ' hafif esinti',
+                                $w['wind'] < 15 => ucfirst($windFrom) . ' tatlı meltem',
+                                $w['wind'] < 20 => ucfirst($windFrom) . ' meltem serinletiyor',
+                                $w['wind'] < 30 => ucfirst($windFrom) . ' hoş bir rüzgar',
+                                $w['wind'] < 40 => ucfirst($windFrom) . ' kuvvetli meltem',
+                                default         => ucfirst($windFrom) . ' sert rüzgar',
+                            };
+                        @endphp
                         <div class="weather-detail-row">
-                            <i class="bi bi-wind"></i> Rüzgar {{ $w['wind'] }} km/s
+                            <i class="bi bi-wind"></i> {{ $windDesc }} · {{ $w['wind'] }} km/s
                         </div>
                         <div class="weather-detail-row">
                             <i class="bi bi-droplet"></i> Nem %{{ $w['humidity'] }}
@@ -1032,10 +1045,12 @@ const SUNRISE    = @json($data['sunrise'] ?? null);
 const SUNSET     = @json($data['sunset']  ?? null);
 const MOON_PHASE = @json($data['moon']['fraction'] ?? 0.5);
 const MOON_AGE   = @json($data['moon']['age']      ?? 15);
-const SEA_TEMP   = @json($sea['temp'] ?? null);
+const SEA_TEMP      = @json($sea['temp'] ?? null);
 const WEATHER_TEMP  = @json($data['weather']['temp'] ?? null);
 const WEATHER_LABEL = @json($data['weather']['label'] ?? null);
 const WEATHER_CODE  = @json($data['weather']['code'] ?? null);
+const WEATHER_WIND  = @json($data['weather']['wind'] ?? null);
+const WEATHER_WDIR  = @json($data['weather']['wind_dir'] ?? null);
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // HELPERS
@@ -1460,6 +1475,21 @@ function updateClock() {
     if (h >= 6 && h < 17) {
         const sp = seaPhrase(SEA_TEMP);
         if (sp) parts.push(sp);
+    }
+
+    // Rüzgar
+    if (WEATHER_WIND !== null) {
+        const dirs = ['kuzeyden','kuzeydoğudan','doğudan','güneydoğudan','güneyden','güneybatıdan','batıdan','kuzeybatıdan'];
+        const from = dirs[Math.round((WEATHER_WDIR || 0) / 45) % 8];
+        const spd = WEATHER_WIND;
+        let w;
+        if      (spd < 5)  w = 'Hava durgun';
+        else if (spd < 10) w = from + ' hafif esinti';
+        else if (spd < 15) w = from.charAt(0).toUpperCase() + from.slice(1) + ' tatlı meltem';
+        else if (spd < 20) w = from.charAt(0).toUpperCase() + from.slice(1) + ' meltem serinletiyor';
+        else if (spd < 30) w = from.charAt(0).toUpperCase() + from.slice(1) + ' hoş bir rüzgar';
+        else               w = from.charAt(0).toUpperCase() + from.slice(1) + ' kuvvetli meltem';
+        parts.push(w);
     }
 
     // Ay (gece/alacakaranlık)

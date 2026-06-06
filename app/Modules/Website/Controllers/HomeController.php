@@ -46,23 +46,27 @@ class HomeController extends Controller
                 $resp = Http::timeout(4)->get('https://api.open-meteo.com/v1/forecast', [
                     'latitude'      => $lat,
                     'longitude'     => $lng,
-                    'current'       => 'temperature_2m,weather_code',
+                    'current'       => 'temperature_2m,weather_code,wind_speed_10m,wind_direction_10m',
                     'timezone'      => 'Europe/Istanbul',
                     'forecast_days' => 1,
                 ]);
 
                 if (! $resp->successful()) return null;
 
-                $current = $resp->json('current');
-                $code    = (int) ($current['weather_code'] ?? 0);
-                $temp    = (int) round($current['temperature_2m'] ?? 0);
+                $current  = $resp->json('current');
+                $code     = (int) ($current['weather_code'] ?? 0);
+                $temp     = (int) round($current['temperature_2m'] ?? 0);
+                $wind     = round($current['wind_speed_10m'] ?? 0, 1);
+                $windDir  = (int) ($current['wind_direction_10m'] ?? 0);
 
                 return [
-                    'code'  => $code,
-                    'temp'  => $temp,
-                    'label' => $this->wmoLabel($code),
-                    'emoji' => $this->wmoEmoji($code),
-                    'moon'  => $this->moonPhase(),
+                    'code'     => $code,
+                    'temp'     => $temp,
+                    'wind'     => $wind,
+                    'wind_dir' => $windDir,
+                    'label'    => $this->wmoLabel($code),
+                    'emoji'    => $this->wmoEmoji($code),
+                    'moon'     => $this->moonPhase(),
                 ];
             } catch (\Throwable) {
                 return null;
