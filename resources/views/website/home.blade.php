@@ -62,8 +62,8 @@
                     const r = await fetch('/spotify/status');
                     if (!r.ok) return;
                     const d = await r.json();
-                    if (d.is_playing && d.track && d.artist) {
-                        currentSong = d.artist + ' — ' + d.track;
+                    if (d.is_playing && d.now_playing) {
+                        currentSong = d.now_playing.artists + ' — ' + d.now_playing.name;
                     } else {
                         currentSong = null;
                     }
