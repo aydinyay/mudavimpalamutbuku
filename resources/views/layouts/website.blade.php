@@ -224,10 +224,14 @@
                     <span class="mx-2 opacity-40">|</span>
                     <a href="tel:02122337748" style="color:inherit;text-decoration:none;">0212 233 77 48</a>
                 </p>
-                <p class="small mb-0" style="opacity:.45;font-size:.72rem;">
-                    <a href="https://www.supratur.com" target="_blank" rel="noopener" style="color:#c8b99a;text-decoration:none;">SUPRATUR</a>
-                    <span class="mx-1 opacity-40">·</span>
-                    <span style="color:#c8b99a;">MÜDAVİM Palamutbükü</span>
+                <p class="small mb-0" style="opacity:.55;font-size:.72rem;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;">
+                    @if(file_exists(public_path('images/supra-group.png')))
+                    <a href="https://www.supratur.com" target="_blank" rel="noopener">
+                        <img src="{{ asset('images/supra-group.png') }}" alt="Supra Group"
+                             style="height:28px;width:auto;opacity:.6;filter:brightness(10);vertical-align:middle;">
+                    </a>
+                    @endif
+                    <span style="color:#c8b99a;">Müdavim Palamutbükü bir Supra Group markasıdır.</span>
                 </p>
             </div>
         </div>
