@@ -795,16 +795,47 @@ body {
 
         @if($spotify['is_playing'] && $spotify['now_playing'])
         @php $heroNp = $spotify['now_playing']; @endphp
-        <p class="hero-music-intro">İskelede dalga sesleri arasından bir şarkı yükseliyor…</p>
-        <div class="hero-song-card">
+        <p class="hero-music-intro">İskelede dalga sesleri arasından tam olarak bu şarkı yükseliyor…</p>
+
+        {{-- Büyük şarkı kartı --}}
+        <div class="now-playing-card" style="margin:0 auto 0;max-width:520px;">
             @if($heroNp['cover'])
-            <img src="{{ $heroNp['cover'] }}" alt="">
+                <img src="{{ $heroNp['cover'] }}" alt="{{ $heroNp['name'] }}" id="album-art">
+            @else
+                <div class="album-placeholder"><i class="bi bi-music-note-beamed"></i></div>
             @endif
             <div>
-                <div class="hero-song-name">{{ $heroNp['name'] }}</div>
-                <div class="hero-song-artist">{{ $heroNp['artists'] }}</div>
+                <div class="track-name">{{ $heroNp['name'] }}</div>
+                <div class="track-artist">{{ $heroNp['artists'] }}</div>
+                <div class="track-album">{{ $heroNp['album'] }}</div>
+                <div class="progress-bar-wrap">
+                    <span id="prog-current">{{ gmdate('i:s', intdiv($heroNp['progress_ms'], 1000)) }}</span>
+                    <div class="progress-bar-bg">
+                        <div id="progress-fill" style="width:{{ $heroNp['duration_ms'] > 0 ? round($heroNp['progress_ms']/$heroNp['duration_ms']*100,1) : 0 }}%"></div>
+                    </div>
+                    <span id="prog-total">{{ gmdate('i:s', intdiv($heroNp['duration_ms'], 1000)) }}</span>
+                </div>
             </div>
         </div>
+
+        {{-- Sırada --}}
+        @if(!empty($spotify['queue']))
+        <div class="section-label" style="margin-top:24px;">Sırada</div>
+        <div class="queue-grid" style="max-width:520px;margin:8px auto 0;">
+            @foreach(array_slice($spotify['queue'], 0, 2) as $q)
+            <div class="queue-card">
+                @if($q['cover'])
+                    <img src="{{ $q['cover'] }}" alt="">
+                @endif
+                <div>
+                    <div class="queue-label">Sırada</div>
+                    <div class="queue-name">{{ $q['name'] }}</div>
+                    <div class="queue-artist">{{ $q['artists'] }}</div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @endif
         @endif
 
         <div class="scroll-cue" aria-hidden="true"><span></span></div>
