@@ -871,11 +871,22 @@ body {
                 </div>
 
                 @if($sea)
+                @php
+                    $seaPhrase = match(true) {
+                        $sea['temp'] < 18 => 'Cesur yüzücüler için',
+                        $sea['temp'] < 20 => 'Serinlemek için birebir',
+                        $sea['temp'] < 22 => 'Dalmak için harika',
+                        $sea['temp'] < 24 => 'Yüzmek için mükemmel',
+                        $sea['temp'] < 26 => 'Plajlar sizi bekliyor',
+                        $sea['temp'] < 28 => 'Suya girmek tam zamanı',
+                        default           => 'Serinlemenin tam vakti',
+                    };
+                @endphp
                 <div class="weather-card-sea">
                     <div>
                         <div style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(168,218,240,.4);margin-bottom:8px;">Deniz Suyu</div>
                         <div class="sea-temp">{{ $sea['temp'] }}°</div>
-                        <div class="sea-label">Deniz sıcaklığı</div>
+                        <div class="sea-label" style="font-style:italic;color:rgba(168,218,240,.7);">{{ $seaPhrase }}</div>
                     </div>
                     <div>
                         <div class="sea-wave">
@@ -1017,10 +1028,14 @@ body {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // DATA FROM PHP
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const SUNRISE    = @json($data['sunrise'] ?? null);  // "05:32"
-const SUNSET     = @json($data['sunset']  ?? null);  // "20:14"
+const SUNRISE    = @json($data['sunrise'] ?? null);
+const SUNSET     = @json($data['sunset']  ?? null);
 const MOON_PHASE = @json($data['moon']['fraction'] ?? 0.5);
 const MOON_AGE   = @json($data['moon']['age']      ?? 15);
+const SEA_TEMP   = @json($sea['temp'] ?? null);
+const WEATHER_TEMP  = @json($data['weather']['temp'] ?? null);
+const WEATHER_LABEL = @json($data['weather']['label'] ?? null);
+const WEATHER_CODE  = @json($data['weather']['code'] ?? null);
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // HELPERS
@@ -1404,14 +1419,57 @@ function timeOfDay(h) {
     return 'Gecesi';
 }
 
+function seaPhrase(temp) {
+    if (temp === null) return null;
+    if (temp < 18) return `Deniz ${temp}°C — cesur yüzücüler için`;
+    if (temp < 20) return `Deniz ${temp}°C — serinlemek için birebir`;
+    if (temp < 22) return `Deniz ${temp}°C — dalmak için harika`;
+    if (temp < 24) return `Deniz ${temp}°C — yüzmek için mükemmel`;
+    if (temp < 26) return `Deniz ${temp}°C — plajlar sizi bekliyor`;
+    if (temp < 28) return `Deniz ${temp}°C — suya girmek tam zamanı`;
+    return `Deniz ${temp}°C — serinlemenin tam vakti`;
+}
+
+function nightWeatherLabel(code, h) {
+    const isNight = h >= 21 || h < 5;
+    const isDawn  = h >= 5  && h < 7;
+    if (!isNight && !isDawn) return null;
+    if (code === 0) return isDawn ? 'Şafak söküyor' : 'Yıldızlı gece';
+    if (code === 1) return isDawn ? 'Açık, şafak yaklaşıyor' : 'Çoğunlukla açık gece';
+    if (code === 2) return 'Parçalı bulutlu';
+    return null;
+}
+
 function updateClock() {
     const now  = new Date();
     const h    = now.getHours();
     const hStr = pad(h) + ':' + pad(now.getMinutes());
     const el   = document.getElementById('hero-time');
-    if (el) {
-        el.textContent = `Günlerden ${DAYS[now.getDay()]} · Saat ${hStr} · Enfes bir ${MONTHS[now.getMonth()]} ${timeOfDay(h)}`;
+    if (!el) return;
+
+    const parts = [`Günlerden ${DAYS[now.getDay()]} · Saat ${hStr} · Enfes bir ${MONTHS[now.getMonth()]} ${timeOfDay(h)}`];
+
+    // Hava
+    if (WEATHER_TEMP !== null) {
+        const nightLbl = nightWeatherLabel(WEATHER_CODE, h);
+        const lbl = nightLbl ?? WEATHER_LABEL;
+        parts.push(`Hava ${WEATHER_TEMP}°C · ${lbl}`);
     }
+
+    // Deniz (gündüz 06-17)
+    if (h >= 6 && h < 17) {
+        const sp = seaPhrase(SEA_TEMP);
+        if (sp) parts.push(sp);
+    }
+
+    // Ay (gece/alacakaranlık)
+    if (h >= 20 || h < 7) {
+        const moonNames = ['Yeni Ay','Hilal','İlk Dördün','Şişen Ay','Dolunay','Azalan Ay','Son Dördün','Batan Hilal'];
+        const moonIdx = Math.round(MOON_PHASE * 8) % 8;
+        parts.push(moonNames[moonIdx]);
+    }
+
+    el.textContent = parts.join(' · ');
 }
 
 updateClock();
