@@ -30,7 +30,7 @@
                     Her gün, en taze malzemelerle, en samimi hizmetle karşılıyoruz misafirlerimizi.
                 </p>
                 <p class="text-muted">
-                    Simit levrekten baklava tatlısına, sıcak ot tabağından ızgara ahtapota — her tabak bir hikaye anlatıyor.
+                    Simit levrekten, deniz balıklarına, sıcak ot tabağından ızgara ahtapota — her tabak bir hikaye anlatıyor.
                     Ağaçların altında, dalgaların sesinde, Akdeniz rüzgarıyla.
                 </p>
                 <div class="d-flex gap-3 mt-4 flex-wrap">
