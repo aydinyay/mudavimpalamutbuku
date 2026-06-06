@@ -29,7 +29,6 @@
             min-height:1.5em;
         "></p>
 
-        @push('scripts')
         <script>
         (function () {
             const DAYS = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
@@ -74,12 +73,11 @@
             }
 
             render();
-            setInterval(render, 30000);   // clock refresh every 30s
+            setInterval(render, 60000);
             fetchSpotify();
-            setInterval(fetchSpotify, 30000); // spotify poll every 30s
+            setInterval(fetchSpotify, 30000);
         })();
         </script>
-        @endpush
 
         <div class="d-flex gap-3 justify-content-center flex-wrap">
             <a href="{{ route('reservation.public.create') }}"
