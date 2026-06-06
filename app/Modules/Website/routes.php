@@ -1,10 +1,12 @@
 <?php
 
+use App\Modules\Website\Controllers\AmbianceController;
 use App\Modules\Website\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('setLocale')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('website.home');
+    Route::get('/ambiyans', [AmbianceController::class, 'index'])->name('website.ambiance');
     Route::get('/hakkimizda', [HomeController::class, 'about'])->name('website.about');
     Route::get('/iletisim', [HomeController::class, 'contact'])->name('website.contact');
     Route::get('/galeri', [HomeController::class, 'gallery'])->name('website.gallery');
