@@ -1103,6 +1103,9 @@ body {
             <a href="https://wa.me/{{ ltrim(config('restaurant.whatsapp'),'+') }}?text={{ urlencode('Merhaba! Rezervasyon için bilgi almak istiyorum.') }}"
                target="_blank" class="btn-wa"><i class="bi bi-whatsapp me-1"></i>WhatsApp</a>
             <a href="{{ route('website.contact') }}" class="btn-map"><i class="bi bi-map me-1"></i>Nasıl Gelinir</a>
+            <button onclick="shareAmbiance()" class="btn-map" style="border:1px solid rgba(255,255,255,.15);">
+                <i class="bi bi-share me-1"></i>Şu Anı Paylaş
+            </button>
         </div>
     </section>
 
@@ -1695,6 +1698,34 @@ setInterval(skyTick, 10000);
 
     sections.forEach(s => obs.observe(document.getElementById(s.id)));
 })();
+
+// ── PAYLAŞIM ──
+function shareAmbiance() {
+    const now  = new Date();
+    const h    = now.getHours();
+    const hStr = pad(h) + ':' + pad(now.getMinutes());
+    let text = `🌊 Şu an Müdavim'deyim — Palamutbükü, Datça\n`;
+    text += `📅 ${DAYS[now.getDay()]}, ${hStr}\n`;
+    if (WEATHER_TEMP !== null) text += `🌡 Hava ${WEATHER_TEMP}°C\n`;
+    if (SEA_TEMP !== null) text += `🌊 Deniz ${SEA_TEMP}°C\n`;
+    if (SPOTIFY_PLAYING) {
+        const trackEl = document.querySelector('.track-name');
+        const artistEl = document.querySelector('.track-artist');
+        if (trackEl) text += `🎵 ${trackEl.textContent} — ${artistEl?.textContent || ''}\n`;
+    }
+    text += `\nSen de gelsene! 👇`;
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'Şu An Müdavim\'de',
+            text: text,
+            url: window.location.href
+        }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(window.location.href + '\n\n' + text)
+            .then(() => alert('Paylaşım metni ve link kopyalandı!'));
+    }
+}
 
 })();
 </script>

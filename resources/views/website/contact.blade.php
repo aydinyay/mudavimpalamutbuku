@@ -192,13 +192,20 @@
         </div>
 
         {{-- Directions CTA --}}
-        <div class="text-center mt-2 mb-2">
+        <div class="text-center mt-2 mb-2 d-flex gap-3 justify-content-center flex-wrap">
             <a href="https://maps.google.com/?q={{ config('restaurant.coordinates.lat') }},{{ config('restaurant.coordinates.lng') }}"
                target="_blank" rel="noopener"
                class="btn btn-lg"
                style="background:var(--color-sea);color:#fff;border-radius:30px;padding:14px 36px;font-weight:700;font-size:1rem;">
                 <i class="bi bi-map me-2"></i>Google Maps'te Aç
             </a>
+            <button onclick="sharePage(
+                'Müdavim Restaurant — Nasıl Gelinir?',
+                'Palamutbükü, Datça\'da denize sıfır Müdavim Restaurant\'a nasıl gelinir? Araç, feribot, tekne ve otobüs seçenekleri burada.',
+                '{{ route(\'website.contact\') }}'
+            )" class="btn btn-lg btn-outline-secondary" style="border-radius:30px;padding:14px 28px;">
+                <i class="bi bi-share me-2"></i>Yol Tarifini Paylaş
+            </button>
         </div>
     </div>
 </section>
