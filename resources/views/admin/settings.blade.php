@@ -47,6 +47,18 @@
                             <input type="text" name="season_close_date" class="form-control"
                                    value="{{ $settings->season_close_date }}" placeholder="10-31">
                         </div>
+                        <div class="col-sm-6 col-md-3">
+                            <label class="form-label">Açılış Saati</label>
+                            <input type="time" name="open_time" class="form-control"
+                                   value="{{ $settings->open_time ?? '09:00' }}">
+                            <div class="form-text">Ör: 09:00</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <label class="form-label">Kapanış Saati</label>
+                            <input type="time" name="close_time" class="form-control"
+                                   value="{{ $settings->close_time ?? '02:00' }}">
+                            <div class="form-text">Gece için ör: 02:00</div>
+                        </div>
                         <div class="col-sm-4">
                             <label class="form-label">Zorla Aç/Kapat</label>
                             <select name="is_open_override" class="form-select">
