@@ -45,13 +45,13 @@
                 const now  = new Date();
                 const day  = 'Günlerden ' + DAYS[now.getDay()];
                 const time = 'Saat ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+                const w    = weatherPart().replace(/^ · /, '');
 
                 if (song) {
-                    return day + ' · ' + time + ' · Dalga sesleri arasında'
-                        + '<br>♪ ' + song + ' çalıyor'
-                        + '<br>' + weatherPart().replace(/^ · /, '');
+                    return 'Tam şu anda Dalga sesleri arasında ♪ ' + song + ' çalıyor…'
+                        + '<br>' + day + ' · ' + time + ', ' + w + '…';
                 }
-                return day + ' · ' + time + '<br>' + weatherPart().replace(/^ · /, '');
+                return day + ' · ' + time + ', ' + w + '…';
             }
 
             const el = document.getElementById('heroAmbient');
