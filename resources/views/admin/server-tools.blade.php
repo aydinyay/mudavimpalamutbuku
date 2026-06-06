@@ -77,6 +77,52 @@
         </div>
     </div>
 
+    {{-- Cron Bilgisi --}}
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div style="width:48px;height:48px;border-radius:12px;background:#f8d7da;display:flex;align-items:center;justify-content:center;font-size:22px;">⏰</div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">cPanel Cron Job</h6>
+                        <small class="text-muted">Google & Instagram otomatik sync</small>
+                    </div>
+                </div>
+                <p class="small text-muted mb-2">cPanel → Cron Jobs'a şunu ekleyin:</p>
+                <code class="d-block bg-dark text-success p-2 rounded small" style="font-size:.72rem;word-break:break-all;">
+                    */5 * * * * php /home/mudavimp/mudavimpalamutbuku/artisan schedule:run >> /dev/null 2>&1
+                </code>
+                <p class="text-muted mt-2 mb-0" style="font-size:.72rem;">
+                    Bu kurulunca yorumlar her 2 saatte, Instagram her saatte otomatik güncellenir.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {{-- Instagram Token --}}
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div style="width:48px;height:48px;border-radius:12px;background:#f3e6f8;display:flex;align-items:center;justify-content:center;font-size:22px;">📸</div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Instagram Token</h6>
+                        <small class="text-muted">60 günde bir yenilenmeli</small>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Mevcut durum</label>
+                    <div class="badge {{ config('services.instagram.access_token') ? 'bg-success' : 'bg-secondary' }} py-2 px-3 d-block text-start" style="font-size:.75rem;">
+                        {{ config('services.instagram.access_token') ? '✓ Token tanımlı' : '✗ Token girilmemiş' }}
+                    </div>
+                </div>
+                <a href="{{ route('admin.instagram.index') }}" class="btn btn-sm w-100" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;border-radius:6px;">
+                    <i class="bi bi-instagram me-1"></i>Instagram Yönet
+                </a>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <style>

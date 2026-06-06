@@ -2,6 +2,7 @@
 
 use App\Modules\Admin\Controllers\DashboardController;
 use App\Modules\Admin\Controllers\ServerToolsController;
+use App\Modules\Admin\Controllers\SiteMediaController;
 use App\Modules\Menu\Controllers\Admin\CategoryController;
 use App\Modules\Menu\Controllers\Admin\MenuItemController;
 use App\Modules\QrCode\Controllers\Admin\QrCodeController;
@@ -78,6 +79,11 @@ Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function (
     Route::get('qr-kodlar', [QrCodeController::class, 'index'])->name('qrcodes.index');
     Route::post('qr-kodlar/{table}/uret', [QrCodeController::class, 'generate'])->name('qrcodes.generate');
     Route::get('qr-kodlar/yazdir', [QrCodeController::class, 'printSheet'])->name('qrcodes.print');
+
+    // Site media / image uploads
+    Route::get('gorseller', [SiteMediaController::class, 'index'])->name('media.index');
+    Route::post('gorseller/yukle', [SiteMediaController::class, 'upload'])->name('media.upload');
+    Route::post('gorseller/sil', [SiteMediaController::class, 'delete'])->name('media.delete');
 
     // Server tools
     Route::get('sunucu-araclari', [ServerToolsController::class, 'index'])->name('server-tools.index');

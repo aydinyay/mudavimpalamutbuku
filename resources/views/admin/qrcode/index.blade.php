@@ -7,8 +7,8 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <p class="text-muted mb-0 small">Her masaya özgü QR kod üretin. Müşteriler taratınca menüye ulaşır.</p>
-    <a href="{{ route('admin.qrcodes.print') }}" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-printer me-1"></i>PDF İndir
+    <a href="{{ route('admin.qrcodes.print') }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-printer me-1"></i>Yazdır / PDF
     </a>
 </div>
 

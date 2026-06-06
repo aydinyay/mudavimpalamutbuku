@@ -70,6 +70,14 @@
     <div class="note">
       Rezervasyonunuzu iptal etmek isterseniz yukarıdaki bağlantıdan yapabilirsiniz.
     </div>
+
+    <div style="text-align:center;margin-top:8px;margin-bottom:8px;padding:20px;background:#f8fffe;border-radius:10px;border:1px solid #d0ede8;">
+      <p style="font-size:13px;color:#555;margin:0 0 12px;">Daha önce geldiyseniz deneyiminizi Google'da paylaşabilirsiniz.</p>
+      <a href="https://g.page/r/Cd4zYQe_40RuEBM/review"
+         style="display:inline-block;background:#4285F4;color:#fff;text-decoration:none;padding:10px 24px;border-radius:20px;font-size:13px;font-weight:600;">
+        ★ Google'da Değerlendir
+      </a>
+    </div>
   </div>
   <div class="footer">
     <p>Müdavim Restaurant &bull; Palamutbükü, Datça</p>

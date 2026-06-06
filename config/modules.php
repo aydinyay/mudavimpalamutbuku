@@ -7,6 +7,9 @@ return [
     'qrcode'      => true,
     'tableplan'   => true,
     'reservation' => true,
+    'reviews'     => true,
+    'analytics'   => true,
+    'spotify'     => true,
     // Phase 2+
     'pos'         => false,
     'kitchen'     => false,

@@ -91,7 +91,7 @@ body {
 }
 
 /* ── HERO ── */
-#hero {
+#hero-section {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -673,6 +673,56 @@ body {
     transition: background .2s;
 }
 .btn-map:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+/* ── FLOATING SECTION NAV ── */
+#section-nav {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+}
+.snav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    opacity: .35;
+    transition: opacity .3s;
+}
+.snav-item:hover, .snav-item.active { opacity: 1; }
+.snav-label {
+    font-size: .65rem;
+    color: rgba(255,255,255,.8);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity .2s, transform .2s;
+    pointer-events: none;
+}
+.snav-item:hover .snav-label, .snav-item.active .snav-label {
+    opacity: 1;
+    transform: translateX(0);
+}
+.snav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.4);
+    border: 1px solid rgba(255,255,255,.3);
+    transition: background .3s, transform .3s;
+    flex-shrink: 0;
+}
+.snav-item.active .snav-dot {
+    background: #fff;
+    transform: scale(1.35);
+}
+@media(max-width:600px){ #section-nav { display: none; } }
 </style>
 </head>
 <body>
@@ -691,8 +741,11 @@ body {
         <a href="{{ route('reservation.public.create') }}">Rezervasyon →</a>
     </nav>
 
+    {{-- Floating section dots --}}
+    <div id="section-nav"></div>
+
     {{-- Hero --}}
-    <section id="hero">
+    <section id="hero-section">
         <div class="hero-time" id="hero-time"></div>
         <h1 class="hero-title">Şu An Müdavim'de</h1>
         <p class="hero-sub">Palamutbükü · Datça · Ege</p>
@@ -1434,6 +1487,43 @@ setInterval(skyTick, 10000);
 
     dots.forEach(d => d.addEventListener('click', () => go(+d.dataset.idx)));
     setInterval(() => go(current + 1), 7000);
+})();
+
+// ── FLOATING SECTION NAV ──
+(function () {
+    const sections = [
+        { id: 'hero-section',    label: 'Şu An' },
+        { id: 'spotify-section', label: 'Müzik' },
+        { id: 'weather-section', label: 'Hava & Deniz' },
+        { id: 'photos-section',  label: 'Fotoğraflar' },
+        { id: 'reviews-section', label: 'Yorumlar' },
+        { id: 'cta-section',     label: 'Rezervasyon' },
+    ].filter(s => document.getElementById(s.id));
+
+    const nav = document.getElementById('section-nav');
+    if (!nav || sections.length < 2) return;
+
+    sections.forEach(s => {
+        const item = document.createElement('div');
+        item.className = 'snav-item';
+        item.innerHTML = `<span class="snav-label">${s.label}</span><span class="snav-dot"></span>`;
+        item.addEventListener('click', () => {
+            document.getElementById(s.id).scrollIntoView({ behavior: 'smooth' });
+        });
+        item.dataset.target = s.id;
+        nav.appendChild(item);
+    });
+
+    const items = nav.querySelectorAll('.snav-item');
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                items.forEach(i => i.classList.toggle('active', i.dataset.target === e.target.id));
+            }
+        });
+    }, { threshold: 0.4 });
+
+    sections.forEach(s => obs.observe(document.getElementById(s.id)));
 })();
 
 })();

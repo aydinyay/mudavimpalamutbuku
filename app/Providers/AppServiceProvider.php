@@ -13,6 +13,9 @@ class AppServiceProvider extends ServiceProvider
         'tableplan'   => \App\Modules\TablePlan\Providers\TableplanServiceProvider::class,
         'reservation' => \App\Modules\Reservation\Providers\ReservationServiceProvider::class,
         'qrcode'      => \App\Modules\QrCode\Providers\QrcodeServiceProvider::class,
+        'reviews'     => \App\Modules\Reviews\Providers\ReviewsServiceProvider::class,
+        'analytics'   => \App\Modules\Analytics\Providers\AnalyticsServiceProvider::class,
+        'spotify'     => \App\Modules\Spotify\Providers\SpotifyServiceProvider::class,
     ];
 
     public function register(): void
