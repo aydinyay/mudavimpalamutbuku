@@ -55,6 +55,19 @@
   @endforeach
 
   <div class="no-res" id="noRes">Sonuç bulunamadı.</div>
+
+  <div style="margin-top:40px;padding:24px 0;border-top:1px solid #ececec;text-align:center;">
+    <p style="font-size:.82rem;color:#888;margin-bottom:12px;">Deneyiminizi paylaşır mısınız?</p>
+    <a href="https://g.page/r/Cd4zYQe_40RuEBM/review" target="_blank" rel="noopener"
+       style="display:inline-block;background:#4285F4;color:#fff;text-decoration:none;padding:8px 22px;border-radius:20px;font-size:.82rem;font-weight:600;">
+      ★ Google'da Değerlendir
+    </a>
+    <div style="margin-top:14px;">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https%3A%2F%2Fg.page%2Fr%2FCd4zYQe_40RuEBM%2Freview"
+           width="100" height="100" alt="Google Yorum QR" style="border-radius:8px;border:1px solid #eee;">
+      <p style="font-size:.7rem;color:#bbb;margin-top:4px;">QR ile de ulaşabilirsiniz</p>
+    </div>
+  </div>
 </div>
 
 @push('scripts')

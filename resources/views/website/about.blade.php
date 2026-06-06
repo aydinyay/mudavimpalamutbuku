@@ -9,9 +9,14 @@
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-6">
-                <div style="background:linear-gradient(135deg,#1a7fa8,#2ea887);border-radius:20px;height:400px;display:flex;align-items:center;justify-content:center;">
-                    <i class="bi bi-water fs-1 text-white opacity-50"></i>
-                </div>
+                @if($setting->about_image)
+                    <img src="{{ $setting->about_image }}" alt="Müdavim Restaurant"
+                         style="width:100%;height:400px;object-fit:cover;border-radius:20px;display:block;">
+                @else
+                    <div style="background:linear-gradient(135deg,#1a7fa8,#2ea887);border-radius:20px;height:400px;display:flex;align-items:center;justify-content:center;">
+                        <i class="bi bi-water fs-1 text-white opacity-50"></i>
+                    </div>
+                @endif
             </div>
             <div class="col-lg-6">
                 <h1 class="section-title">{{ __('common.nav_about') }}</h1>

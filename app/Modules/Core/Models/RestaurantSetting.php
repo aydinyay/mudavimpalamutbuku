@@ -20,12 +20,22 @@ class RestaurantSetting extends Model
         'is_open_override',
         'max_advance_days',
         'sms_provider', 'sms_api_key', 'sms_sender_name',
+        'spotify_access_token', 'spotify_refresh_token', 'spotify_token_expires_at',
+        'spotify_enabled', 'spotify_widget_on_website', 'spotify_widget_on_menu',
+        'spotify_fallback_playlist_url', 'spotify_fallback_playlist_name',
+        'ambiance_page_active',
+        'hero_bg_image', 'about_image',
     ];
 
     protected $casts = [
-        'is_open_override' => 'boolean',
-        'lat' => 'decimal:7',
-        'lng' => 'decimal:7',
+        'is_open_override'          => 'boolean',
+        'lat'                       => 'decimal:7',
+        'lng'                       => 'decimal:7',
+        'spotify_enabled'           => 'boolean',
+        'spotify_widget_on_website' => 'boolean',
+        'spotify_widget_on_menu'    => 'boolean',
+        'ambiance_page_active'      => 'boolean',
+        'spotify_token_expires_at'  => 'datetime',
     ];
 
     public static function current(): self
@@ -41,7 +51,7 @@ class RestaurantSetting extends Model
         ]);
     }
 
-    public function name(string $locale = null): string
+    public function name(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
         return $this->{"name_{$locale}"} ?? $this->name_tr;

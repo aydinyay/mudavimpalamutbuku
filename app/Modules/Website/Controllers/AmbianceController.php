@@ -4,6 +4,7 @@ namespace App\Modules\Website\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\InstagramPost;
+use App\Modules\Core\Models\RestaurantSetting;
 use App\Modules\Reviews\Services\GoogleReviewService;
 use App\Modules\Spotify\Services\SpotifyService;
 use Illuminate\Support\Facades\Cache;
@@ -13,6 +14,10 @@ class AmbianceController extends Controller
 {
     public function index(SpotifyService $spotify, GoogleReviewService $reviews)
     {
+        $setting = RestaurantSetting::current();
+        if (!($setting->ambiance_page_active ?? true)) {
+            abort(404);
+        }
         $data    = Cache::remember('ambiance_data', 1800, fn() => $this->fetchData());
         $spotify = $spotify->getStatus();
 

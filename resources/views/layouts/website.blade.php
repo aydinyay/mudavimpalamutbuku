@@ -13,6 +13,7 @@
     <link rel="alternate" hreflang="de" href="{{ url('de/' . request()->path()) }}">
 
     @vite(['resources/css/website.css', 'resources/js/website.js'])
+    <style>@keyframes ambPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}</style>
     @stack('styles')
 </head>
 <body>
@@ -42,6 +43,16 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('website.about') }}">{{ __('common.nav_about') }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('menu.public.index') }}">{{ __('common.nav_menu') }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('website.contact') }}">{{ __('common.nav_contact') }}</a></li>
+                @php $ambianceSetting = \App\Modules\Core\Models\RestaurantSetting::current(); @endphp
+                @if($ambianceSetting->ambiance_page_active ?? true)
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-1" href="{{ route('website.ambiance') }}"
+                       style="color:rgba(255,255,255,.85);">
+                        <span style="width:7px;height:7px;border-radius:50%;background:#1DB954;display:inline-block;animation:ambPulse 2s infinite;"></span>
+                        Şu An
+                    </a>
+                </li>
+                @endif
                 <li class="nav-item ms-lg-2">
                     <a class="btn btn-sm" style="background:var(--color-coral);color:#fff;border-radius:20px;padding:6px 16px;"
                        href="{{ route('reservation.public.create') }}">

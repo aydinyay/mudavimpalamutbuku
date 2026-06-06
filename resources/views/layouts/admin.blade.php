@@ -13,7 +13,7 @@
 {{-- Sidebar --}}
 <aside class="admin-sidebar">
     <div class="sidebar-brand">
-        Müdavim
+        <a href="{{ url('/') }}" style="color:inherit;text-decoration:none;">Müdavim</a>
         <small>YÖNETİM PANELİ</small>
     </div>
     <nav class="sidebar-nav">
@@ -40,7 +40,27 @@
             <i class="bi bi-qr-code"></i> QR Kodlar
         </a>
 
+        <div class="nav-section-label">İtibar</div>
+        <a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
+            <i class="bi bi-star-half"></i> Yorumlar & Şikayetler
+        </a>
+        <a href="{{ route('admin.instagram.index') }}" class="{{ request()->routeIs('admin.instagram.*') ? 'active' : '' }}">
+            <i class="bi bi-instagram"></i> Instagram Galeri
+        </a>
+
+        <div class="nav-section-label">Analitik</div>
+        <a href="{{ route('admin.analytics.index') }}" class="{{ request()->routeIs('admin.analytics.*') ? 'active' : '' }}">
+            <i class="bi bi-bar-chart-line"></i> İstatistikler
+        </a>
+
+        <a href="{{ route('admin.spotify.index') }}" class="{{ request()->routeIs('admin.spotify.*') ? 'active' : '' }}">
+            <i class="bi bi-spotify"></i> Spotify Müzik
+        </a>
+
         <div class="nav-section-label">Sistem</div>
+        <a href="{{ route('admin.media.index') }}" class="{{ request()->routeIs('admin.media.*') ? 'active' : '' }}">
+            <i class="bi bi-images"></i> Görseller
+        </a>
         <a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">
             <i class="bi bi-gear"></i> Ayarlar
         </a>

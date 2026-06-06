@@ -12,14 +12,40 @@ class ReservationController extends Controller
 {
     public function index(Request $request)
     {
-        $date = $request->get('tarih', Carbon::today()->toDateString());
+        $date     = $request->get('tarih', Carbon::today()->toDateString());
+        $selected = Carbon::parse($date);
 
+        // Seçili günün rezervasyonları
         $reservations = Reservation::whereDate('reservation_date', $date)
+            ->where('status', '!=', 'cancelled')
             ->with(['table.area'])
             ->orderBy('arrival_time')
             ->get();
 
-        return view('admin.reservation.index', compact('reservations', 'date'));
+        // Bölgeye göre dağılım
+        $byArea = $reservations->groupBy(fn($r) => $r->table?->area?->name_tr ?? 'Masasız');
+
+        // 60 günlük takvim için günlük sayılar (bugün dahil)
+        $start  = Carbon::today();
+        $end    = $start->copy()->addDays(59);
+        $counts = Reservation::whereBetween('reservation_date', [$start, $end])
+            ->where('status', '!=', 'cancelled')
+            ->selectRaw('DATE(reservation_date) as day, COUNT(*) as cnt')
+            ->groupBy('day')
+            ->pluck('cnt', 'day');
+
+        // Yaklaşan dolu günler (en kalabalık 5)
+        $busyDays = Reservation::where('reservation_date', '>=', Carbon::today())
+            ->where('status', '!=', 'cancelled')
+            ->selectRaw('DATE(reservation_date) as day, COUNT(*) as cnt, SUM(guest_count) as guests')
+            ->groupBy('day')
+            ->orderByDesc('cnt')
+            ->limit(5)
+            ->get();
+
+        return view('admin.reservation.index', compact(
+            'reservations', 'date', 'selected', 'byArea', 'counts', 'busyDays', 'start'
+        ));
     }
 
     public function create()

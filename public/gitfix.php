@@ -120,6 +120,27 @@ if (($_GET['action'] ?? '') === 'mailtest') {
     exit;
 }
 
+// Artisan komutu çalıştır — ?action=artisan&cmd=reviews:sync-google
+if (($_GET['action'] ?? '') === 'artisan') {
+    header('Content-Type: text/plain; charset=utf-8');
+    $allowed = ['reviews:sync-google', 'instagram:sync'];
+    $cmd = $_GET['cmd'] ?? '';
+    if (!in_array($cmd, $allowed)) { echo "NOT_ALLOWED: $cmd"; exit; }
+    define('LARAVEL_START', microtime(true));
+    require $appRoot . '/vendor/autoload.php';
+    $app    = require_once $appRoot . '/bootstrap/app.php';
+    $kernel = $app->make(\Illuminate\Contracts\Console\Kernel::class);
+    $kernel->bootstrap();
+    try {
+        $exitCode = \Illuminate\Support\Facades\Artisan::call($cmd);
+        echo "OK exitCode=$exitCode\n";
+        echo \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Throwable $e) {
+        echo "ERROR: " . $e->getMessage();
+    }
+    exit;
+}
+
 // Her çağrıda cache temizle
 @unlink("$appRoot/bootstrap/cache/routes-v7.php");
 @unlink("$appRoot/bootstrap/cache/config.php");

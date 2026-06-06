@@ -43,4 +43,20 @@ return [
         'notify_phone' => env('SMS_NOTIFY_PHONE'),
     ],
 
+    'google' => [
+        'api_key'  => env('GOOGLE_API_KEY'),
+        'place_id' => env('GOOGLE_PLACE_ID'),  // Places API (New) format: "ChIJ..."
+    ],
+
+    'instagram' => [
+        'access_token' => env('INSTAGRAM_ACCESS_TOKEN'),
+        'user_id'      => env('INSTAGRAM_USER_ID'),
+    ],
+
+    'spotify' => [
+        'client_id'     => env('SPOTIFY_CLIENT_ID'),
+        'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
+        'redirect_uri'  => env('SPOTIFY_REDIRECT_URI', 'https://mudavimpalamutbuku.com/yonetim/spotify/callback'),
+    ],
+
 ];

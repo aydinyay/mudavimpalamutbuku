@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class InstagramPost extends Model
+{
+    protected $fillable = [
+        'instagram_id', 'media_type', 'media_url',
+        'thumbnail_url', 'caption', 'permalink',
+        'posted_at', 'is_visible',
+    ];
+
+    protected $casts = [
+        'posted_at'  => 'datetime',
+        'is_visible' => 'boolean',
+    ];
+}

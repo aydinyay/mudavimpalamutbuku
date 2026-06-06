@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'setLocale' => \App\Http\Middleware\SetLocale::class,
         ]);
+        $middleware->append(\App\Http\Middleware\TrackPageView::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

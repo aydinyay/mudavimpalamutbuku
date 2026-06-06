@@ -69,6 +69,16 @@
                             Ana Sayfa
                         </a>
                     </div>
+
+                    @if($reservation->status !== 'cancelled')
+                    <div class="mt-4 pt-4" style="border-top:1px solid #f0f0f0;">
+                        <p class="small text-muted mb-2">Daha önce geldiyseniz deneyiminizi paylaşır mısınız?</p>
+                        <a href="https://g.page/r/Cd4zYQe_40RuEBM/review" target="_blank" rel="noopener"
+                           class="btn btn-sm" style="background:#4285F4;color:#fff;border-radius:20px;padding:6px 18px;font-size:.82rem;">
+                            ★ Google'da Değerlendir
+                        </a>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

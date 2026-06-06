@@ -7,7 +7,6 @@ use App\Modules\QrCode\Models\QrCode;
 use App\Modules\QrCode\Services\QrCodeService;
 use App\Modules\TablePlan\Models\Area;
 use App\Modules\TablePlan\Models\Table;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class QrCodeController extends Controller
 {
@@ -32,9 +31,6 @@ class QrCodeController extends Controller
             ->orderBy('table_number')
             ->get();
 
-        $pdf = Pdf::loadView('admin.qrcode.print-sheet', compact('tables'))
-            ->setPaper('a4');
-
-        return $pdf->download('qr-kodlar.pdf');
+        return view('admin.qrcode.print-sheet', compact('tables'));
     }
 }

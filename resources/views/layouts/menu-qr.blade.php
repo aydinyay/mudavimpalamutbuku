@@ -120,5 +120,7 @@ inp.addEventListener('input', function(){
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{{-- Spotify Widget --}}
+<x-spotify-widget context="menu" />
 </body>
 </html>
