@@ -764,10 +764,10 @@ body {
 </head>
 <body>
 
-{{-- Fixed sky layers --}}
-<div id="sky"></div>
-<canvas id="star-canvas"></canvas>
-<div id="horizon-glow"></div>
+{{-- Fixed sky layers — inline style ile CSS beklenmeden fixed --}}
+<div id="sky" style="position:fixed;inset:0;z-index:0;"></div>
+<canvas id="star-canvas" style="position:fixed;inset:0;z-index:1;pointer-events:none;"></canvas>
+<div id="horizon-glow" style="position:fixed;bottom:0;left:0;right:0;height:35vh;z-index:2;pointer-events:none;opacity:0;"></div>
 
 <div id="page">
 
