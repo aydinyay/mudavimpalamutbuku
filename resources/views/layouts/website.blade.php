@@ -54,57 +54,52 @@
     <link rel="alternate" hreflang="de"      href="{{ url('de/' . request()->path()) }}">
     <link rel="alternate" hreflang="x-default" href="{{ url('/') }}">
 
-    {{-- Schema.org JSON-LD --}}
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Restaurant",
-        "name": "Müdavim Restaurant",
-        "alternateName": "Müdavim Palamutbükü",
-        "url": "{{ url('/') }}",
-        "logo": "{{ asset('images/logo-dark.png') }}",
-        "image": "{{ $ogImage }}",
-        "description": "{{ config('restaurant.tagline.tr') }}",
-        "telephone": "{{ config('restaurant.phone') }}",
-        "email": "{{ config('restaurant.email', 'info@mudavimpalamutbuku.com') }}",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Cumalı Mahallesi, Palamutbükü Sokak No:50",
-            "addressLocality": "Datça",
-            "addressRegion": "Muğla",
-            "postalCode": "48900",
-            "addressCountry": "TR"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": {{ config('restaurant.coordinates.lat') }},
-            "longitude": {{ config('restaurant.coordinates.lng') }}
-        },
-        "openingHoursSpecification": [
-            {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-                "opens": "{{ $openTime }}",
-                "closes": "{{ $closeTime }}"
-            }
-        ],
-        "servesCuisine": ["Akdeniz Mutfağı", "Türk Mutfağı", "Deniz Ürünleri"],
-        "priceRange": "₺₺₺",
-        "currenciesAccepted": "TRY",
-        "paymentAccepted": "Cash, Credit Card",
-        "hasMap": "https://maps.google.com/?q={{ config('restaurant.coordinates.lat') }},{{ config('restaurant.coordinates.lng') }}",
-        "sameAs": [
-            "{{ config('restaurant.social.instagram') }}",
-            "{{ config('restaurant.social.facebook') }}"
-        ],
-        "amenityFeature": [
-            { "@type": "LocationFeatureSpecification", "name": "Ücretsiz Wi-Fi", "value": true },
-            { "@type": "LocationFeatureSpecification", "name": "Evcil Hayvan Dostu", "value": true },
-            { "@type": "LocationFeatureSpecification", "name": "Deniz Manzarası", "value": true }
-        ],
-        "keywords": "Palamutbükü restoran, Datça yemek, Ege mutfağı, denize sıfır restoran"
-    }
-    </script>
+    {{-- Schema.org JSON-LD — PHP array ile oluşturulur (@context Blade çakışması önlemek için) --}}
+    @php
+        $schemaOrg = json_encode([
+            '@context' => 'https://schema.org',
+            '@type'    => 'Restaurant',
+            'name'            => 'Müdavim Restaurant',
+            'alternateName'   => 'Müdavim Palamutbükü',
+            'url'             => url('/'),
+            'logo'            => asset('images/logo-dark.png'),
+            'image'           => $ogImage,
+            'description'     => config('restaurant.tagline.tr'),
+            'telephone'       => config('restaurant.phone'),
+            'email'           => config('restaurant.email', 'info@mudavimpalamutbuku.com'),
+            'address'         => [
+                '@type'           => 'PostalAddress',
+                'streetAddress'   => 'Cumalı Mahallesi, Palamutbükü Sokak No:50',
+                'addressLocality' => 'Datça',
+                'addressRegion'   => 'Muğla',
+                'postalCode'      => '48900',
+                'addressCountry'  => 'TR',
+            ],
+            'geo' => [
+                '@type'    => 'GeoCoordinates',
+                'latitude' => (float) config('restaurant.coordinates.lat'),
+                'longitude'=> (float) config('restaurant.coordinates.lng'),
+            ],
+            'openingHoursSpecification' => [[
+                '@type'     => 'OpeningHoursSpecification',
+                'dayOfWeek' => ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                'opens'     => $openTime,
+                'closes'    => $closeTime,
+            ]],
+            'servesCuisine'    => ['Akdeniz Mutfağı','Türk Mutfağı','Deniz Ürünleri'],
+            'priceRange'       => '₺₺₺',
+            'currenciesAccepted' => 'TRY',
+            'paymentAccepted'  => 'Cash, Credit Card',
+            'hasMap'           => 'https://maps.google.com/?q=' . config('restaurant.coordinates.lat') . ',' . config('restaurant.coordinates.lng'),
+            'sameAs'           => [config('restaurant.social.instagram'), config('restaurant.social.facebook')],
+            'amenityFeature'   => [
+                ['@type'=>'LocationFeatureSpecification','name'=>'Ücretsiz Wi-Fi','value'=>true],
+                ['@type'=>'LocationFeatureSpecification','name'=>'Evcil Hayvan Dostu','value'=>true],
+                ['@type'=>'LocationFeatureSpecification','name'=>'Deniz Manzarası','value'=>true],
+            ],
+        ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    @endphp
+    <script type="application/ld+json">{!! $schemaOrg !!}</script>
 
     @vite(['resources/css/website.css', 'resources/js/website.js'])
     <style>@keyframes ambPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}</style>
