@@ -1,6 +1,11 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
+html {
+    scrollbar-gutter: stable;
+    overflow-x: hidden;
+}
+
 :root {
     --color-sea:    #1a7fa8;
     --color-sand:   #e8d5b0;

@@ -6,17 +6,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=optional" rel="stylesheet">
 <style>
-body { background: #020610 !important; color: #fff; }
+/* ── SCROLLBAR GUTTER — navbar shift'i önler ── */
+html {
+    scrollbar-gutter: stable;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
 :root {
     --serif: 'Cormorant Garamond', Georgia, serif;
     --sans:  'Inter', system-ui, sans-serif;
     --transition-sky: 12s linear;
-}
-
-@keyframes ambPulse {
-    0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(29,185,84,.5); }
-    50%      { opacity:.7; box-shadow:0 0 0 4px rgba(29,185,84,0); }
 }
 
 body {
@@ -25,13 +25,18 @@ body {
     color: #fff;
 }
 
+@keyframes ambPulse {
+    0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(29,185,84,.5); }
+    50%      { opacity:.7; box-shadow:0 0 0 4px rgba(29,185,84,0); }
+}
+
 /* ── SKY ── */
 #sky {
     position: fixed;
     inset: 0;
     z-index: 0;
     transition: background var(--transition-sky);
-    will-change: background;
+    /* will-change:background kaldırıldı — fixed element positioning'i bozuyordu */
 }
 
 #star-canvas {
