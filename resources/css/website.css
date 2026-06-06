@@ -66,6 +66,12 @@ body {
     color: #fff;
 }
 
+@media (min-width: 992px) {
+    .hero-content > img:first-child {
+        margin-top: 12px !important;
+    }
+}
+
 .hero-content h1 {
     font-size: clamp(2rem, 5vw, 4rem);
     font-weight: 700;
