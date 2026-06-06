@@ -19,6 +19,11 @@
     --transition-sky: 12s linear;
 }
 
+@keyframes ambPulse {
+    0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(29,185,84,.5); }
+    50%      { opacity:.7; box-shadow:0 0 0 4px rgba(29,185,84,0); }
+}
+
 html, body { width: 100%; overflow-x: hidden; }
 
 body {
