@@ -15,7 +15,7 @@
 <section class="hero-section">
     <div class="hero-content">
         <img src="{{ asset('images/logo-light.png') }}" alt="Müdavim Restaurant"
-             style="height:140px;width:auto;display:block;margin:0 auto 18px;filter:drop-shadow(0 2px 12px rgba(0,0,0,.4));margin-top:clamp(0px, 3vw, 24px);">
+             style="height:140px;width:auto;display:block;margin:0 auto 18px;filter:drop-shadow(0 2px 12px rgba(0,0,0,.4));margin-top:clamp(0px, 4vw, 36px);">
         <h1>Müdavim Restaurant</h1>
         <p class="tagline">{{ config('restaurant.tagline.' . app()->getLocale()) }}</p>
 
