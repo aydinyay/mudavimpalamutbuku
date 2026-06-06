@@ -31,21 +31,46 @@
 
         <script>
         (function () {
-            const DAYS = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+            const DAYS   = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+            const MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran',
+                            'Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
             const weather = @json($weather);
 
             function pad(n) { return String(n).padStart(2, '0'); }
 
             function weatherPart() {
                 if (!weather) return '';
-                return ' · Hava ' + weather.emoji + ' ' + weather.temp + '°C · ' + weather.label + ' · ' + weather.moon;
+                const moon = weather.moon.split(' ').slice(1).join(' '); // emoji'yi at
+                return 'Hava ' + weather.temp + '°C · ' + weather.label + ' · ' + moon;
+            }
+
+            function eveningGreeting(now) {
+                const h = now.getHours();
+                if (h >= 18 && h < 23) {
+                    return 'Enfes bir ' + MONTHS[now.getMonth()] + ' Akşamı…';
+                }
+                return null;
             }
 
             function buildLine(song) {
-                const now  = new Date();
-                const day  = 'Günlerden ' + DAYS[now.getDay()];
-                const time = 'Saat ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-                const w    = weatherPart().replace(/^ · /, '');
+                const now      = new Date();
+                const day      = 'Günlerden ' + DAYS[now.getDay()];
+                const time     = 'Saat ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+                const w        = weatherPart();
+                const greeting = eveningGreeting(now);
+
+                let line1 = '';
+                let line2 = '';
+
+                if (greeting) {
+                    line1 = greeting;
+                    if (song) {
+                        line2 = 'Tam şu anda Dalga sesleri arasında ♪ ' + song + ' çalıyor… ' + day + ' · ' + time + ', ' + w + '…';
+                    } else {
+                        line2 = day + ' · ' + time + ', ' + w + '…';
+                    }
+                    return line1 + '<br>' + line2;
+                }
 
                 if (song) {
                     return 'Tam şu anda Dalga sesleri arasında ♪ ' + song + ' çalıyor…'
