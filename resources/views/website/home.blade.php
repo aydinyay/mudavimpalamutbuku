@@ -39,12 +39,13 @@
             function pad(n) { return String(n).padStart(2, '0'); }
 
             function nightLabel(code, h) {
-                const isNight = h >= 21 || h < 5;
-                if (!isNight) return null;
-                if (code === 0) return 'Açık, yıldızlı gece';
-                if (code === 1) return 'Çoğunlukla açık gece';
-                if (code === 2) return 'Parçalı bulutlu gece';
-                if (code === 3) return 'Bulutlu gece';
+                const isNight = h >= 21 || h < 5;   // 21:00 – 04:59
+                const isDawn  = h >= 5  && h < 7;   // 05:00 – 06:59 şafak
+                if (!isNight && !isDawn) return null;
+                if (code === 0) return isDawn ? 'Açık, şafak söküyor' : 'Açık, yıldızlı gece';
+                if (code === 1) return isDawn ? 'Açık, şafak yaklaşıyor' : 'Çoğunlukla açık gece';
+                if (code === 2) return isDawn ? 'Parçalı bulutlu' : 'Parçalı bulutlu gece';
+                if (code === 3) return 'Bulutlu';
                 return null;
             }
 
