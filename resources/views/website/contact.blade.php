@@ -78,6 +78,9 @@
                             <div style="background:#f0f7fa;border-radius:10px;padding:10px 14px;">
                                 <div style="font-weight:600;font-size:.82rem;color:#1a7fa8;">Bodrum'dan</div>
                                 <div style="font-size:.88rem;color:#555;">~2.5 saat · 130 km</div>
+                                <div style="font-size:.75rem;color:#c0392b;margin-top:4px;">
+                                    ⚠️ Bodrum → Marmaris → Datça karayolunu tercih edin. Google Maps feribot önerirse navigasyondan 🚗 Araba modunu seçin.
+                                </div>
                             </div>
                             <div style="background:#f0f7fa;border-radius:10px;padding:10px 14px;">
                                 <div style="font-weight:600;font-size:.82rem;color:#1a7fa8;">İzmir'den</div>
