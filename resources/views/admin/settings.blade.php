@@ -5,7 +5,7 @@
 
 @section('content')
 <form method="POST" action="{{ route('admin.settings.update') }}">
-    @csrf @method('PUT')
+    @csrf
 
     <div class="row g-4">
         <div class="col-lg-8">
