@@ -5,21 +5,35 @@ use App\Modules\Website\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/sitemap.xml', function () {
+    $base = rtrim(url('/'), '/');
+    $today = now()->toDateString();
     $urls = [
-        ['loc' => url('/'),             'priority' => '1.0', 'freq' => 'daily'],
-        ['loc' => url('/hakkimizda'),   'priority' => '0.8', 'freq' => 'monthly'],
-        ['loc' => url('/iletisim'),     'priority' => '0.8', 'freq' => 'monthly'],
-        ['loc' => url('/galeri'),       'priority' => '0.7', 'freq' => 'weekly'],
-        ['loc' => url('/ambiyans'),     'priority' => '0.9', 'freq' => 'always'],
-        ['loc' => url('/en/'),          'priority' => '0.8', 'freq' => 'daily'],
-        ['loc' => url('/en/about'),     'priority' => '0.6', 'freq' => 'monthly'],
-        ['loc' => url('/en/contact'),   'priority' => '0.6', 'freq' => 'monthly'],
-        ['loc' => url('/de/'),          'priority' => '0.8', 'freq' => 'daily'],
-        ['loc' => url('/de/uber-uns'),  'priority' => '0.6', 'freq' => 'monthly'],
-        ['loc' => url('/de/kontakt'),   'priority' => '0.6', 'freq' => 'monthly'],
+        [$base . '/',             '1.0', 'daily'],
+        [$base . '/hakkimizda',   '0.8', 'monthly'],
+        [$base . '/iletisim',     '0.8', 'monthly'],
+        [$base . '/galeri',       '0.7', 'weekly'],
+        [$base . '/ambiyans',     '0.9', 'always'],
+        [$base . '/en/',          '0.8', 'daily'],
+        [$base . '/en/about',     '0.6', 'monthly'],
+        [$base . '/en/contact',   '0.6', 'monthly'],
+        [$base . '/de/',          '0.8', 'daily'],
+        [$base . '/de/uber-uns',  '0.6', 'monthly'],
+        [$base . '/de/kontakt',   '0.6', 'monthly'],
     ];
-    $xml = view('website.sitemap', compact('urls'));
-    return response($xml, 200, ['Content-Type' => 'application/xml']);
+
+    $xml  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+    foreach ($urls as [$loc, $priority, $freq]) {
+        $xml .= "  <url>\n";
+        $xml .= "    <loc>{$loc}</loc>\n";
+        $xml .= "    <lastmod>{$today}</lastmod>\n";
+        $xml .= "    <changefreq>{$freq}</changefreq>\n";
+        $xml .= "    <priority>{$priority}</priority>\n";
+        $xml .= "  </url>\n";
+    }
+    $xml .= '</urlset>';
+
+    return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
 })->name('sitemap');
 
 Route::middleware('setLocale')->group(function () {
