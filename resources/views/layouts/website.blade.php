@@ -110,7 +110,7 @@
                 <p class="small opacity-75">
                     <i class="bi bi-clock-fill me-1"></i>
                     @php $s = \App\Modules\Core\Models\RestaurantSetting::current(); @endphp
-                    {{ ($s->open_time ?? '09:00') }} – {{ ($s->close_time ?? '02:00') }}, Haftanın 7 Günü
+                    {{ substr($s->open_time ?? '09:00', 0, 5) }} – {{ substr($s->close_time ?? '02:00', 0, 5) }}, Haftanın 7 Günü
                 </p>
             </div>
             <div class="col-lg-4">
