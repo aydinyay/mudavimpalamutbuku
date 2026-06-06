@@ -145,9 +145,23 @@
                                 <span style="font-family:monospace;font-size:.75rem;">36.6752, 27.5096</span>
                             </div>
                         </div>
+                        @if(!empty($sea))
+                        <div style="background:#e3f2fd;border-radius:10px;padding:10px 14px;text-align:left;margin-bottom:.75rem;display:flex;gap:16px;align-items:center;">
+                            <div style="text-align:center;min-width:44px;">
+                                <div style="font-size:1.4rem;">🌊</div>
+                                <div style="font-weight:700;font-size:1rem;color:#1565c0;">{{ $sea['temp'] }}°C</div>
+                                <div style="font-size:.68rem;color:#888;">deniz</div>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:.78rem;color:#1565c0;">Bugün Palamutbükü</div>
+                                <div style="font-size:.78rem;color:#555;">{{ $sea['wave_label'] }}</div>
+                                <div style="font-size:.72rem;color:#888;">Dalga yüksekliği: {{ $sea['wave'] }} m</div>
+                            </div>
+                        </div>
+                        @endif
                         <p class="text-muted small mb-2">Koyda demir atabilir ya da bizim iskeleye yanaşabilirsiniz.</p>
                         <p class="text-muted small mb-0" style="font-style:italic;">
-                            Tekne rezervasyonu için arayın — sahil masası ayırtıyoruz. 🌊
+                            Tekne rezervasyonu için arayın — sahil masası ayırtıyoruz.
                         </p>
                     </div>
                 </div>
