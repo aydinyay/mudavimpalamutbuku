@@ -9,7 +9,7 @@
 <meta property="og:description" content="Palamutbükü'nde şu anki atmosfer — müzik, hava, deniz.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+@vite(['resources/css/website.css', 'resources/js/website.js'])
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -60,36 +60,6 @@ body {
     z-index: 10;
 }
 
-/* ── NAV ── */
-#amb-nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 18px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(to bottom, rgba(0,0,0,.35), transparent);
-}
-
-#amb-nav a {
-    color: rgba(255,255,255,.75);
-    text-decoration: none;
-    font-size: .82rem;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    transition: color .2s;
-}
-#amb-nav a:hover { color: #fff; }
-
-.nav-logo {
-    font-family: var(--serif);
-    font-size: 1.1rem;
-    font-weight: 400;
-    letter-spacing: .08em;
-    color: rgba(255,255,255,.85) !important;
-}
-
 /* ── HERO ── */
 #hero-section {
     min-height: 100vh;
@@ -98,38 +68,78 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 100px 24px 80px;
+    padding: 110px 24px 80px;
     position: relative;
 }
 
-.hero-time {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    color: rgba(255,255,255,.6);
-    letter-spacing: .06em;
-    margin-bottom: 2rem;
-    min-height: 1.4em;
-}
-
 .hero-title {
-    font-family: var(--serif);
-    font-weight: 300;
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    letter-spacing: .04em;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: -.01em;
     line-height: 1.1;
     color: #fff;
-    text-shadow: 0 2px 32px rgba(0,0,0,.5);
-    margin-bottom: .6rem;
+    text-shadow: 0 2px 16px rgba(0,0,0,.4);
+    margin-bottom: 1.2rem;
+    margin-top: .4rem;
 }
 
 .hero-sub {
     font-family: var(--serif);
     font-style: italic;
-    font-size: clamp(.95rem, 2vw, 1.15rem);
-    color: rgba(255,255,255,.55);
+    font-size: clamp(.9rem, 1.8vw, 1.05rem);
+    color: rgba(255,255,255,.5);
+    letter-spacing: .05em;
+    margin-bottom: .5rem;
+}
+
+.hero-ambient {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(.92rem, 1.8vw, 1.08rem);
+    color: rgba(255,255,255,.72);
+    letter-spacing: .03em;
+    line-height: 1.9;
+    margin-bottom: 1.8rem;
+    min-height: 2em;
+}
+
+.hero-music-intro {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(.88rem, 1.6vw, 1rem);
+    color: rgba(255,255,255,.5);
     letter-spacing: .04em;
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero-song-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px;
+    padding: 12px 20px 12px 12px;
+    margin-bottom: 2rem;
+}
+.hero-song-card img {
+    width: 52px; height: 52px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+.hero-song-name {
+    font-size: .95rem;
+    font-weight: 600;
+    color: #fff;
+    text-align: left;
+}
+.hero-song-artist {
+    font-size: .78rem;
+    color: rgba(255,255,255,.55);
+    text-align: left;
+    margin-top: 2px;
 }
 
 /* Spotify hero pill */
@@ -743,11 +753,35 @@ body {
 
 <div id="page">
 
-    {{-- Nav --}}
-    <nav id="amb-nav">
-        <a href="{{ route('website.home') }}"><i class="bi bi-arrow-left me-1"></i>Ana Sayfa</a>
-        <span class="nav-logo">Müdavim</span>
-        <a href="{{ route('reservation.public.create') }}">Rezervasyon →</a>
+    {{-- Standard Navbar --}}
+    @php $s = \App\Modules\Core\Models\RestaurantSetting::current(); @endphp
+    <nav class="navbar navbar-expand-lg navbar-mudavim fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ asset('images/logo-light.png') }}" alt="Müdavim Restaurant" style="height:56px;width:auto;">
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#ambNavMenu">
+                <i class="bi bi-list text-white fs-4"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="ambNavMenu">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('website.home') }}">Ana Sayfa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('website.about') }}">Hakkımızda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('menu.public.index') }}">Menü</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('website.contact') }}">İletişim</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center gap-1 active" href="{{ route('website.ambiance') }}">
+                            <span style="width:7px;height:7px;border-radius:50%;background:#1DB954;display:inline-block;animation:ambPulse 2s infinite;"></span>
+                            Şu An
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-sm" style="background:var(--color-coral);color:#fff;border-radius:20px;padding:6px 16px;"
+                           href="{{ route('reservation.public.create') }}">Rezervasyon</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
     {{-- Floating section dots --}}
@@ -755,9 +789,23 @@ body {
 
     {{-- Hero --}}
     <section id="hero-section">
-        <div class="hero-time" id="hero-time"></div>
-        <h1 class="hero-title">Şu An Müdavim'de</h1>
         <p class="hero-sub">Palamutbükü · Datça · Ege</p>
+        <h1 class="hero-title">Şu An Müdavim'de,</h1>
+        <div class="hero-ambient" id="hero-time"></div>
+
+        @if($spotify['is_playing'] && $spotify['now_playing'])
+        @php $heroNp = $spotify['now_playing']; @endphp
+        <p class="hero-music-intro">İskelede dalga sesleri arasından bir şarkı yükseliyor…</p>
+        <div class="hero-song-card">
+            @if($heroNp['cover'])
+            <img src="{{ $heroNp['cover'] }}" alt="">
+            @endif
+            <div>
+                <div class="hero-song-name">{{ $heroNp['name'] }}</div>
+                <div class="hero-song-artist">{{ $heroNp['artists'] }}</div>
+            </div>
+        </div>
+        @endif
 
         <div class="scroll-cue" aria-hidden="true"><span></span></div>
     </section>
@@ -1044,8 +1092,9 @@ const SEA_TEMP      = @json($sea['temp'] ?? null);
 const WEATHER_TEMP  = @json($data['weather']['temp'] ?? null);
 const WEATHER_LABEL = @json($data['weather']['label'] ?? null);
 const WEATHER_CODE  = @json($data['weather']['code'] ?? null);
-const WEATHER_WIND  = @json($data['weather']['wind'] ?? null);
-const WEATHER_WDIR  = @json($data['weather']['wind_dir'] ?? null);
+const WEATHER_WIND    = @json($data['weather']['wind'] ?? null);
+const WEATHER_WDIR    = @json($data['weather']['wind_dir'] ?? null);
+const SPOTIFY_PLAYING = @json($spotify['is_playing'] && !empty($spotify['now_playing']));
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // HELPERS
@@ -1457,44 +1506,51 @@ function updateClock() {
     const el   = document.getElementById('hero-time');
     if (!el) return;
 
-    const parts = [`Günlerden ${DAYS[now.getDay()]} · Saat ${hStr} · Enfes bir ${MONTHS[now.getMonth()]} ${timeOfDay(h)}`];
+    // Satır 1: gün + saat
+    const lines = [`Günlerden ${DAYS[now.getDay()]} · Saat ${hStr}`];
 
-    // Hava
+    // Satır 2: selamlama
+    lines.push(`· Enfes bir ${MONTHS[now.getMonth()]} ${timeOfDay(h)}`);
+
+    // Satır 3: hava
     if (WEATHER_TEMP !== null) {
         const nightLbl = nightWeatherLabel(WEATHER_CODE, h);
         const lbl = nightLbl ?? WEATHER_LABEL;
-        parts.push(`Hava ${WEATHER_TEMP}°C · ${lbl}`);
+        lines.push(`· Hava ${WEATHER_TEMP}°C, ${lbl}`);
     }
 
-    // Deniz (gündüz 06-17)
-    if (h >= 6 && h < 17) {
+    // Satır 4: deniz (gündüz 06-17)
+    if (h >= 6 && h < 17 && SEA_TEMP !== null) {
         const sp = seaPhrase(SEA_TEMP);
-        if (sp) parts.push(sp);
+        if (sp) {
+            const phrase = sp.includes('—') ? sp.split('—')[1].trim() : sp;
+            lines.push(`· Deniz ${SEA_TEMP}°C, ${phrase.charAt(0).toUpperCase() + phrase.slice(1)}`);
+        }
     }
 
-    // Rüzgar
+    // Satır 5: rüzgar (ve eğer spotify çalıyorsa "ve" ile bitiyor)
     if (WEATHER_WIND !== null) {
         const dirs = ['kuzeyden','kuzeydoğudan','doğudan','güneydoğudan','güneyden','güneybatıdan','batıdan','kuzeybatıdan'];
         const from = dirs[Math.round((WEATHER_WDIR || 0) / 45) % 8];
-        const spd = WEATHER_WIND;
+        const cap  = from.charAt(0).toUpperCase() + from.slice(1);
+        const spd  = WEATHER_WIND;
         let w;
         if      (spd < 5)  w = 'Hava durgun';
-        else if (spd < 10) w = from + ' hafif esinti';
-        else if (spd < 15) w = from.charAt(0).toUpperCase() + from.slice(1) + ' tatlı meltem';
-        else if (spd < 20) w = from.charAt(0).toUpperCase() + from.slice(1) + ' meltem serinletiyor';
-        else if (spd < 30) w = from.charAt(0).toUpperCase() + from.slice(1) + ' hoş bir rüzgar';
-        else               w = from.charAt(0).toUpperCase() + from.slice(1) + ' kuvvetli meltem';
-        parts.push(w);
+        else if (spd < 10) w = `${cap} hafif bir esinti var`;
+        else if (spd < 15) w = `${cap} tatlı bir meltem esiyor`;
+        else if (spd < 20) w = `${cap} meltem serinletiyor`;
+        else if (spd < 30) w = `${cap} hoş bir rüzgar esiyor`;
+        else               w = `${cap} kuvvetli bir meltem esiyor`;
+        lines.push(`· ${w}${SPOTIFY_PLAYING ? ' ve' : ''}`);
     }
 
-    // Ay (gece/alacakaranlık)
-    if (h >= 20 || h < 7) {
+    // Satır 6: ay (sadece gece)
+    if ((h >= 20 || h < 7) && !SPOTIFY_PLAYING) {
         const moonNames = ['Yeni Ay','Hilal','İlk Dördün','Şişen Ay','Dolunay','Azalan Ay','Son Dördün','Batan Hilal'];
-        const moonIdx = Math.round(MOON_PHASE * 8) % 8;
-        parts.push(moonNames[moonIdx]);
+        lines.push(`· ${moonNames[Math.round(MOON_PHASE * 8) % 8]}`);
     }
 
-    el.textContent = parts.join(' · ');
+    el.innerHTML = lines.join('<br>');
 }
 
 updateClock();
