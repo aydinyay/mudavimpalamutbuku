@@ -145,7 +145,7 @@
                 <i class="bi bi-heart me-1"></i>{{ __('common.pet_friendly') }}
             </span>
             <span class="badge bg-dark bg-opacity-50 py-2 px-3">
-                <i class="bi bi-clock me-1"></i>09:00 – 02:00
+                <i class="bi bi-clock me-1"></i>{{ $setting->open_time ?? '09:00' }} – {{ $setting->close_time ?? '02:00' }}
             </span>
         </div>
     </div>
@@ -309,7 +309,7 @@
                 </p>
                 <p class="mb-4">
                     <i class="bi bi-clock-fill me-2" style="color:var(--color-coral);"></i>
-                    {{ __('common.open_hours_value') }}
+                    {{ ($setting->open_time ?? '09:00') }} – {{ ($setting->close_time ?? '02:00') }}, Haftanın 7 Günü
                 </p>
                 <a href="https://maps.google.com/?q={{ config('restaurant.coordinates.lat') }},{{ config('restaurant.coordinates.lng') }}"
                    target="_blank" class="btn btn-outline-secondary">
