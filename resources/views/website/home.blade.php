@@ -35,7 +35,7 @@
             const MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran',
                             'Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
             const weather = @json($weather);
-            const sea     = @json($sea);
+            const sea     = @json($sea ?? null);
 
             function pad(n) { return String(n).padStart(2, '0'); }
 
@@ -62,6 +62,19 @@
                 if (code === 2) return isDawn ? 'Parçalı bulutlu' : 'Parçalı bulutlu gece';
                 if (code === 3) return 'Bulutlu';
                 return null;
+            }
+
+            function windPhrase(speed, dir) {
+                if (speed === undefined || speed === null) return null;
+                const dirs = ['kuzeyden','kuzeydoğudan','doğudan','güneydoğudan','güneyden','güneybatıdan','batıdan','kuzeybatıdan'];
+                const from = dirs[Math.round(dir / 45) % 8];
+                if (speed < 5)  return 'Hava durgun, esinti yok';
+                if (speed < 10) return `${from} hafif bir esinti var`;
+                if (speed < 15) return `${from} tatlı bir meltem esiyor`;
+                if (speed < 20) return `${from} meltem serinletiyor`;
+                if (speed < 30) return `${from} hoş bir rüzgar var`;
+                if (speed < 40) return `${from} kuvvetli bir meltem`;
+                return `${from} sert bir rüzgar esiyor`;
             }
 
             function weatherPart() {
@@ -91,8 +104,10 @@
                 const greeting = 'Enfes bir ' + MONTHS[now.getMonth()] + ' ' + timeOfDay(h) + '…';
 
                 const s = seaPart(h);
+                const wp = weather ? windPhrase(weather.wind, weather.wind_dir) : null;
                 let out = greeting + '<br>' + day + ' · ' + time + ', ' + w;
-                if (s) out += ' ' + s;
+                if (s)  out += ' ' + s;
+                if (wp) out += ' ' + wp + '.';
                 if (song) {
                     out += '<br>Tam şu anda dalga sesleri arasında ♪ ' + song + ' çalıyor…';
                 }
