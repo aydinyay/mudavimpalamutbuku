@@ -689,38 +689,47 @@ body {
 .snav-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     cursor: pointer;
-    opacity: .35;
+    opacity: .65;
     transition: opacity .3s;
 }
 .snav-item:hover, .snav-item.active { opacity: 1; }
 .snav-label {
-    font-size: .65rem;
-    color: rgba(255,255,255,.8);
-    letter-spacing: .06em;
+    font-size: .68rem;
+    color: rgba(255,255,255,.9);
+    letter-spacing: .07em;
     text-transform: uppercase;
     white-space: nowrap;
     opacity: 0;
-    transform: translateX(6px);
+    transform: translateX(8px);
     transition: opacity .2s, transform .2s;
     pointer-events: none;
+    text-shadow: 0 1px 4px rgba(0,0,0,.5);
+    font-weight: 600;
 }
 .snav-item:hover .snav-label, .snav-item.active .snav-label {
     opacity: 1;
     transform: translateX(0);
 }
 .snav-dot {
-    width: 8px; height: 8px;
+    width: 10px; height: 10px;
     border-radius: 50%;
-    background: rgba(255,255,255,.4);
-    border: 1px solid rgba(255,255,255,.3);
-    transition: background .3s, transform .3s;
+    background: rgba(255,255,255,.55);
+    border: 2px solid rgba(255,255,255,.7);
+    box-shadow: 0 0 6px rgba(0,0,0,.4);
+    transition: background .3s, transform .3s, border-color .3s;
     flex-shrink: 0;
+}
+.snav-item:hover .snav-dot {
+    background: rgba(255,255,255,.8);
+    border-color: #fff;
 }
 .snav-item.active .snav-dot {
     background: #fff;
-    transform: scale(1.35);
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(255,255,255,.6);
+    transform: scale(1.4);
 }
 @media(max-width:600px){ #section-nav { display: none; } }
 </style>
@@ -751,17 +760,9 @@ body {
         <p class="hero-sub">Palamutbükü · Datça · Ege</p>
 
         @if($spotify['is_playing'] && $spotify['now_playing'])
-        <div id="hero-spotify">
-            @if($spotify['now_playing']['cover'])
-                <img src="{{ $spotify['now_playing']['cover'] }}" alt="">
-            @else
-                <span class="note">♪</span>
-            @endif
-            <div>
-                <div class="spotify-track">{{ $spotify['now_playing']['name'] }}</div>
-                <div class="spotify-artist">{{ $spotify['now_playing']['artists'] }}</div>
-            </div>
-        </div>
+        <p style="font-family:var(--serif);font-style:italic;font-size:.85rem;color:rgba(255,255,255,.5);margin:12px 0 0;letter-spacing:.06em;">
+            ♪ Müdavim'de Şu An Çalan
+        </p>
         @endif
 
         <div class="scroll-cue" aria-hidden="true"><span></span></div>
