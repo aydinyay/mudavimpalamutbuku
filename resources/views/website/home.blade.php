@@ -100,16 +100,24 @@
                 const h    = now.getHours();
                 const day  = 'Günlerden ' + DAYS[now.getDay()];
                 const time = 'Saat ' + pad(h) + ':' + pad(now.getMinutes());
-                const w    = weatherPart();
                 const greeting = 'Enfes bir ' + MONTHS[now.getMonth()] + ' ' + timeOfDay(h) + '…';
 
-                const s = seaPart(h);
+                // Satır 1: selamlama + gün + saat
+                let line1 = greeting + ' ' + day + ' · ' + time + ',';
+
+                // Satır 2: hava + deniz (+ rüzgar varsa)
+                const w  = weatherPart();
+                const s  = seaPart(h);
                 const wp = weather ? windPhrase(weather.wind, weather.wind_dir) : null;
-                let out = greeting + '<br>' + day + ' · ' + time + ', ' + w;
-                if (s)  out += ' ' + s;
-                if (wp) out += ' ' + wp + '.';
+                let line2 = w;
+                if (s)  line2 += ' ' + s;
+                if (wp) line2 += ' ' + wp + '.';
+
+                let out = line1 + '<br>' + line2;
+
+                // Satır 3: çalan şarkı
                 if (song) {
-                    out += '<br>Tam şu anda dalga sesleri arasında ♪ ' + song + ' çalıyor…';
+                    out += '<br>Tam şu anda Müdavim İskelesinde dalga sesleri arasında ♪ ' + song + ' çalıyor…';
                 }
                 return out;
             }
@@ -160,7 +168,7 @@
                 <i class="bi bi-heart me-1"></i>{{ __('common.pet_friendly') }}
             </span>
             <span class="badge bg-dark bg-opacity-50 py-2 px-3">
-                <i class="bi bi-clock me-1"></i>{{ $setting->open_time ?? '09:00' }} – {{ $setting->close_time ?? '02:00' }}
+                <i class="bi bi-clock me-1"></i>{{ substr($setting->open_time ?? '09:00', 0, 5) }} – {{ substr($setting->close_time ?? '02:00', 0, 5) }}
             </span>
         </div>
     </div>
