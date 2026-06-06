@@ -144,8 +144,8 @@
             &copy; {{ date('Y') }} Müdavim Restaurant. {{ __('common.footer_rights') }}
         </p>
         <p class="text-center mb-0" style="opacity:.3;font-size:.68rem;margin-top:6px;">
-            Bu site <a href="https://www.gruptalepleri.com" target="_blank" rel="noopener"
-               style="color:#c8b99a;text-decoration:none;">GrupTalepleri.com</a>'un Müdavim'e armağanıdır.
+            Powered by <a href="https://www.gruptalepleri.com" target="_blank" rel="noopener"
+               style="color:#c8b99a;text-decoration:none;">GrupTalepleri.com</a>
         </p>
     </div>
 </footer>
