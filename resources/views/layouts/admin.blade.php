@@ -22,8 +22,14 @@
         </a>
 
         <div class="nav-section-label">Operasyon</div>
-        <a href="{{ route('admin.reservations.index') }}" class="{{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}">
+        <a href="{{ route('admin.reservations.index') }}" class="{{ request()->routeIs('admin.reservations.index') ? 'active' : '' }}">
             <i class="bi bi-calendar-check"></i> Rezervasyonlar
+        </a>
+        <a href="{{ route('admin.reservations.quick') }}"
+           class="{{ request()->routeIs('admin.reservations.quick') ? 'active' : '' }}"
+           style="background:rgba(22,163,74,.15);border-left:3px solid #16a34a;">
+            <i class="bi bi-lightning-fill" style="color:#4ade80;"></i>
+            <strong style="color:#4ade80;">Hızlı Rezervasyon</strong>
         </a>
         <a href="{{ route('admin.tables.index') }}" class="{{ request()->routeIs('admin.tables.*') ? 'active' : '' }}">
             <i class="bi bi-grid-3x3-gap"></i> Masa Planı

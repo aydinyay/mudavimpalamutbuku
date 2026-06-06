@@ -54,11 +54,16 @@ class ReservationController extends Controller
         return view('admin.reservation.form', compact('tables'));
     }
 
+    public function quick()
+    {
+        return view('admin.reservation.quick');
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
             'guest_name'      => 'required|string|max:100',
-            'guest_phone'     => 'required|string|max:20',
+            'guest_phone'     => 'nullable|string|max:20',
             'guest_email'     => 'nullable|email',
             'guest_count'     => 'required|integer|min:1',
             'reservation_date'=> 'required|date',
@@ -92,7 +97,7 @@ class ReservationController extends Controller
     {
         $data = $request->validate([
             'guest_name'      => 'required|string|max:100',
-            'guest_phone'     => 'required|string|max:20',
+            'guest_phone'     => 'nullable|string|max:20',
             'guest_email'     => 'nullable|email',
             'guest_count'     => 'required|integer|min:1',
             'reservation_date'=> 'required|date',

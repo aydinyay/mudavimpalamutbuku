@@ -29,6 +29,7 @@ Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function (
         ]);
     Route::post('rezervasyonlar/{reservation}/durum', [AdminReservationController::class, 'updateStatus'])
         ->name('reservations.status');
+    Route::get('hizli-rezervasyon', [AdminReservationController::class, 'quick'])->name('reservations.quick');
 
     // Table plan
     Route::resource('masalar', TableController::class)
