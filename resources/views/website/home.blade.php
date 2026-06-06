@@ -54,8 +54,9 @@
                 const h    = new Date().getHours();
                 const over = nightLabel(weather.code, h);
                 const lbl  = over ?? weather.label;
-                const moon = weather.moon.split(' ').slice(1).join(' ');
-                return 'Hava ' + weather.temp + '°C · ' + lbl + '. ' + moon + '…';
+                const isNightOrDusk = h >= 20 || h < 7;
+                const moon = isNightOrDusk ? weather.moon.split(' ').slice(1).join(' ') : null;
+                return 'Hava ' + weather.temp + '°C · ' + lbl + (moon ? '. ' + moon : '') + '…';
             }
 
             function timeOfDay(h) {
