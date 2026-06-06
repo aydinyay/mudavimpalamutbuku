@@ -24,7 +24,14 @@
     50%      { opacity:.7; box-shadow:0 0 0 4px rgba(29,185,84,0); }
 }
 
-html, body { width: 100%; overflow-x: hidden; }
+html {
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+}
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
 
 body {
     font-family: var(--sans);
