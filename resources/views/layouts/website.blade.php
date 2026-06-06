@@ -5,62 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     @php
-        $pageTitle       = trim(strip_tags(@yield('title', '')));
-        $fullTitle       = $pageTitle ? $pageTitle . ' — Müdavim Restaurant' : 'Müdavim Restaurant — Palamutbükü\'nde Denize Sıfır Akdeniz Mutfağı';
-        $metaDesc        = trim(strip_tags(@yield('meta_description', config('restaurant.tagline.' . app()->getLocale()))));
-        $canonicalUrl    = url()->current();
-        $ogImage         = file_exists(public_path('images/og-image.jpg'))
+        $canonicalUrl = url()->current();
+        $ogImage      = file_exists(public_path('images/og-image.jpg'))
                             ? asset('images/og-image.jpg')
                             : asset('images/logo-dark.png');
-        $locale          = app()->getLocale();
-        $ogLocale        = ['tr'=>'tr_TR','en'=>'en_US','de'=>'de_DE'][$locale] ?? 'tr_TR';
+        $locale       = app()->getLocale();
+        $ogLocale     = ['tr'=>'tr_TR','en'=>'en_US','de'=>'de_DE'][$locale] ?? 'tr_TR';
+        $seoSetting   = \App\Modules\Core\Models\RestaurantSetting::current();
+        $openTime     = substr($seoSetting->open_time  ?? '09:00', 0, 5);
+        $closeTime    = substr($seoSetting->close_time ?? '02:00', 0, 5);
+        $defaultDesc  = config('restaurant.tagline.' . $locale);
     @endphp
 
-    <title>{{ $fullTitle }}</title>
-    <meta name="description" content="{{ $metaDesc }}">
-    <meta name="keywords" content="Müdavim Restaurant, Palamutbükü restoran, Datça restoran, Ege yemekleri, Akdeniz mutfağı, denize sıfır restoran, Datça yemek, Palamutbükü yemek, balık restoran Datça">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Müdavim Restaurant">
-    <meta name="theme-color" content="#1a7fa8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="canonical" href="{{ $canonicalUrl }}">
+    <title>@yield('title', 'Ana Sayfa') — Müdavim Restaurant</title>
+    <meta name="description"  content="@yield('meta_description', $defaultDesc)">
+    <meta name="keywords"     content="Müdavim Restaurant, Palamutbükü restoran, Datça restoran, Ege yemekleri, Akdeniz mutfağı, denize sıfır restoran, Datça yemek, Palamutbükü yemek, balık restoran Datça">
+    <meta name="robots"       content="index, follow">
+    <meta name="author"       content="Müdavim Restaurant">
+    <meta name="theme-color"  content="#1a7fa8">
+    <meta name="csrf-token"   content="{{ csrf_token() }}">
+    <link rel="canonical"     href="{{ $canonicalUrl }}">
 
     {{-- Open Graph --}}
-    <meta property="og:type"               content="restaurant">
-    <meta property="og:site_name"          content="Müdavim Restaurant">
-    <meta property="og:url"                content="{{ $canonicalUrl }}">
-    <meta property="og:title"              content="{{ $fullTitle }}">
-    <meta property="og:description"        content="{{ $metaDesc }}">
-    <meta property="og:image"              content="{{ $ogImage }}">
-    <meta property="og:image:width"        content="1200">
-    <meta property="og:image:height"       content="630">
-    <meta property="og:image:alt"          content="Müdavim Restaurant — Palamutbükü">
-    <meta property="og:locale"             content="{{ $ogLocale }}">
-    <meta property="og:locale:alternate"   content="tr_TR">
-    <meta property="og:locale:alternate"   content="en_US">
+    <meta property="og:type"             content="restaurant">
+    <meta property="og:site_name"        content="Müdavim Restaurant">
+    <meta property="og:url"              content="{{ $canonicalUrl }}">
+    <meta property="og:title"            content="@yield('title', 'Ana Sayfa') — Müdavim Restaurant">
+    <meta property="og:description"      content="@yield('meta_description', $defaultDesc)">
+    <meta property="og:image"            content="{{ $ogImage }}">
+    <meta property="og:image:width"      content="1200">
+    <meta property="og:image:height"     content="630">
+    <meta property="og:image:alt"        content="Müdavim Restaurant — Palamutbükü">
+    <meta property="og:image:type"       content="image/jpeg">
+    <meta property="og:locale"           content="{{ $ogLocale }}">
+    <meta property="og:locale:alternate" content="tr_TR">
+    <meta property="og:locale:alternate" content="en_US">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card"        content="summary_large_image">
-    <meta name="twitter:title"       content="{{ $fullTitle }}">
-    <meta name="twitter:description" content="{{ $metaDesc }}">
+    <meta name="twitter:title"       content="@yield('title', 'Ana Sayfa') — Müdavim Restaurant">
+    <meta name="twitter:description" content="@yield('meta_description', $defaultDesc)">
     <meta name="twitter:image"       content="{{ $ogImage }}">
     <meta name="twitter:image:alt"   content="Müdavim Restaurant — Palamutbükü">
 
-    {{-- WhatsApp & iMessage önizleme için --}}
-    <meta property="og:image:type"   content="image/jpeg">
-
     {{-- hreflang --}}
-    <link rel="alternate" hreflang="tr" href="{{ url(request()->path()) }}">
-    <link rel="alternate" hreflang="en" href="{{ url('en/' . request()->path()) }}">
-    <link rel="alternate" hreflang="de" href="{{ url('de/' . request()->path()) }}">
+    <link rel="alternate" hreflang="tr"      href="{{ url(request()->path()) }}">
+    <link rel="alternate" hreflang="en"      href="{{ url('en/' . request()->path()) }}">
+    <link rel="alternate" hreflang="de"      href="{{ url('de/' . request()->path()) }}">
     <link rel="alternate" hreflang="x-default" href="{{ url('/') }}">
 
     {{-- Schema.org JSON-LD --}}
-    @php
-        $seoSetting = \App\Modules\Core\Models\RestaurantSetting::current();
-        $openTime   = substr($seoSetting->open_time  ?? '09:00', 0, 5);
-        $closeTime  = substr($seoSetting->close_time ?? '02:00', 0, 5);
-    @endphp
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
