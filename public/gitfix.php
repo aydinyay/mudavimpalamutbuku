@@ -123,7 +123,7 @@ if (($_GET['action'] ?? '') === 'mailtest') {
 // Artisan komutu çalıştır — ?action=artisan&cmd=reviews:sync-google
 if (($_GET['action'] ?? '') === 'artisan') {
     header('Content-Type: text/plain; charset=utf-8');
-    $allowed = ['reviews:sync-google', 'instagram:sync'];
+    $allowed = ['reviews:sync-google', 'instagram:sync', 'cache:clear'];
     $cmd = $_GET['cmd'] ?? '';
     if (!in_array($cmd, $allowed)) { echo "NOT_ALLOWED: $cmd"; exit; }
     define('LARAVEL_START', microtime(true));
