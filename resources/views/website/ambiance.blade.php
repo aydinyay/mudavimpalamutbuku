@@ -25,8 +25,8 @@
 }
 
 html {
+    overflow-y: scroll;
     overflow-x: hidden;
-    scrollbar-gutter: stable;
 }
 body {
     width: 100%;
