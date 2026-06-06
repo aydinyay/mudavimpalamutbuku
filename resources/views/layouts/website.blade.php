@@ -102,7 +102,7 @@
     <script type="application/ld+json">{!! $schemaOrg !!}</script>
 
     @vite(['resources/css/website.css', 'resources/js/website.js'])
-    <style>@keyframes ambPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}</style>
+    <style>@keyframes ambPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(29,185,84,.5)}50%{opacity:.7;box-shadow:0 0 0 4px rgba(29,185,84,0)}}</style>
     @stack('styles')
 </head>
 <body>
