@@ -43,6 +43,7 @@ Route::middleware('setLocale')->group(function () {
     Route::get('/iletisim', [HomeController::class, 'contact'])->name('website.contact');
     Route::get('/galeri', [HomeController::class, 'gallery'])->name('website.gallery');
     Route::get('/navtest', fn() => view('website.navtest'));
+    Route::get('/ambtest', fn() => view('website.ambtest'));
 
     Route::prefix('en')->group(function () {
         Route::get('/', [HomeController::class, 'index']);
