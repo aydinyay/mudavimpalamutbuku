@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Şu An Müdavim'de — Ambiyans</title>
-<meta name="description" content="Palamutbükü'nde şu an ne çalıyor, hava nasıl, deniz ne durumda — canlı atmosfer.">
-<meta property="og:title" content="Şu An Müdavim'de">
-<meta property="og:description" content="Palamutbükü'nde şu anki atmosfer — müzik, hava, deniz.">
+@extends('layouts.website')
+@section('title', 'Şu An Müdavim\'de')
+@section('meta_description', 'Palamutbükü\'nde şu an ne çalıyor, hava nasıl, deniz ne durumda — canlı atmosfer.')
+
+@push('styles')
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=optional" rel="stylesheet">
-@vite(['resources/css/website.css', 'resources/js/website.js'])
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #020610 !important; color: #fff; }
 
 :root {
     --serif: 'Cormorant Garamond', Georgia, serif;
@@ -761,18 +756,15 @@ body {
 }
 @media(max-width:600px){ #section-nav { display: none; } }
 </style>
-</head>
-<body>
+@endpush
 
-{{-- Fixed sky layers — inline style ile CSS beklenmeden fixed --}}
+@section('content')
+{{-- Fixed sky layers --}}
 <div id="sky" style="position:fixed;inset:0;z-index:0;"></div>
 <canvas id="star-canvas" style="position:fixed;inset:0;z-index:1;pointer-events:none;"></canvas>
 <div id="horizon-glow" style="position:fixed;bottom:0;left:0;right:0;height:35vh;z-index:2;pointer-events:none;opacity:0;"></div>
 
 <div id="page">
-
-    @include('partials.navbar')
-
     {{-- Floating section dots --}}
     <div id="section-nav"></div>
 
@@ -1099,9 +1091,9 @@ body {
     </section>
 
 </div>{{-- #page --}}
+@endsection
 
-@include('partials.footer')
-
+@push('scripts')
 <script>
 (function () {
 'use strict';
@@ -1721,27 +1713,4 @@ function shareAmbiance() {
 })();
 </script>
 
-{{-- WhatsApp float (layout kullanılmadığı için burada) --}}
-<a href="https://wa.me/{{ ltrim(config('restaurant.whatsapp'), '+') }}" target="_blank"
-   class="whatsapp-float" title="WhatsApp">
-    <i class="bi bi-whatsapp"></i>
-</a>
-
-{{-- sharePage fonksiyonu (navbar share butonu için) --}}
-<script>
-function sharePage(customTitle, customText, customUrl) {
-    const title = customTitle || document.title;
-    const text  = customText  || 'Müdavim Restaurant — Palamutbükü\'nde denize sıfır Akdeniz mutfağı.';
-    const url   = customUrl   || window.location.href;
-    if (navigator.share) {
-        navigator.share({ title, text, url }).catch(() => {});
-    } else {
-        navigator.clipboard.writeText(url).then(function() {
-            const btn = event?.target?.closest('button');
-            if (btn) { const o = btn.innerHTML; btn.innerHTML = '<i class="bi bi-check2"></i>'; setTimeout(() => btn.innerHTML = o, 2000); }
-        });
-    }
-}
-</script>
-</body>
-</html>
+@endpush
