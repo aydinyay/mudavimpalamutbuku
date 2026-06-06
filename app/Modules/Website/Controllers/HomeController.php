@@ -57,6 +57,7 @@ class HomeController extends Controller
                 $temp    = (int) round($current['temperature_2m'] ?? 0);
 
                 return [
+                    'code'  => $code,
                     'temp'  => $temp,
                     'label' => $this->wmoLabel($code),
                     'emoji' => $this->wmoEmoji($code),
