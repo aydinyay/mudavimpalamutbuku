@@ -199,13 +199,22 @@
                style="background:var(--color-sea);color:#fff;border-radius:30px;padding:14px 36px;font-weight:700;font-size:1rem;">
                 <i class="bi bi-map me-2"></i>Google Maps'te Aç
             </a>
-            <button onclick="sharePage(
-                'Müdavim Restaurant — Nasıl Gelinir?',
-                'Palamutbükü, Datça\'da denize sıfır Müdavim Restaurant\'a nasıl gelinir? Araç, feribot, tekne ve otobüs seçenekleri burada.',
-                '{{ route(\'website.contact\') }}'
-            )" class="btn btn-lg btn-outline-secondary" style="border-radius:30px;padding:14px 28px;">
+            <button onclick="shareContact(this)"
+                    data-url="{{ route('website.contact') }}"
+                    class="btn btn-lg btn-outline-secondary" style="border-radius:30px;padding:14px 28px;">
                 <i class="bi bi-share me-2"></i>Yol Tarifini Paylaş
             </button>
+            @push('scripts')
+            <script>
+            function shareContact(btn) {
+                sharePage(
+                    'Müdavim Restaurant — Nasıl Gelinir?',
+                    'Palamutbükü, Datça\'da denize sıfır Müdavim Restaurant\'a nasıl gelinir? Araç, feribot, tekne ve otobüs seçenekleri burada.',
+                    btn.dataset.url
+                );
+            }
+            </script>
+            @endpush
         </div>
     </div>
 </section>
