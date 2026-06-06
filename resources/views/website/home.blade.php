@@ -40,43 +40,31 @@
 
             function weatherPart() {
                 if (!weather) return '';
-                const moon = weather.moon.split(' ').slice(1).join(' '); // emoji'yi at
-                return 'Hava ' + weather.temp + '°C · ' + weather.label + ' · ' + moon;
+                const moon = weather.moon.split(' ').slice(1).join(' ');
+                return 'Hava ' + weather.temp + '°C · ' + weather.label + '. ' + moon + '…';
             }
 
-            function eveningGreeting(now) {
-                const h = now.getHours();
-                if (h >= 18 && h < 23) {
-                    return 'Enfes bir ' + MONTHS[now.getMonth()] + ' Akşamı…';
-                }
-                return null;
+            function timeOfDay(h) {
+                if (h >= 5  && h < 12) return 'Sabahı';
+                if (h >= 12 && h < 15) return 'Öğleden Sonrası';
+                if (h >= 15 && h < 18) return 'Akşamüstü';
+                if (h >= 18 && h < 22) return 'Akşamı';
+                return 'Gecesi';
             }
 
             function buildLine(song) {
-                const now      = new Date();
-                const day      = 'Günlerden ' + DAYS[now.getDay()];
-                const time     = 'Saat ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-                const w        = weatherPart();
-                const greeting = eveningGreeting(now);
+                const now  = new Date();
+                const h    = now.getHours();
+                const day  = 'Günlerden ' + DAYS[now.getDay()];
+                const time = 'Saat ' + pad(h) + ':' + pad(now.getMinutes());
+                const w    = weatherPart();
+                const greeting = 'Enfes bir ' + MONTHS[now.getMonth()] + ' ' + timeOfDay(h) + '…';
 
-                let line1 = '';
-                let line2 = '';
-
-                if (greeting) {
-                    line1 = greeting;
-                    if (song) {
-                        line2 = 'Tam şu anda Dalga sesleri arasında ♪ ' + song + ' çalıyor… ' + day + ' · ' + time + ', ' + w + '…';
-                    } else {
-                        line2 = day + ' · ' + time + ', ' + w + '…';
-                    }
-                    return line1 + '<br>' + line2;
-                }
-
+                let out = greeting + '<br>' + day + ' · ' + time + ', ' + w;
                 if (song) {
-                    return 'Tam şu anda Dalga sesleri arasında ♪ ' + song + ' çalıyor…'
-                        + '<br>' + day + ' · ' + time + ', ' + w + '…';
+                    out += '<br>Tam şu anda dalga sesleri arasında ♪ ' + song + ' çalıyor…';
                 }
-                return day + ' · ' + time + ', ' + w + '…';
+                return out;
             }
 
             const el = document.getElementById('heroAmbient');
