@@ -35,8 +35,23 @@
             const MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran',
                             'Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
             const weather = @json($weather);
+            const sea     = @json($sea);
 
             function pad(n) { return String(n).padStart(2, '0'); }
+
+            function seaPart(h) {
+                if (!sea || h < 6 || h >= 17) return null;
+                const t = sea.temp;
+                let phrase;
+                if      (t < 18) phrase = 'cesur yüzücüler için';
+                else if (t < 20) phrase = 'serinlemek için birebir';
+                else if (t < 22) phrase = 'dalmak için harika';
+                else if (t < 24) phrase = 'yüzmek için mükemmel';
+                else if (t < 26) phrase = 'plajlar sizi bekliyor';
+                else if (t < 28) phrase = 'suya girmek tam zamanı';
+                else             phrase = 'serinlemenin tam vakti';
+                return 'Deniz suyu ' + t + '°C, ' + phrase + '.';
+            }
 
             function nightLabel(code, h) {
                 const isNight = h >= 21 || h < 5;   // 21:00 – 04:59
@@ -75,7 +90,9 @@
                 const w    = weatherPart();
                 const greeting = 'Enfes bir ' + MONTHS[now.getMonth()] + ' ' + timeOfDay(h) + '…';
 
+                const s = seaPart(h);
                 let out = greeting + '<br>' + day + ' · ' + time + ', ' + w;
+                if (s) out += ' ' + s;
                 if (song) {
                     out += '<br>Tam şu anda dalga sesleri arasında ♪ ' + song + ' çalıyor…';
                 }
