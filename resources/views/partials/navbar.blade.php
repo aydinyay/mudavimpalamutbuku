@@ -11,6 +11,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('website.home') }}">{{ __('common.nav_home') }}</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ route('website.about') }}">{{ __('common.nav_about') }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('menu.public.index') }}">{{ __('common.nav_menu') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('website.gallery') }}">{{ __('common.nav_gallery') }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('website.contact') }}">{{ __('common.nav_contact') }}</a></li>
                 @php $ambianceSetting = \App\Modules\Core\Models\RestaurantSetting::current(); @endphp
                 @if($ambianceSetting->ambiance_page_active ?? true)

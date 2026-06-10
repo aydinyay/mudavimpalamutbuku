@@ -5,6 +5,7 @@ return [
     'nav_home'      => 'Startseite',
     'nav_menu'      => 'Speisekarte',
     'nav_about'     => 'Über uns',
+    'nav_gallery'   => 'Galerie',
     'nav_contact'   => 'Kontakt',
     'nav_reserve'   => 'Reservierung',
     'footer_rights' => 'Alle Rechte vorbehalten.',

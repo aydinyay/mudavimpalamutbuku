@@ -5,6 +5,7 @@ return [
     'nav_home'      => 'Ana Sayfa',
     'nav_menu'      => 'Menü',
     'nav_about'     => 'Hakkımızda',
+    'nav_gallery'   => 'Galeri',
     'nav_contact'   => 'İletişim',
     'nav_reserve'   => 'Rezervasyon',
     'footer_rights' => 'Tüm hakları saklıdır.',
