@@ -42,7 +42,7 @@
             <div class="card-body p-2">
                 <div class="d-flex align-items-center justify-content-between mb-1">
                     <small class="text-muted text-truncate" style="max-width:70%;">
-                        {{ $photo->alt_tr ?: '—' }}
+                        {{ $photo->alt_tr ?? $photo->alt ?? '—' }}
                     </small>
                     <span class="badge bg-secondary" style="font-size:.65rem;">
                         #{{ $photo->sort_order }}
