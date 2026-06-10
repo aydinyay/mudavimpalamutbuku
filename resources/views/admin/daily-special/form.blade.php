@@ -17,7 +17,8 @@
 @endif
 
 <form method="POST"
-      action="{{ isset($special) ? route('admin.daily-specials.update', $special) : route('admin.daily-specials.store') }}">
+      action="{{ isset($special) ? route('admin.daily-specials.update', $special) : route('admin.daily-specials.store') }}"
+      enctype="multipart/form-data">
     @csrf
     @isset($special) @method('PUT') @endisset
 
@@ -55,6 +56,32 @@
                         <label class="form-check-label fw-500" for="isActive">Aktif</label>
                     </div>
                 </div>
+            </div>
+
+            {{-- Görsel --}}
+            <div class="mb-4">
+                <label class="form-label fw-500">Yemek Görseli</label>
+
+                @isset($special)
+                    @if($special->image_path)
+                    <div class="mb-2 d-flex align-items-center gap-3">
+                        <img src="{{ asset('daily-specials/' . $special->image_path) }}"
+                             alt="{{ $special->title_tr }}"
+                             style="height:90px;border-radius:8px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.12);">
+                        <div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="remove_image" id="removeImage" value="1">
+                                <label class="form-check-label text-danger small" for="removeImage">Görseli kaldır</label>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                @endisset
+
+                <input type="file" name="image" accept="image/jpeg,image/jpg,image/png,image/webp"
+                       class="form-control @error('image') is-invalid @enderror">
+                <div class="form-text">JPEG, PNG veya WebP — maks. 5 MB. Otomatik 800×600 WebP'ye dönüştürülür.</div>
+                @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
 
             {{-- Dil Sekmeleri --}}

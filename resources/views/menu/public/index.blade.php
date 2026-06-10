@@ -27,15 +27,22 @@
 <div class="menu-page">
 
   @isset($todaySpecial)
-  <div style="background:linear-gradient(135deg,#1a7fa8,#2ea887);color:#fff;border-radius:10px;padding:14px 16px;margin-bottom:20px;">
-    <div style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85;margin-bottom:4px;">🍽 Bugün Ne Var?</div>
-    <div style="font-family:Georgia,serif;font-size:1.05rem;font-weight:700;">{{ $todaySpecial->title(app()->getLocale()) }}</div>
-    @if($todaySpecial->description(app()->getLocale()))
-      <div style="font-size:.82rem;opacity:.9;margin-top:3px;">{{ $todaySpecial->description(app()->getLocale()) }}</div>
+  <div style="background:linear-gradient(135deg,#1a7fa8,#2ea887);color:#fff;border-radius:10px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px;">
+    @if($todaySpecial->image_path)
+    <img src="{{ asset('daily-specials/' . $todaySpecial->image_path) }}"
+         alt="{{ $todaySpecial->title(app()->getLocale()) }}"
+         style="width:72px;height:54px;object-fit:cover;border-radius:7px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.2);">
     @endif
-    @if($todaySpecial->price)
-      <div style="margin-top:6px;font-weight:700;font-size:.95rem;">{{ number_format($todaySpecial->price, 0, ',', '.') }} ₺</div>
-    @endif
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85;margin-bottom:4px;">🍽 Bugün Ne Var?</div>
+      <div style="font-family:Georgia,serif;font-size:1.05rem;font-weight:700;">{{ $todaySpecial->title(app()->getLocale()) }}</div>
+      @if($todaySpecial->description(app()->getLocale()))
+        <div style="font-size:.82rem;opacity:.9;margin-top:3px;">{{ $todaySpecial->description(app()->getLocale()) }}</div>
+      @endif
+      @if($todaySpecial->price)
+        <div style="margin-top:6px;font-weight:700;font-size:.95rem;">{{ number_format($todaySpecial->price, 0, ',', '.') }} ₺</div>
+      @endif
+    </div>
   </div>
   @endisset
 

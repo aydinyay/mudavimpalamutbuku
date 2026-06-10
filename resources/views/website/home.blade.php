@@ -185,6 +185,30 @@
 @isset($todaySpecial)
 <section class="py-4" style="background:linear-gradient(135deg,#1a7fa8 0%,#2ea887 100%);color:#fff;">
     <div class="container">
+        @if($todaySpecial->image_path)
+        <div class="row align-items-center justify-content-center g-3">
+            <div class="col-auto">
+                <img src="{{ asset('daily-specials/' . $todaySpecial->image_path) }}"
+                     alt="{{ $todaySpecial->title(app()->getLocale()) }}"
+                     style="width:110px;height:82px;object-fit:cover;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.25);">
+            </div>
+            <div class="col-lg-6">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <span style="font-size:1.2rem;">🍽</span>
+                    <span style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85;font-weight:600;">BUGÜN NE VAR?</span>
+                </div>
+                <p class="mb-1 fw-700" style="font-size:1.15rem;">{{ $todaySpecial->title(app()->getLocale()) }}</p>
+                @if($todaySpecial->description(app()->getLocale()))
+                    <p class="mb-2 opacity-90" style="font-size:.9rem;">{{ $todaySpecial->description(app()->getLocale()) }}</p>
+                @endif
+                @if($todaySpecial->price)
+                    <span style="background:rgba(255,255,255,.2);padding:3px 12px;border-radius:20px;font-weight:700;font-size:1rem;">
+                        {{ number_format($todaySpecial->price, 0, ',', '.') }} ₺
+                    </span>
+                @endif
+            </div>
+        </div>
+        @else
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">
                 <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
@@ -202,6 +226,7 @@
                 @endif
             </div>
         </div>
+        @endif
     </div>
 </section>
 @endisset
