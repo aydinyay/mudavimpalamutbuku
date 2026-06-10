@@ -81,4 +81,73 @@
 </div>
 @endforeach
 
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Masaları kayıtlı konumlarına yerleştir
+    document.querySelectorAll('.table-plan-draggable').forEach(function (el) {
+        var x = parseInt(el.dataset.x) || 0;
+        var y = parseInt(el.dataset.y) || 0;
+        el.style.left = x + 'px';
+        el.style.top  = y + 'px';
+    });
+
+    var dragging  = null;
+    var startX, startY, startLeft, startTop;
+
+    document.querySelectorAll('.table-plan-draggable').forEach(function (el) {
+
+        el.addEventListener('pointerdown', function (e) {
+            e.preventDefault();
+            dragging = el;
+            el.setPointerCapture(e.pointerId);
+            startX    = e.clientX;
+            startY    = e.clientY;
+            startLeft = parseInt(el.style.left) || 0;
+            startTop  = parseInt(el.style.top)  || 0;
+            el.style.cursor = 'grabbing';
+            el.style.zIndex = '50';
+        });
+
+        el.addEventListener('pointermove', function (e) {
+            if (dragging !== el) return;
+            var container = el.closest('[data-area-id]');
+            var rect      = container.getBoundingClientRect();
+            var newLeft   = startLeft + (e.clientX - startX);
+            var newTop    = startTop  + (e.clientY - startY);
+            newLeft = Math.max(0, Math.min(newLeft, rect.width  - el.offsetWidth));
+            newTop  = Math.max(0, Math.min(newTop,  rect.height - el.offsetHeight));
+            el.style.left = newLeft + 'px';
+            el.style.top  = newTop  + 'px';
+        });
+
+        el.addEventListener('pointerup', function (e) {
+            if (dragging !== el) return;
+            dragging = null;
+            el.style.cursor = 'grab';
+            el.style.zIndex = '';
+
+            var tableId = el.dataset.tableId;
+            var posX    = parseInt(el.style.left) || 0;
+            var posY    = parseInt(el.style.top)  || 0;
+
+            fetch('/yonetim/masalar/' + tableId + '/pozisyon', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ pos_x: posX, pos_y: posY })
+            }).then(function (r) { return r.json(); })
+              .then(function (d) {
+                  if (!d.ok) { el.style.outline = '2px solid red'; }
+              })
+              .catch(function () { el.style.outline = '2px solid red'; });
+        });
+    });
+});
+</script>
+@endpush
+
 @endsection
