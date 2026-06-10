@@ -16,6 +16,7 @@ class DailySpecial extends Model
         'description_en',
         'description_de',
         'price',
+        'image_path',
         'is_active',
     ];
 
