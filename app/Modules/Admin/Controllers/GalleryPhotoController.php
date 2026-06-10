@@ -113,6 +113,47 @@ class GalleryPhotoController extends Controller
             ->with('success', 'Fotoğraf güncellendi.');
     }
 
+    public function bulkCreate()
+    {
+        return view('admin.gallery.bulk');
+    }
+
+    public function bulkStore(Request $request)
+    {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,jpg,png,webp|max:8192',
+        ]);
+
+        $galleryDir = public_path('gallery');
+        if (!is_dir($galleryDir)) {
+            mkdir($galleryDir, 0755, true);
+        }
+
+        $filename = uniqid('gallery_') . '.webp';
+        $savePath = $galleryDir . DIRECTORY_SEPARATOR . $filename;
+
+        $manager = new ImageManager(new Driver());
+        $img = $manager->read($request->file('photo'));
+        $img->cover(1200, 900);
+        $img->toWebp(85)->save($savePath);
+
+        $hasMultilang = \Illuminate\Support\Facades\Schema::hasColumn('gallery_photos', 'alt_tr');
+
+        $photo = GalleryPhoto::create(array_merge([
+            'filename'   => $filename,
+            'alt'        => '',
+            'caption'    => '',
+            'sort_order' => 0,
+            'active'     => true,
+        ], $hasMultilang ? ['alt_tr' => '', 'alt_en' => '', 'alt_de' => ''] : []));
+
+        return response()->json([
+            'ok'  => true,
+            'id'  => $photo->id,
+            'url' => asset('gallery/' . $filename),
+        ]);
+    }
+
     public function destroy(GalleryPhoto $photo)
     {
         $path = public_path('gallery' . DIRECTORY_SEPARATOR . $photo->filename);
