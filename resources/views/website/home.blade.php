@@ -181,6 +181,31 @@
     </div>
 </section>
 
+{{-- Günlük Özel --}}
+@isset($todaySpecial)
+<section class="py-4" style="background:linear-gradient(135deg,#1a7fa8 0%,#2ea887 100%);color:#fff;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+                    <span style="font-size:1.5rem;">🍽</span>
+                    <h2 class="mb-0 fw-700" style="font-size:1.3rem;letter-spacing:.05em;">BUGÜN NE VAR?</h2>
+                </div>
+                <p class="mb-1 fw-700" style="font-size:1.2rem;">{{ $todaySpecial->title(app()->getLocale()) }}</p>
+                @if($todaySpecial->description(app()->getLocale()))
+                    <p class="mb-2 opacity-90" style="font-size:.95rem;">{{ $todaySpecial->description(app()->getLocale()) }}</p>
+                @endif
+                @if($todaySpecial->price)
+                    <span style="background:rgba(255,255,255,.2);padding:4px 14px;border-radius:20px;font-weight:700;font-size:1.1rem;">
+                        {{ number_format($todaySpecial->price, 0, ',', '.') }} ₺
+                    </span>
+                @endif
+            </div>
+        </div>
+    </div>
+</section>
+@endisset
+
 {{-- About snippet --}}
 <section class="py-5">
     <div class="container text-center">

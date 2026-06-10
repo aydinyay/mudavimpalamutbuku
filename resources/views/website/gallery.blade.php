@@ -3,7 +3,19 @@
 @section('title', 'Galeri')
 
 @push('styles')
+@if(isset($photos) && $photos->isNotEmpty())
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+@endif
 <style>
+/* Yerel galeri grid */
+#gallery-grid .gallery-thumb img {
+    transition: transform .35s ease;
+}
+#gallery-grid .gallery-thumb:hover img {
+    transform: scale(1.06);
+}
+
+/* Instagram fallback grid */
 .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 @media(max-width:576px){.ig-grid{grid-template-columns:repeat(2,1fr)}}
 .ig-item{position:relative;aspect-ratio:1;overflow:hidden;border-radius:6px;background:#f0f0f0;}
@@ -25,7 +37,31 @@
             <div class="section-divider"></div>
         </div>
 
-        @if($posts->isNotEmpty())
+        @if(isset($photos) && $photos->isNotEmpty())
+
+        {{-- Yerel fotoğraf galerisi --}}
+        <div class="row g-2" id="gallery-grid">
+            @foreach($photos as $photo)
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="{{ asset('gallery/' . $photo->filename) }}"
+                   class="glightbox d-block gallery-thumb"
+                   data-gallery="mudavim"
+                   data-title="{{ $photo->altText(app()->getLocale()) }}">
+                    <div class="gallery-thumb" style="aspect-ratio:1;overflow:hidden;border-radius:8px;background:#f0f0f0;">
+                        <img src="{{ asset('gallery/' . $photo->filename) }}"
+                             alt="{{ $photo->altText(app()->getLocale()) }}"
+                             loading="lazy"
+                             style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                </a>
+            </div>
+            @endforeach
+        </div>
+
+        @else
+
+        {{-- Instagram fallback --}}
+        @if(isset($posts) && $posts->isNotEmpty())
             <div class="text-center mb-4">
                 <span class="badge py-2 px-3" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-size:.85rem;">
                     <i class="bi bi-instagram me-1"></i>Instagram'dan canlı
@@ -46,7 +82,7 @@
                 </a>
             </div>
         @else
-            {{-- Instagram token gelmeden önce placeholder --}}
+            {{-- Placeholder: ne yerel fotoğraf var ne de Instagram tokeni --}}
             <div class="ig-grid mb-4">
                 @for($i=0;$i<9;$i++)
                 <div class="ig-item" style="background:linear-gradient(135deg,#e8f4f2,#d0e8e4);">
@@ -63,6 +99,15 @@
                 </a>
             </div>
         @endif
+
+        @endif
     </div>
 </section>
 @endsection
+
+@push('scripts')
+@if(isset($photos) && $photos->isNotEmpty())
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script>GLightbox({ selector: '.glightbox' });</script>
+@endif
+@endpush

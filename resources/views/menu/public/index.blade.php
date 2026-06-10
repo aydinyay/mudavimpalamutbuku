@@ -16,6 +16,7 @@
 .item-desc{font-size:.78rem;color:#777;font-style:italic;margin-top:2px}
 .item-price{font-size:.9rem;font-weight:600;color:#1a6b5e;white-space:nowrap;flex-shrink:0}
 .item-unavail{opacity:.4}
+.item-thumb{width:56px;height:56px;object-fit:cover;border-radius:6px;flex-shrink:0;margin-right:10px;}
 .item.hidden{display:none}
 .cat-block.hidden{display:none}
 .no-res{text-align:center;padding:40px;color:#aaa;display:none;font-size:.9rem}
@@ -24,6 +25,19 @@
 
 @section('content')
 <div class="menu-page">
+
+  @isset($todaySpecial)
+  <div style="background:linear-gradient(135deg,#1a7fa8,#2ea887);color:#fff;border-radius:10px;padding:14px 16px;margin-bottom:20px;">
+    <div style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85;margin-bottom:4px;">🍽 Bugün Ne Var?</div>
+    <div style="font-family:Georgia,serif;font-size:1.05rem;font-weight:700;">{{ $todaySpecial->title(app()->getLocale()) }}</div>
+    @if($todaySpecial->description(app()->getLocale()))
+      <div style="font-size:.82rem;opacity:.9;margin-top:3px;">{{ $todaySpecial->description(app()->getLocale()) }}</div>
+    @endif
+    @if($todaySpecial->price)
+      <div style="margin-top:6px;font-weight:700;font-size:.95rem;">{{ number_format($todaySpecial->price, 0, ',', '.') }} ₺</div>
+    @endif
+  </div>
+  @endisset
 
   <div class="menu-search">
     <input type="text" id="q" placeholder="Menüde ara..." autocomplete="off">
@@ -35,6 +49,9 @@
       <div class="cat-title">{{ $category->name() }}</div>
       @foreach($category->items as $item)
       <div class="item {{ !$item->is_available ? 'item-unavail' : '' }}" data-name="{{ strtolower($item->name()) }}">
+        @if($item->image_path)
+        <img src="{{ $item->image_path }}" alt="{{ $item->name() }}" class="item-thumb">
+        @endif
         <div>
           <div class="item-name">{{ $item->name() }}</div>
           @if(trim($item->description() ?? '') !== '')

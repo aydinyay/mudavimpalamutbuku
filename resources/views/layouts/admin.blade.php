@@ -42,6 +42,9 @@
         <a href="{{ route('admin.menu.items.index') }}" class="{{ request()->routeIs('admin.menu.items.*') ? 'active' : '' }}">
             <i class="bi bi-egg-fried"></i> Menü Ürünleri
         </a>
+        <a href="{{ route('admin.daily-specials.index') }}" class="{{ request()->routeIs('admin.daily-specials.*') ? 'active' : '' }}">
+            <i class="bi bi-sun"></i> Günlük Özel
+        </a>
         <a href="{{ route('admin.qrcodes.index') }}" class="{{ request()->routeIs('admin.qrcodes.*') ? 'active' : '' }}">
             <i class="bi bi-qr-code"></i> QR Kodlar
         </a>
@@ -49,6 +52,9 @@
         <div class="nav-section-label">İtibar</div>
         <a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
             <i class="bi bi-star-half"></i> Yorumlar & Şikayetler
+        </a>
+        <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+            <i class="bi bi-images"></i> Fotoğraf Galerisi
         </a>
         <a href="{{ route('admin.instagram.index') }}" class="{{ request()->routeIs('admin.instagram.*') ? 'active' : '' }}">
             <i class="bi bi-instagram"></i> Instagram Galeri

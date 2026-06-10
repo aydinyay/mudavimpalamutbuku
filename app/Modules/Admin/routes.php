@@ -1,6 +1,8 @@
 <?php
 
 use App\Modules\Admin\Controllers\DashboardController;
+use App\Modules\Admin\Controllers\DailySpecialController;
+use App\Modules\Admin\Controllers\GalleryPhotoController;
 use App\Modules\Admin\Controllers\ServerToolsController;
 use App\Modules\Admin\Controllers\SiteMediaController;
 use App\Modules\Menu\Controllers\Admin\CategoryController;
@@ -85,6 +87,32 @@ Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function (
     Route::get('gorseller', [SiteMediaController::class, 'index'])->name('media.index');
     Route::post('gorseller/yukle', [SiteMediaController::class, 'upload'])->name('media.upload');
     Route::post('gorseller/sil', [SiteMediaController::class, 'delete'])->name('media.delete');
+
+    // Daily specials
+    Route::resource('gunluk-ozel', DailySpecialController::class)
+        ->except(['show'])
+        ->parameters(['gunluk-ozel' => 'special'])
+        ->names([
+            'index'   => 'daily-specials.index',
+            'create'  => 'daily-specials.create',
+            'store'   => 'daily-specials.store',
+            'edit'    => 'daily-specials.edit',
+            'update'  => 'daily-specials.update',
+            'destroy' => 'daily-specials.destroy',
+        ]);
+
+    // Gallery photos
+    Route::resource('galeri', GalleryPhotoController::class)
+        ->except(['show'])
+        ->parameters(['galeri' => 'photo'])
+        ->names([
+            'index'   => 'gallery.index',
+            'create'  => 'gallery.create',
+            'store'   => 'gallery.store',
+            'edit'    => 'gallery.edit',
+            'update'  => 'gallery.update',
+            'destroy' => 'gallery.destroy',
+        ]);
 
     // Server tools
     Route::get('sunucu-araclari', [ServerToolsController::class, 'index'])->name('server-tools.index');

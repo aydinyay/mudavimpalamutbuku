@@ -3,6 +3,7 @@
 namespace App\Modules\Menu\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Models\DailySpecial;
 use App\Modules\Menu\Models\Allergen;
 use App\Modules\Menu\Models\MenuCategory;
 use App\Modules\QrCode\Models\QrCode;
@@ -13,7 +14,8 @@ class MenuController extends Controller
     public function index()
     {
         [$categories, $allergens] = $this->menuData();
-        return view('menu.public.index', compact('categories', 'allergens'));
+        $todaySpecial = DailySpecial::whereDate('date', today())->where('is_active', true)->first();
+        return view('menu.public.index', compact('categories', 'allergens', 'todaySpecial'));
     }
 
     public function tableMenu(string $tableCode)
@@ -26,10 +28,11 @@ class MenuController extends Controller
         }
 
         [$categories, $allergens] = $this->menuData();
-        $tableName = $table->displayLabel();
-        $qrUuid    = $qr?->qr_uuid;
+        $tableName    = $table->displayLabel();
+        $qrUuid       = $qr?->qr_uuid;
+        $todaySpecial = DailySpecial::whereDate('date', today())->where('is_active', true)->first();
 
-        return view('menu.public.index', compact('categories', 'allergens', 'table', 'tableName', 'qrUuid', 'tableCode'));
+        return view('menu.public.index', compact('categories', 'allergens', 'table', 'tableName', 'qrUuid', 'tableCode', 'todaySpecial'));
     }
 
     private function menuData(): array
