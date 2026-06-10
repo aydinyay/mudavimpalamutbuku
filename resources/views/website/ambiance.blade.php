@@ -1560,6 +1560,17 @@ function updateClock() {
         lines.push(`· ${moonNames[Math.round(MOON_PHASE * 8) % 8]}`);
     }
 
+    // Son satır: akşama davet
+    {
+        let invite;
+        if (h >= 5  && h < 12) invite = '· Öğlen ve akşam yemeği için masanızı ayırtın';
+        else if (h < 17)       invite = '· Bu akşam için masanızı şimdiden ayırtın';
+        else if (h < 20)       invite = '· Bu güzel akşamı Müdavim sofrasında geçirin';
+        else if (h < 23)       invite = '· Geç saate kadar buradayız, buyurun';
+        else                   invite = '· Gece yarısı da açığız, sofra hazır';
+        lines.push(invite);
+    }
+
     el.innerHTML = lines.join('<br>');
 }
 
