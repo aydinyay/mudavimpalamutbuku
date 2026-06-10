@@ -130,7 +130,7 @@
 @include('partials.footer')
 
 {{-- WhatsApp float --}}
-<a href="https://wa.me/{{ ltrim(config('restaurant.whatsapp'), '+') }}" target="_blank"
+<a href="https://wa.me/{{ ltrim(config('restaurant.whatsapp'), '+') }}?text={{ urlencode('Merhaba, rezervasyon yapmak istiyorum.') }}" target="_blank"
    class="whatsapp-float" title="WhatsApp">
     <i class="bi bi-whatsapp"></i>
 </a>

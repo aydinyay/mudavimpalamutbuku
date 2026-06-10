@@ -3,6 +3,8 @@
 namespace App\Modules\Website\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\DailySpecial;
+use App\Models\GalleryPhoto;
 use App\Models\GoogleReview;
 use App\Models\InstagramPost;
 use App\Modules\Core\Models\RestaurantSetting;
@@ -24,10 +26,11 @@ class HomeController extends Controller
         $reviewSummary = $reviewService->getSummary();
         $reviews       = $reviewService->getVisibleReviews(6);
 
-        $setting = RestaurantSetting::current();
-        $weather = $this->getWeather();
-        $sea     = Cache::get('ambiance_data')['sea'] ?? null;
-        return view('website.home', compact('featured', 'reviewSummary', 'reviews', 'setting', 'weather', 'sea'));
+        $setting      = RestaurantSetting::current();
+        $weather      = $this->getWeather();
+        $sea          = Cache::get('ambiance_data')['sea'] ?? null;
+        $todaySpecial = DailySpecial::whereDate('date', today())->where('is_active', true)->first();
+        return view('website.home', compact('featured', 'reviewSummary', 'reviews', 'setting', 'weather', 'sea', 'todaySpecial'));
     }
 
     public function about()
@@ -140,12 +143,14 @@ class HomeController extends Controller
 
     public function gallery()
     {
+        $photos = GalleryPhoto::where('active', true)->orderBy('sort_order')->orderBy('id')->get();
+
         $posts = InstagramPost::where('is_visible', true)
             ->whereIn('media_type', ['IMAGE', 'CAROUSEL_ALBUM'])
             ->orderByDesc('posted_at')
             ->limit(12)
             ->get();
 
-        return view('website.gallery', compact('posts'));
+        return view('website.gallery', compact('photos', 'posts'));
     }
 }
