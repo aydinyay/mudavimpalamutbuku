@@ -5,6 +5,7 @@ return [
     'nav_home'      => 'Home',
     'nav_menu'      => 'Menu',
     'nav_about'     => 'About',
+    'nav_gallery'   => 'Gallery',
     'nav_contact'   => 'Contact',
     'nav_reserve'   => 'Reservation',
     'footer_rights' => 'All rights reserved.',
