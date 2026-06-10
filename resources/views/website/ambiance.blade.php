@@ -1529,8 +1529,8 @@ function updateClock() {
         lines.push(`· Hava ${WEATHER_TEMP}°C, ${lbl}`);
     }
 
-    // Satır 4: deniz (gün boyu göster)
-    if (SEA_TEMP !== null) {
+    // Satır 4: deniz (06:00–18:30 arası)
+    if (SEA_TEMP !== null && (h < 18 || (h === 18 && now.getMinutes() <= 30))) {
         const sp = seaPhrase(SEA_TEMP);
         if (sp) {
             const phrase = sp.includes('—') ? sp.split('—')[1].trim() : sp;
