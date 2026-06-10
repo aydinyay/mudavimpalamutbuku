@@ -1,36 +1,46 @@
 <?php
-// Güvenlik token kontrolü
 if (($_GET['token'] ?? '') !== 'mudavim2024deploy') {
     http_response_code(403);
     die('Yetkisiz erişim.');
 }
 
-chdir('/home/mudavimp/mudavimpalamutbuku');
+echo '<pre style="font-family:monospace;font-size:13px;padding:20px;background:#111;color:#0f0;">';
+echo "=== Müdavim Post-Deploy ===\n\n";
 
-echo '<pre style="font-family:monospace;padding:20px;">';
-echo "=== Müdavim Deploy Script ===\n\n";
+define('LARAVEL_START', microtime(true));
 
-echo ">> php artisan migrate --force\n";
-echo shell_exec('php artisan migrate --force 2>&1');
+try {
+    require '/home/mudavimp/mudavimpalamutbuku/vendor/autoload.php';
+    echo "✅ autoload OK\n";
 
-echo "\n>> php artisan db:seed --force\n";
-echo shell_exec('php artisan db:seed --force 2>&1');
+    $app = require_once '/home/mudavimp/mudavimpalamutbuku/bootstrap/app.php';
+    echo "✅ bootstrap OK\n";
 
-echo "\n>> php artisan config:cache\n";
-echo shell_exec('php artisan config:cache 2>&1');
+    $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+    echo "✅ kernel OK\n\n";
 
-echo "\n>> php artisan route:cache\n";
-echo shell_exec('php artisan route:cache 2>&1');
+    $commands = [
+        ['migrate',      ['--force' => true]],
+        ['config:cache', []],
+        ['route:cache',  []],
+        ['view:cache',   []],
+    ];
 
-echo "\n>> php artisan view:cache\n";
-echo shell_exec('php artisan view:cache 2>&1');
+    foreach ($commands as [$cmd, $args]) {
+        echo "▶ php artisan {$cmd}\n";
+        ob_start();
+        $status = $kernel->call($cmd, $args);
+        $out    = ob_get_clean();
+        echo $out ?: "  (çıktı yok)\n";
+        echo $status === 0 ? "  ✅ OK\n\n" : "  ⚠️ Exit: {$status}\n\n";
+    }
 
-echo "\n>> php artisan storage:link\n";
-echo shell_exec('php artisan storage:link 2>&1');
+    echo "=== TAMAMLANDI ===\n";
+    echo sprintf("Süre: %.2fs\n", microtime(true) - LARAVEL_START);
 
-echo "\n\n=== TAMAMLANDI ===\n";
+} catch (\Throwable $e) {
+    echo "❌ HATA: " . $e->getMessage() . "\n";
+    echo "Dosya: " . $e->getFile() . ":" . $e->getLine() . "\n";
+}
+
 echo '</pre>';
-
-// Script kendini siler
-unlink(__FILE__);
-echo '<p style="color:green;font-weight:bold;">Script silindi. Bu sayfayı kapatabilirsiniz.</p>';
