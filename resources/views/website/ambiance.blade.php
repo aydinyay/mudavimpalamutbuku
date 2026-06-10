@@ -1529,12 +1529,12 @@ function updateClock() {
         lines.push(`· Hava ${WEATHER_TEMP}°C, ${lbl}`);
     }
 
-    // Satır 4: deniz (gündüz 06-17)
-    if (h >= 6 && h < 17 && SEA_TEMP !== null) {
+    // Satır 4: deniz (gün boyu göster)
+    if (SEA_TEMP !== null) {
         const sp = seaPhrase(SEA_TEMP);
         if (sp) {
             const phrase = sp.includes('—') ? sp.split('—')[1].trim() : sp;
-            lines.push(`· Deniz ${SEA_TEMP}°C, ${phrase.charAt(0).toUpperCase() + phrase.slice(1)}`);
+            lines.push(`· Deniz suyu ${SEA_TEMP}°C, hemen önümüzdeki plajımız sizi bekliyor`);
         }
     }
 
