@@ -44,14 +44,19 @@ class GalleryPhotoController extends Controller
         $img->cover(1200, 900);
         $img->toWebp(85)->save($savePath);
 
-        GalleryPhoto::create([
+        $hasMultilang = \Illuminate\Support\Facades\Schema::hasColumn('gallery_photos', 'alt_tr');
+
+        GalleryPhoto::create(array_merge([
             'filename'   => $filename,
-            'alt_tr'     => $request->alt_tr,
-            'alt_en'     => $request->alt_en,
-            'alt_de'     => $request->alt_de,
+            'alt'        => $request->alt_tr ?? '',
+            'caption'    => $request->alt_tr ?? '',
             'sort_order' => $request->integer('sort_order', 0),
             'active'     => true,
-        ]);
+        ], $hasMultilang ? [
+            'alt_tr' => $request->alt_tr,
+            'alt_en' => $request->alt_en,
+            'alt_de' => $request->alt_de,
+        ] : []));
 
         return redirect()->route('admin.gallery.index')
             ->with('success', 'Fotoğraf başarıyla eklendi.');
