@@ -83,18 +83,41 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+(function () {
+    var CSRF = document.querySelector('meta[name="csrf-token"]').content;
 
-    // Masaları kayıtlı konumlarına yerleştir
-    document.querySelectorAll('.table-plan-draggable').forEach(function (el) {
-        var x = parseInt(el.dataset.x) || 0;
-        var y = parseInt(el.dataset.y) || 0;
-        el.style.left = x + 'px';
-        el.style.top  = y + 'px';
-    });
+    function clamp(val, min, max) { return Math.max(min, Math.min(val, max)); }
 
-    var dragging  = null;
-    var startX, startY, startLeft, startTop;
+    function placeAll() {
+        document.querySelectorAll('.table-plan-draggable').forEach(function (el) {
+            var container = el.closest('[data-area-id]');
+            var cw = container.clientWidth;
+            var ch = container.clientHeight;
+            var ew = el.offsetWidth  || 60;
+            var eh = el.offsetHeight || 60;
+
+            var x = parseInt(el.dataset.x) || 0;
+            var y = parseInt(el.dataset.y) || 0;
+
+            // Sınır dışına çıkmasını engelle
+            x = clamp(x, 0, Math.max(0, cw - ew));
+            y = clamp(y, 0, Math.max(0, ch - eh));
+
+            el.style.left = x + 'px';
+            el.style.top  = y + 'px';
+        });
+    }
+
+    // Layout hazır olunca yerleştir
+    if (document.readyState === 'complete') {
+        placeAll();
+    } else {
+        window.addEventListener('load', placeAll);
+    }
+
+    // Sürükleme
+    var dragging = null;
+    var ox, oy; // pointer'ın element içindeki offset'i
 
     document.querySelectorAll('.table-plan-draggable').forEach(function (el) {
 
@@ -102,22 +125,31 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             dragging = el;
             el.setPointerCapture(e.pointerId);
-            startX    = e.clientX;
-            startY    = e.clientY;
-            startLeft = parseInt(el.style.left) || 0;
-            startTop  = parseInt(el.style.top)  || 0;
+
+            var rect = el.getBoundingClientRect();
+            ox = e.clientX - rect.left;   // pointer'ın element sol kenarından uzaklığı
+            oy = e.clientY - rect.top;
+
             el.style.cursor = 'grabbing';
             el.style.zIndex = '50';
         });
 
         el.addEventListener('pointermove', function (e) {
             if (dragging !== el) return;
+            e.preventDefault();
+
             var container = el.closest('[data-area-id]');
-            var rect      = container.getBoundingClientRect();
-            var newLeft   = startLeft + (e.clientX - startX);
-            var newTop    = startTop  + (e.clientY - startY);
-            newLeft = Math.max(0, Math.min(newLeft, rect.width  - el.offsetWidth));
-            newTop  = Math.max(0, Math.min(newTop,  rect.height - el.offsetHeight));
+            var cr  = container.getBoundingClientRect();
+            var ew  = el.offsetWidth;
+            var eh  = el.offsetHeight;
+
+            // Pointer pozisyonunu container'a göre hesapla, element offset'ini çıkar
+            var newLeft = e.clientX - cr.left - ox;
+            var newTop  = e.clientY - cr.top  - oy;
+
+            newLeft = clamp(newLeft, 0, cr.width  - ew);
+            newTop  = clamp(newTop,  0, cr.height - eh);
+
             el.style.left = newLeft + 'px';
             el.style.top  = newTop  + 'px';
         });
@@ -129,24 +161,47 @@ document.addEventListener('DOMContentLoaded', function () {
             el.style.zIndex = '';
 
             var tableId = el.dataset.tableId;
-            var posX    = parseInt(el.style.left) || 0;
-            var posY    = parseInt(el.style.top)  || 0;
+            var posX    = Math.round(parseFloat(el.style.left));
+            var posY    = Math.round(parseFloat(el.style.top));
+
+            // data-x/y güncelle — sayfa yenilenmeden de doğru kalsın
+            el.dataset.x = posX;
+            el.dataset.y = posY;
 
             fetch('/yonetim/masalar/' + tableId + '/pozisyon', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    'X-CSRF-TOKEN': CSRF
                 },
                 body: JSON.stringify({ pos_x: posX, pos_y: posY })
-            }).then(function (r) { return r.json(); })
-              .then(function (d) {
-                  if (!d.ok) { el.style.outline = '2px solid red'; }
-              })
-              .catch(function () { el.style.outline = '2px solid red'; });
+            })
+            .then(function (r) {
+                if (!r.ok) throw new Error(r.status);
+                return r.json();
+            })
+            .then(function (d) {
+                if (d.ok) {
+                    el.style.outline = '2px solid #16a34a';
+                    setTimeout(function () { el.style.outline = ''; }, 800);
+                } else {
+                    el.style.outline = '2px solid #dc2626';
+                }
+            })
+            .catch(function () {
+                el.style.outline = '2px solid #dc2626';
+            });
+        });
+
+        el.addEventListener('pointercancel', function () {
+            if (dragging === el) {
+                dragging = null;
+                el.style.cursor = 'grab';
+                el.style.zIndex = '';
+            }
         });
     });
-});
+}());
 </script>
 @endpush
 
