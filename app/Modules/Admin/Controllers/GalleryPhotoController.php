@@ -91,14 +91,19 @@ class GalleryPhotoController extends Controller
             $photo->filename = $this->saveImage($request->file('photo'));
         }
 
-        $photo->update([
+        $hasMultilang = \Illuminate\Support\Facades\Schema::hasColumn('gallery_photos', 'alt_tr');
+
+        $photo->update(array_merge([
             'filename'   => $photo->filename,
-            'alt_tr'     => $request->alt_tr,
-            'alt_en'     => $request->alt_en,
-            'alt_de'     => $request->alt_de,
+            'alt'        => $request->alt_tr ?? '',
+            'caption'    => $request->alt_tr ?? '',
             'sort_order' => $request->integer('sort_order', 0),
             'active'     => $request->boolean('active'),
-        ]);
+        ], $hasMultilang ? [
+            'alt_tr' => $request->alt_tr,
+            'alt_en' => $request->alt_en,
+            'alt_de' => $request->alt_de,
+        ] : []));
 
         return redirect()->route('admin.gallery.index')
             ->with('success', 'Fotoğraf güncellendi.');
