@@ -14,7 +14,11 @@ class MenuController extends Controller
     public function index()
     {
         [$categories, $allergens] = $this->menuData();
-        $todaySpecial = DailySpecial::whereDate('date', today())->where('is_active', true)->first();
+        try {
+            $todaySpecial = DailySpecial::whereDate('date', today())->where('is_active', true)->first();
+        } catch (\Throwable) {
+            $todaySpecial = null;
+        }
         return view('menu.public.index', compact('categories', 'allergens', 'todaySpecial'));
     }
 

@@ -29,7 +29,11 @@ class HomeController extends Controller
         $setting      = RestaurantSetting::current();
         $weather      = $this->getWeather();
         $sea          = Cache::get('ambiance_data')['sea'] ?? null;
-        $todaySpecial = DailySpecial::whereDate('date', today())->where('is_active', true)->first();
+        try {
+            $todaySpecial = DailySpecial::whereDate('date', today())->where('is_active', true)->first();
+        } catch (\Throwable) {
+            $todaySpecial = null;
+        }
         return view('website.home', compact('featured', 'reviewSummary', 'reviews', 'setting', 'weather', 'sea', 'todaySpecial'));
     }
 
