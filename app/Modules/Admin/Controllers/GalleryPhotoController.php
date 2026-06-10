@@ -21,6 +21,26 @@ class GalleryPhotoController extends Controller
         return view('admin.gallery.form');
     }
 
+    // cPanel'de public_path() ≠ web root (public_html). DOCUMENT_ROOT kullan.
+    private function galleryDir(): string
+    {
+        $root = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\');
+        $dir  = $root ? $root . DIRECTORY_SEPARATOR . 'gallery' : public_path('gallery');
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+        return $dir;
+    }
+
+    private function saveImage($uploadedFile): string
+    {
+        $dir      = $this->galleryDir();
+        $filename = uniqid('gallery_') . '.webp';
+        $manager  = new ImageManager(new Driver());
+        $manager->read($uploadedFile)->cover(1200, 900)->toWebp(85)->save($dir . DIRECTORY_SEPARATOR . $filename);
+        return $filename;
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -31,19 +51,7 @@ class GalleryPhotoController extends Controller
             'sort_order' => 'nullable|integer|min:0',
         ]);
 
-        $galleryDir = public_path('gallery');
-        if (!is_dir($galleryDir)) {
-            mkdir($galleryDir, 0755, true);
-        }
-
-        $filename = uniqid('gallery_') . '.webp';
-        $savePath = $galleryDir . DIRECTORY_SEPARATOR . $filename;
-
-        $manager = new ImageManager(new Driver());
-        $img = $manager->read($request->file('photo'));
-        $img->cover(1200, 900);
-        $img->toWebp(85)->save($savePath);
-
+        $filename     = $this->saveImage($request->file('photo'));
         $hasMultilang = \Illuminate\Support\Facades\Schema::hasColumn('gallery_photos', 'alt_tr');
 
         GalleryPhoto::create(array_merge([
@@ -78,26 +86,9 @@ class GalleryPhotoController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            $galleryDir = public_path('gallery');
-            if (!is_dir($galleryDir)) {
-                mkdir($galleryDir, 0755, true);
-            }
-
-            // Eski dosyayı sil
-            $oldPath = $galleryDir . DIRECTORY_SEPARATOR . $photo->filename;
-            if (file_exists($oldPath)) {
-                @unlink($oldPath);
-            }
-
-            $filename = uniqid('gallery_') . '.webp';
-            $savePath = $galleryDir . DIRECTORY_SEPARATOR . $filename;
-
-            $manager = new ImageManager(new Driver());
-            $img = $manager->read($request->file('photo'));
-            $img->cover(1200, 900);
-            $img->toWebp(85)->save($savePath);
-
-            $photo->filename = $filename;
+            $dir = $this->galleryDir();
+            @unlink($dir . DIRECTORY_SEPARATOR . $photo->filename);
+            $photo->filename = $this->saveImage($request->file('photo'));
         }
 
         $photo->update([
@@ -124,19 +115,7 @@ class GalleryPhotoController extends Controller
             'photo' => 'required|image|mimes:jpeg,jpg,png,webp|max:8192',
         ]);
 
-        $galleryDir = public_path('gallery');
-        if (!is_dir($galleryDir)) {
-            mkdir($galleryDir, 0755, true);
-        }
-
-        $filename = uniqid('gallery_') . '.webp';
-        $savePath = $galleryDir . DIRECTORY_SEPARATOR . $filename;
-
-        $manager = new ImageManager(new Driver());
-        $img = $manager->read($request->file('photo'));
-        $img->cover(1200, 900);
-        $img->toWebp(85)->save($savePath);
-
+        $filename     = $this->saveImage($request->file('photo'));
         $hasMultilang = \Illuminate\Support\Facades\Schema::hasColumn('gallery_photos', 'alt_tr');
 
         $photo = GalleryPhoto::create(array_merge([
@@ -156,11 +135,7 @@ class GalleryPhotoController extends Controller
 
     public function destroy(GalleryPhoto $photo)
     {
-        $path = public_path('gallery' . DIRECTORY_SEPARATOR . $photo->filename);
-        if (file_exists($path)) {
-            @unlink($path);
-        }
-
+        @unlink($this->galleryDir() . DIRECTORY_SEPARATOR . $photo->filename);
         $photo->delete();
 
         return redirect()->route('admin.gallery.index')
