@@ -16,10 +16,16 @@
     <div>
         <p class="text-muted mb-0">Galeri sayfasında görünecek restoran fotoğrafları.</p>
     </div>
-    <a href="{{ route('admin.gallery.create') }}" class="btn btn-sm"
-       style="background:#1a7fa8;color:#fff;border-radius:8px;">
-        <i class="bi bi-plus-lg me-1"></i> Fotoğraf Ekle
-    </a>
+    <div class="d-flex gap-2">
+        <a href="{{ route('admin.gallery.bulk') }}" class="btn btn-sm"
+           style="background:linear-gradient(135deg,#1a7fa8,#2ea887);color:#fff;border-radius:8px;">
+            <i class="bi bi-cloud-upload me-1"></i> Toplu Yükle
+        </a>
+        <a href="{{ route('admin.gallery.create') }}" class="btn btn-sm btn-outline-secondary"
+           style="border-radius:8px;">
+            <i class="bi bi-plus-lg me-1"></i> Tekli Ekle
+        </a>
+    </div>
 </div>
 
 @if($photos->isNotEmpty())

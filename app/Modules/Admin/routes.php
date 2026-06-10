@@ -101,7 +101,10 @@ Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function (
             'destroy' => 'daily-specials.destroy',
         ]);
 
-    // Gallery photos
+    // Gallery photos — bulk upload (must be before resource to avoid conflict)
+    Route::get('galeri/toplu-yukle', [GalleryPhotoController::class, 'bulkCreate'])->name('gallery.bulk');
+    Route::post('galeri/toplu-yukle', [GalleryPhotoController::class, 'bulkStore'])->name('gallery.bulk.store');
+
     Route::resource('galeri', GalleryPhotoController::class)
         ->except(['show'])
         ->parameters(['galeri' => 'photo'])
