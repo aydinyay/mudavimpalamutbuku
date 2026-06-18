@@ -16,9 +16,9 @@ class SpotifyService
     private const CACHE_TTL   = 20; // saniye
     private const SCOPES      = 'user-read-currently-playing user-read-recently-played user-read-playback-state';
 
-    private string $clientId;
-    private string $clientSecret;
-    private string $redirectUri;
+    private ?string $clientId;
+    private ?string $clientSecret;
+    private ?string $redirectUri;
 
     public function __construct()
     {

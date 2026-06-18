@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Log;
 
 class InstagramService
 {
-    private string $accessToken;
-    private string $userId;
+    private ?string $accessToken;
+    private ?string $userId;
 
     public function __construct()
     {
