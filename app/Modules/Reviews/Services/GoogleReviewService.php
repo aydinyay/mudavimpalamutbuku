@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Mail;
 
 class GoogleReviewService
 {
-    private string $placeId;
-    private string $apiKey;
+    private ?string $placeId;
+    private ?string $apiKey;
 
     public function __construct()
     {

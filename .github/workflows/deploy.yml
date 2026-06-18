@@ -6,127 +6,36 @@ on:
 
 jobs:
   deploy:
+    name: Deploy to VPS
     runs-on: ubuntu-latest
 
     steps:
-      - name: Kodu çek
-        uses: actions/checkout@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          fetch-depth: 0
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            cd /var/www/mudavimpalamutbuku
 
-      - name: PHP kur
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          extensions: gd, mbstring, pdo_mysql, zip
-          tools: composer:v2
+            git pull origin main
 
-      - name: Composer bağımlılıkları
-        run: composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
+            composer install --no-dev --optimize-autoloader --no-interaction
 
-      - name: Node.js kur
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
+            npm ci
+            npm run build
 
-      - name: NPM bağımlılıkları ve build
-        run: npm ci && npm run build
+            php8.4 artisan down --retry=60
+            php8.4 artisan migrate --force
+            php8.4 artisan config:cache
+            php8.4 artisan route:cache
+            php8.4 artisan view:clear
+            php8.4 artisan queue:restart
+            php8.4 artisan up
 
-      - name: Public klasörünü web root'a yükle (FTP)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ftp.mudavimpalamutbuku.com
-          username: deploy@mudavimpalamutbuku.com
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./public/
-          server-dir: /public_html/
-          state-name: .ftp-state-public-v2
-          exclude: |
-            **/.git*
-            **/storage/**
+            chown -R www-data:www-data storage bootstrap/cache
+            chmod -R 775 storage bootstrap/cache
 
-      - name: App dosyalarını yükle (gitfix.php POST)
-        run: |
-          HOOK="https://mudavimpalamutbuku.com/gitfix.php"
-          TOKEN="mud2026Xk9mP"
-          BEFORE="${{ github.event.before }}"
-
-          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] || \
-             ! git cat-file -e "$BEFORE^{commit}" >/dev/null 2>&1; then
-            FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git ls-files)
-            echo "BEFORE erişilemiyor — son commit farkı veya tüm dosyalar"
-          else
-            FILES=$(git diff --name-only "$BEFORE" HEAD)
-            echo "Deploy aralığı: $BEFORE → ${{ github.sha }}"
-          fi
-
-          FAIL=0
-          for FILE in $FILES; do
-            # Atlanacaklar
-            [[ "$FILE" == .github/* ]]          && continue
-            [[ "$FILE" == public/* ]]            && continue
-            [[ "$FILE" == node_modules/* ]]      && continue
-            [[ "$FILE" == vendor/* ]]            && continue
-            [[ "$FILE" == storage/logs/* ]]      && continue
-            [[ "$FILE" == storage/framework/cache/* ]]    && continue
-            [[ "$FILE" == storage/framework/sessions/* ]] && continue
-            [[ "$FILE" == .env ]]                && continue
-
-            [ -f "$FILE" ] || continue
-
-            TMPFILE=$(mktemp)
-            base64 -w 0 "$FILE" > "$TMPFILE"
-            RESP=$(curl -sf --max-time 120 --connect-timeout 30 --retry 2 --retry-delay 5 \
-              -X POST "$HOOK" \
-              -F "t=$TOKEN" \
-              -F "p=$FILE" \
-              -F "c=<$TMPFILE" 2>&1) \
-              || { echo "WARN: $FILE yüklenemedi (resp=$RESP)"; FAIL=$((FAIL+1)); rm -f "$TMPFILE"; continue; }
-            rm -f "$TMPFILE"
-            echo "OK: $FILE"
-          done
-
-          if [ $FAIL -gt 0 ]; then
-            echo "UYARI: $FAIL dosya yüklenemedi (FTP tamamladiysa kritik degil)"
-          fi
-
-      - name: Vendor yükle (composer.json değiştiyse)
-        run: |
-          HOOK="https://mudavimpalamutbuku.com/gitfix.php"
-          TOKEN="mud2026Xk9mP"
-          BEFORE="${{ github.event.before }}"
-
-          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
-            COMPOSER_CHANGED=true
-          elif git diff --name-only "$BEFORE" HEAD 2>/dev/null | grep -q "composer\.json"; then
-            COMPOSER_CHANGED=true
-          else
-            COMPOSER_CHANGED=false
-          fi
-
-          if [ "$COMPOSER_CHANGED" = "true" ]; then
-            echo "composer.json değişti — vendor deploy ediliyor..."
-            zip -r vendor-deploy.zip vendor/ \
-              -x "*/test/*" -x "*/tests/*" -x "*/Test/*" -x "*/Tests/*" \
-              -x "*/docs/*" -x "*/.git/*" 2>/dev/null || true
-            ZIP_SIZE=$(du -sh vendor-deploy.zip | cut -f1)
-            echo "Vendor zip boyutu: $ZIP_SIZE"
-            RESP=$(curl -sf --max-time 600 --connect-timeout 30 \
-              -X POST "$HOOK" \
-              -F "t=$TOKEN" \
-              -F "action=vendor-extract" \
-              -F "zip=@vendor-deploy.zip;type=application/zip" 2>&1) \
-              || { echo "WARN: vendor deploy başarısız: $RESP"; }
-            echo "Vendor sonuç: $RESP"
-            rm -f vendor-deploy.zip
-          else
-            echo "composer.json değişmedi — vendor atlandı."
-          fi
-
-      - name: Cache temizle
-        run: |
-          sleep 10
-          RESULT=$(curl -s --max-time 30 "https://mudavimpalamutbuku.com/gitfix.php?t=mud2026Xk9mP" || echo "TIMEOUT")
-          echo "Cache temizle yanıtı: ${RESULT}"
-          echo "${RESULT}" | grep -q "CACHE_CLEARED" && echo "OK" || echo "UYARI: cache temizlenemedi (gitfix geçici hata olabilir)"
+            echo "Deploy tamamlandi: $(date)"
