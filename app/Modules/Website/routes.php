@@ -48,6 +48,7 @@ Route::middleware('setLocale')->group(function () {
         Route::get('/about', [HomeController::class, 'about']);
         Route::get('/contact', [HomeController::class, 'contact']);
         Route::get('/gallery', [HomeController::class, 'gallery']);
+        Route::get('/ambiyans', [AmbianceController::class, 'index']);
     });
 
     Route::prefix('de')->group(function () {
@@ -55,5 +56,6 @@ Route::middleware('setLocale')->group(function () {
         Route::get('/uber-uns', [HomeController::class, 'about']);
         Route::get('/kontakt', [HomeController::class, 'contact']);
         Route::get('/galerie', [HomeController::class, 'gallery']);
+        Route::get('/ambiyans', [AmbianceController::class, 'index']);
     });
 });
