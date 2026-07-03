@@ -40,7 +40,7 @@
 
                     {{-- Allergens --}}
                     <div class="mt-3">
-                        <label class="form-label fw-600">Alerjenler</label>
+                        <label class="form-label fw-semibold">Alerjenler <span class="badge bg-danger" style="font-size:.65rem;">Yasal Zorunlu — Ara. 2026</span></label>
                         <div class="d-flex flex-wrap gap-2">
                             @foreach($allergens as $allergen)
                             <div class="form-check">
@@ -53,6 +53,73 @@
                                 </label>
                             </div>
                             @endforeach
+                        </div>
+                    </div>
+
+                    {{-- İçindekiler --}}
+                    <div class="mt-4 p-3 border rounded" style="border-color:#ffc107!important;background:#fffdf0;">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <strong>İçindekiler / Bileşenler</strong>
+                            <span class="badge bg-warning text-dark" style="font-size:.65rem;">Yasal Zorunlu — Ara. 2026</span>
+                        </div>
+                        <p class="text-muted small mb-3">Üründe kullanılan tüm malzemeleri virgülle ayırarak yazın. (ör: tavuk göğsü, zeytinyağı, limon, sarımsak, tuz, karabiber)</p>
+                        <div class="mb-2">
+                            <label class="form-label small">🇹🇷 Türkçe</label>
+                            <textarea name="ingredients_tr" class="form-control form-control-sm" rows="2">{{ old('ingredients_tr', $item->ingredients_tr ?? '') }}</textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">🇬🇧 English</label>
+                            <textarea name="ingredients_en" class="form-control form-control-sm" rows="2">{{ old('ingredients_en', $item->ingredients_en ?? '') }}</textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">🇩🇪 Deutsch</label>
+                            <textarea name="ingredients_de" class="form-control form-control-sm" rows="2">{{ old('ingredients_de', $item->ingredients_de ?? '') }}</textarea>
+                        </div>
+                        <div class="mt-2">
+                            <label class="form-label small">Et Kökeni <span class="text-muted">(varsa: dana, kuzu, tavuk, balık vb.)</span></label>
+                            <input type="text" name="meat_origin" class="form-control form-control-sm"
+                                   value="{{ old('meat_origin', $item->meat_origin ?? '') }}"
+                                   placeholder="ör: Ege levreği, dana bonfile">
+                        </div>
+                    </div>
+
+                    {{-- Besin Değerleri --}}
+                    <div class="mt-3 p-3 border rounded" style="border-color:#0dcaf0!important;background:#f0fbff;">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <strong>Besin Değerleri</strong>
+                            <span class="badge bg-info text-dark" style="font-size:.65rem;">Zorunlu — Ara. 2027</span>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6 col-md-4">
+                                <label class="form-label small">Porsiyon (g)</label>
+                                <input type="number" name="serving_size_g" class="form-control form-control-sm"
+                                       value="{{ old('serving_size_g', $item->serving_size_g ?? '') }}"
+                                       min="0" max="9999" placeholder="ör: 250">
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <label class="form-label small">Kalori (kcal)</label>
+                                <input type="number" name="calories" class="form-control form-control-sm"
+                                       value="{{ old('calories', $item->calories ?? '') }}"
+                                       min="0" max="9999" placeholder="ör: 420">
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <label class="form-label small">Protein (g)</label>
+                                <input type="number" name="protein_g" class="form-control form-control-sm"
+                                       value="{{ old('protein_g', $item->protein_g ?? '') }}"
+                                       step="0.1" min="0" placeholder="ör: 38.5">
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <label class="form-label small">Yağ (g)</label>
+                                <input type="number" name="fat_g" class="form-control form-control-sm"
+                                       value="{{ old('fat_g', $item->fat_g ?? '') }}"
+                                       step="0.1" min="0" placeholder="ör: 18.2">
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <label class="form-label small">Karbonhidrat (g)</label>
+                                <input type="number" name="carbs_g" class="form-control form-control-sm"
+                                       value="{{ old('carbs_g', $item->carbs_g ?? '') }}"
+                                       step="0.1" min="0" placeholder="ör: 2.1">
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -15,6 +15,9 @@ class MenuItem extends Model
         'is_available', 'is_seasonal', 'is_featured',
         'is_vegetarian', 'is_vegan', 'is_gluten_free',
         'preparation_time_minutes', 'sort_order',
+        'ingredients_tr', 'ingredients_en', 'ingredients_de',
+        'meat_origin',
+        'serving_size_g', 'calories', 'protein_g', 'fat_g', 'carbs_g',
     ];
 
     protected $casts = [
@@ -26,6 +29,11 @@ class MenuItem extends Model
         'is_gluten_free' => 'boolean',
         'price'          => 'decimal:2',
         'price_eur'      => 'decimal:2',
+        'calories'       => 'integer',
+        'serving_size_g' => 'integer',
+        'protein_g'      => 'decimal:1',
+        'fat_g'          => 'decimal:1',
+        'carbs_g'        => 'decimal:1',
     ];
 
     public function category(): BelongsTo
