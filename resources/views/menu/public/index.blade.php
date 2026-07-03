@@ -82,7 +82,7 @@
 
           {{-- Kalori --}}
           @if($item->calories)
-            <span class="item-kcal">⚡ {{ $item->calories }} kcal@if($item->serving_size_g) / {{ $item->serving_size_g }}g@endif</span>
+            <span class="item-kcal">⚡ {{ $item->calories }} kcal{{ $item->serving_size_g ? ' / ' . $item->serving_size_g . 'g' : '' }}</span>
           @endif
 
           {{-- Alerjenler --}}
