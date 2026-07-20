@@ -7,43 +7,39 @@ Datça/Palamutbükü'nde denize sıfır konumda hizmet veren **Müdavim Şef Res
 - **Admin panel:** https://mudavimpalamutbuku.com/yonetim
 - **Stok sistemi:** https://mudavimpalamutbuku.com/mudavim/ (AYRI sistem, bu repoda değil)
 - **Repo:** aydinyay/mudavimpalamutbuku
-- **Deploy branch:** main → GitHub Actions FTP → cPanel
+- **Deploy branch:** main → GitHub Actions SSH → Hetzner VPS
 
 ---
 
 ## KRİTİK KURALLAR
 
-1. **SSH YOK, terminal YOK** — Hosting hayalhost.com cPanel paylaşımlı. shell_exec da KAPALI.
+1. **VPS'e taşındık (2026-07) — SSH VE terminal VAR.** Hayalhost.com/cPanel tamamen terk edildi, artık hiçbir şey orada değil. Bu dosyanın aşağıdaki bölümlerinde hâlâ eski cPanel bilgisi görürsen güncelliğinden şüphelen.
 2. **Asla tahmini fiyat veya veri kullanma** — Fiyatlar kolaybu.com'dan doğrulanır.
-3. **Deploy = GitHub Actions FTP** — main'e push → otomatik deploy.
-4. **Seeder otomatik çalışmaz** — `post_deploy.php` elle tetiklenir.
+3. **Deploy = GitHub Actions → SSH → VPS** — main'e push → otomatik `git pull` + migrate + cache.
+4. **Seeder deploy pipeline'ının parçası DEĞİL** — `migrate --force` otomatik çalışır ama `db:seed` çalışmaz. Yeni bir seeder eklersen VPS'te elle tetiklemen gerekir (bkz. [[project_vps_server]]).
 5. **Push öncesi kullanıcıdan onay al.**
 
 ---
 
-## Hosting & Deploy
+## Hosting & Deploy (VPS — güncel)
 
 ```
-Hosting: hayalhost.com cPanel (SSH YOK, terminal YOK, shell_exec KAPALI)
-FTP: deploy@mudavimpalamutbuku.com
-App dizini: /home/mudavimp/mudavimpalamutbuku/
-Web root: /home/mudavimp/public_html/
-Deploy: GitHub Actions → SamKirkland/FTP-Deploy-Action@v4.3.5
+Sunucu    : Hetzner VPS (bkz. global CLAUDE.md → [[project_vps_server]]), IP 167.233.33.12
+App dizini: /var/www/mudavimpalamutbuku
+Deploy    : .github/workflows/deploy.yml — appleboy/ssh-action, main push tetikler
+Adımlar   : git pull → composer install → npm ci && npm run build → artisan down →
+            migrate --force → config:cache → route:cache → view:clear → queue:restart → artisan up
 ```
 
-**post_deploy.php:**
-- `public_html/post_deploy.php?token=mudavim2024deploy` adresinden çalıştırılır
-- migrate + seed + config:cache + route:cache + view:cache yapar
-- Çalıştırdıktan sonra dosya silinmeli
+**Önemli:** `db:seed` deploy adımlarında YOK. Yeni bir seeder eklenirse (örn. TableSeeder) VPS'e SSH ile bağlanıp elle çalıştırılmalı — aksi halde ilgili tablo boş kalır (2026-07-21'de rezervasyon uygunluk kontrolünün çalışmamasının kök nedeni buydu, TableSeeder hiç çalıştırılmamıştı).
 
 **.env (production) özeti:**
 ```
 APP_URL=https://mudavimpalamutbuku.com
-DB_DATABASE=mudavimp_mudavimp_db
-DB_USERNAME=mudavimp_mudavimp_user
 SESSION_DRIVER=file
 CACHE_STORE=file
 ```
+(DB bilgileri VPS'teki gerçek `.env`'den okunmalı — buraya yazılmıyor.)
 
 ---
 
@@ -123,14 +119,14 @@ Kategoriler: Atıştırmalıklar, Salatalar, Mezeler, Deniz Mezeleri, Ara Sıcak
 ## Yapılacaklar (Öncelik Sırası)
 
 ### Acil
-- [ ] `post_deploy.php` çalıştır → seed veritabanına işlensin
+- [x] ~~post_deploy.php çalıştır → seed veritabanına işlensin~~ — menü (79 ürün/15 kategori) ve restoran ayarları zaten seed'liydi; TableSeeder eksikti, 2026-07-21'de production'da elle çalıştırıldı (12 masa + 12 şezlong)
 - [ ] Galeri fotoğrafları ekle (`/galeri` sayfası boş)
 
 ### Yakın Vade
 - [ ] Floating WhatsApp butonu (tüm sayfalarda, +905544427748)
-- [ ] Yemek fotoğrafları (MenuItem'a image_path kolonu)
-- [ ] "Bugün Ne Var?" bölümü (admin'den güncellenen günlük balık/özel)
-- [ ] Rezervasyon formu (3 adım: tarih → masa seç → misafir bilgisi)
+- [x] ~~Yemek fotoğrafları (MenuItem'a image_path kolonu)~~ — altyapı hazır (upload/WebP dönüşüm/DB kolonu çalışıyor), sadece gerçek fotoğraflar yüklenmemiş — içerik eksikliği, kod eksikliği değil
+- [x] ~~"Bugün Ne Var?" bölümü~~ — Günlük Özel modülü (görsel yükleme dahil) zaten yapılmış
+- [ ] Rezervasyon formu (3 adım: tarih → masa seç → misafir bilgisi) — uygunluk kontrolü artık çalışıyor, çok adımlı akış henüz yok
 
 ### Orta Vade
 - [ ] Müşteri geri bildirimi (QR'dan 5 yıldız)
