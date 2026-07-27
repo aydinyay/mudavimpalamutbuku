@@ -22,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'setLocale' => \App\Http\Middleware\SetLocale::class,
+            'vehicle.owner' => \App\Modules\Vehicle\Middleware\EnsureVehicleOwnerSession::class,
+            'vehicle.headers' => \App\Modules\Vehicle\Middleware\VehiclePrivacyHeaders::class,
         ]);
         $middleware->append(\App\Http\Middleware\TrackPageView::class);
     })

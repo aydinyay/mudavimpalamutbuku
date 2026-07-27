@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
         'reviews'     => \App\Modules\Reviews\Providers\ReviewsServiceProvider::class,
         'analytics'   => \App\Modules\Analytics\Providers\AnalyticsServiceProvider::class,
         'spotify'     => \App\Modules\Spotify\Providers\SpotifyServiceProvider::class,
+        'vehicle'     => \App\Modules\Vehicle\Providers\VehicleServiceProvider::class,
     ];
 
     public function register(): void
@@ -27,5 +29,8 @@ class AppServiceProvider extends ServiceProvider
         }
     }
 
-    public function boot(): void {}
+    public function boot(): void
+    {
+        Schema::defaultStringLength(191);
+    }
 }

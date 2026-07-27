@@ -21,7 +21,18 @@
             <i class="bi bi-speedometer2"></i> Özet
         </a>
 
+        <a href="{{ route('admin.bridge.restoran') }}"
+           style="background:rgba(234,179,8,.12);border-left:3px solid #ca8a04;margin-bottom:8px;">
+            <i class="bi bi-arrow-left-right" style="color:#fbbf24;"></i>
+            <strong style="color:#fde68a;">Restoran Sistemi</strong>
+        </a>
+
         <div class="nav-section-label">Operasyon</div>
+        @if(config('modules.vehicle'))
+        <a href="{{ route('admin.vehicles.index') }}" class="{{ request()->routeIs('admin.vehicles.*') || request()->routeIs('admin.vehicle-parties.*') ? 'active' : '' }}">
+            <i class="bi bi-truck"></i> Araçlar
+        </a>
+        @endif
         <a href="{{ route('admin.reservations.index') }}" class="{{ request()->routeIs('admin.reservations.index') ? 'active' : '' }}">
             <i class="bi bi-calendar-check"></i> Rezervasyonlar
         </a>

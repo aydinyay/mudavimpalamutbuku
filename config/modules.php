@@ -10,6 +10,7 @@ return [
     'reviews'     => true,
     'analytics'   => true,
     'spotify'     => true,
+    'vehicle'     => true,
     // Phase 2+
     'pos'         => false,
     'kitchen'     => false,
