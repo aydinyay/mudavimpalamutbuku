@@ -21,11 +21,13 @@
             <i class="bi bi-speedometer2"></i> Özet
         </a>
 
+        @if(Route::has('admin.bridge.restoran'))
         <a href="{{ route('admin.bridge.restoran') }}"
            style="background:rgba(234,179,8,.12);border-left:3px solid #ca8a04;margin-bottom:8px;">
             <i class="bi bi-arrow-left-right" style="color:#fbbf24;"></i>
             <strong style="color:#fde68a;">Restoran Sistemi</strong>
         </a>
+        @endif
 
         <div class="nav-section-label">Operasyon</div>
         @if(config('modules.vehicle'))
