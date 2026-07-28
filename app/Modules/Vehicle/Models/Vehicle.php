@@ -12,7 +12,7 @@ class Vehicle extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['plaka', 'marka', 'model', 'model_yili', 'sase_no', 'motor_no', 'renk', 'yakit_cinsi', 'sahip_party_id', 'guncel_km', 'sonraki_bakim_km', 'sonraki_bakim_tarihi', 'sonraki_muayene_tarihi', 'sigorta_bitis_tarihi', 'onceki_sahipler_notu', 'donanimlar', 'erisim_sifresi_hash', 'credential_version', 'vitrin_acik', 'notlar'];
+    protected $fillable = ['plaka', 'marka', 'model', 'model_yili', 'sase_no', 'motor_no', 'renk', 'yakit_cinsi', 'sahip_party_id', 'guncel_km', 'sonraki_bakim_km', 'sonraki_bakim_tarihi', 'sonraki_muayene_tarihi', 'sigorta_bitis_tarihi', 'onceki_sahipler_notu', 'donanimlar', 'vitrin_aciklama', 'erisim_sifresi_hash', 'credential_version', 'vitrin_acik', 'notlar'];
 
     protected $hidden = ['erisim_sifresi_hash'];
 

@@ -137,6 +137,16 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple
     </div>
   </section>
 
+  @if($vehicle->vitrin_aciklama)
+    <section class="card">
+      <h2>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        Açıklama
+      </h2>
+      <p style="white-space:pre-line;margin:0;color:var(--ink);line-height:1.6">{{ $vehicle->vitrin_aciklama }}</p>
+    </section>
+  @endif
+
   @if($vehicle->donanimlar)
     <section class="card">
       <h2>
