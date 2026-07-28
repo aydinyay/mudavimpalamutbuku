@@ -17,7 +17,12 @@ class ReservationController extends Controller
 
     public function create()
     {
-        return view('reservation.public.create');
+        $now = now('Europe/Istanbul');
+        $defaultDate = ($now->hour < 20 ? $now : $now->copy()->addDay())->format('Y-m-d');
+        $minDate     = $now->format('Y-m-d');
+        $maxDate     = $now->copy()->addDays(30)->format('Y-m-d');
+
+        return view('reservation.public.create', compact('defaultDate', 'minDate', 'maxDate'));
     }
 
     public function checkAvailability(Request $request)

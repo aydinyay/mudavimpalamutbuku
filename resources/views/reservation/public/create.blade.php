@@ -31,9 +31,9 @@
                             <div class="col-sm-6">
                                 <label class="form-label small fw-600">{{ __('reservation.date') }}</label>
                                 <input type="date" name="reservation_date" class="form-control" required
-                                       value="{{ old('reservation_date') }}"
-                                       min="{{ date('Y-m-d') }}"
-                                       max="{{ date('Y-m-d', strtotime('+30 days')) }}">
+                                       value="{{ old('reservation_date', $defaultDate) }}"
+                                       min="{{ $minDate }}"
+                                       max="{{ $maxDate }}">
                             </div>
                             <div class="col-sm-6">
                                 <label class="form-label small fw-600">{{ __('reservation.time') }}</label>
