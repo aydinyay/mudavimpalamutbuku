@@ -34,8 +34,17 @@ class GoogleReviewService
             $fetched = count($reviews);
 
             foreach ($reviews as $review) {
-                $exists = GoogleReview::where('google_review_id', $review['id'])->exists();
-                if ($exists) continue;
+                $existing = GoogleReview::where('google_review_id', $review['id'])->first();
+                if ($existing) {
+                    // Geçmişte bozuk tarihle (0000-00-00) kaydedilmiş yorumları
+                    // kendi kendine onar — Google API bize gerçek tarihi tekrar
+                    // verdiğinde bunu kullanmayıp atlamak yanlış "X yıl önce"
+                    // gösterimine yol açıyordu.
+                    if (! $existing->review_time || $existing->review_time->year < 2000) {
+                        $existing->update(['review_time' => $review['time']]);
+                    }
+                    continue;
+                }
 
                 $rating = $review['rating'];
                 $status = $rating >= 4 ? 'visible' : 'hidden';
