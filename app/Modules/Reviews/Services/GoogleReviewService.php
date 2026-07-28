@@ -4,6 +4,7 @@ namespace App\Modules\Reviews\Services;
 
 use App\Models\GoogleReview;
 use App\Models\ReviewSyncLog;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -94,10 +95,19 @@ class GoogleReviewService
     }
 
     /**
-     * Genel puan özeti (DB'deki visible yorumlardan hesaplar).
+     * Genel puan özeti. Google'ın kendi bildirdiği gerçek toplam puan/yorum
+     * sayısı (sync sırasında önbelleğe alınır) — bizim DB'de sadece bir kısım
+     * yorum saklı olduğu için (Google en fazla ~5 son yorumu döndürüyor),
+     * yerel ortalama gerçek toplamı YANSITMAZ. Önbellek boşsa (ilk sync
+     * öncesi) yerel ortalamaya düşer.
      */
     public function getSummary(): array
     {
+        $cached = Cache::get('google_place_summary');
+        if ($cached) {
+            return $cached;
+        }
+
         $all = GoogleReview::all();
         if ($all->isEmpty()) {
             return ['rating' => 0, 'total' => 0];
@@ -153,6 +163,11 @@ class GoogleReviewService
         if (! $response->successful()) {
             throw new \RuntimeException('Places API error: ' . $response->status() . ' ' . $response->body());
         }
+
+        Cache::put('google_place_summary', [
+            'rating' => $response->json('rating', 0),
+            'total'  => $response->json('userRatingCount', 0),
+        ], now()->addDay());
 
         return array_map(fn($r) => [
             'id'          => $r['name'],
