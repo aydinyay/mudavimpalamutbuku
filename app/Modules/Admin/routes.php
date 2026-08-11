@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Admin\Controllers\AdminBridgeController;
 use App\Modules\Admin\Controllers\DashboardController;
 use App\Modules\Admin\Controllers\DailySpecialController;
 use App\Modules\Admin\Controllers\GalleryPhotoController;
@@ -116,6 +117,9 @@ Route::prefix('yonetim')->middleware(['auth'])->name('admin.')->group(function (
             'update'  => 'gallery.update',
             'destroy' => 'gallery.destroy',
         ]);
+
+    // Bridge to restoran system
+    Route::get('restoran-gecis', [AdminBridgeController::class, 'redirectToRestoran'])->name('bridge.restoran');
 
     // Server tools
     Route::get('sunucu-araclari', [ServerToolsController::class, 'index'])->name('server-tools.index');

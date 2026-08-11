@@ -5,20 +5,20 @@ if (($_GET['token'] ?? '') !== 'mudavim2024deploy') {
 }
 
 echo '<pre style="font-family:monospace;font-size:13px;padding:20px;background:#111;color:#0f0;">';
-echo "=== Müdavim Post-Deploy ===\n\n";
+echo "=== Müdavim Post-Deploy v2 ===\n\n";
 
 define('LARAVEL_START', microtime(true));
-
+ 
 try {
     require '/home/mudavimp/mudavimpalamutbuku/vendor/autoload.php';
     echo "✅ autoload OK\n";
 
     $app = require_once '/home/mudavimp/mudavimpalamutbuku/bootstrap/app.php';
     echo "✅ bootstrap OK\n";
-
+ 
     $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
     echo "✅ kernel OK\n\n";
-
+ 
     $commands = [
         ['migrate',      ['--force' => true]],
         ['config:cache', []],

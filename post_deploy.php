@@ -8,7 +8,7 @@ echo '<pre style="font-family:monospace;font-size:13px;padding:20px;background:#
 echo "=== Müdavim Post-Deploy ===\n\n";
 
 define('LARAVEL_START', microtime(true));
-
+    
 try {
     require '/home/mudavimp/mudavimpalamutbuku/vendor/autoload.php';
     echo "✅ autoload OK\n";
