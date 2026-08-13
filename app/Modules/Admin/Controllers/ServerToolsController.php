@@ -14,12 +14,10 @@ class ServerToolsController extends Controller
 
     public function clearCache()
     {
-        $webRoot = '/home/mudavimp/mudavimpalamutbuku';
-
-        foreach (glob($webRoot . '/bootstrap/cache/*.php') ?: [] as $f) {
+        foreach (glob(base_path('bootstrap/cache/*.php')) ?: [] as $f) {
             @unlink($f);
         }
-        foreach (glob($webRoot . '/storage/framework/views/*.php') ?: [] as $f) {
+        foreach (glob(storage_path('framework/views/*.php')) ?: [] as $f) {
             @unlink($f);
         }
         if (function_exists('opcache_reset')) opcache_reset();

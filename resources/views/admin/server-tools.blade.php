@@ -84,16 +84,16 @@
                 <div class="d-flex align-items-center gap-3 mb-3">
                     <div style="width:48px;height:48px;border-radius:12px;background:#f8d7da;display:flex;align-items:center;justify-content:center;font-size:22px;">⏰</div>
                     <div>
-                        <h6 class="mb-0 fw-bold">cPanel Cron Job</h6>
+                        <h6 class="mb-0 fw-bold">Sunucu Cron Job</h6>
                         <small class="text-muted">Google & Instagram otomatik sync</small>
                     </div>
                 </div>
-                <p class="small text-muted mb-2">cPanel → Cron Jobs'a şunu ekleyin:</p>
+                <p class="small text-muted mb-2">VPS'te crontab'a kurulu (root):</p>
                 <code class="d-block bg-dark text-success p-2 rounded small" style="font-size:.72rem;word-break:break-all;">
-                    */5 * * * * php /home/mudavimp/mudavimpalamutbuku/artisan schedule:run >> /dev/null 2>&1
+                    * * * * * cd /var/www/mudavimpalamutbuku && php artisan schedule:run >> /dev/null 2>&1
                 </code>
                 <p class="text-muted mt-2 mb-0" style="font-size:.72rem;">
-                    Bu kurulunca yorumlar her 2 saatte, Instagram her saatte otomatik güncellenir.
+                    Yorumlar her 2 saatte, Instagram her saatte otomatik güncellenir. (2026-08-13'te eklendi)
                 </p>
             </div>
         </div>
