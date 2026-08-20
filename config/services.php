@@ -43,6 +43,12 @@ return [
         'notify_phone' => env('SMS_NOTIFY_PHONE'),
     ],
 
+    'whatsapp_bot' => [
+        'url' => env('WHATSAPP_BOT_URL', 'http://127.0.0.1:3100/send'),
+        'token' => env('WHATSAPP_BOT_TOKEN'),
+        'notify_jid' => env('WHATSAPP_BOT_NOTIFY_JID'),
+    ],
+
     'google' => [
         'api_key'  => env('GOOGLE_API_KEY'),
         'place_id' => env('GOOGLE_PLACE_ID'),  // Places API (New) format: "ChIJ..."

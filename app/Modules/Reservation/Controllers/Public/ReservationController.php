@@ -9,6 +9,7 @@ use App\Modules\Reservation\Models\Reservation;
 use App\Modules\Reservation\Services\AvailabilityService;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
@@ -18,17 +19,18 @@ class ReservationController extends Controller
     public function create()
     {
         $now = now('Europe/Istanbul');
-        $defaultDate = ($now->hour < 20 ? $now : $now->copy()->addDay())->format('Y-m-d');
-        $minDate     = $now->format('Y-m-d');
+        $defaultDate = $now->copy()->addDay()->format('Y-m-d');
+        $minDate     = $now->copy()->addDay()->format('Y-m-d');
         $maxDate     = $now->copy()->addDays(30)->format('Y-m-d');
+        $onlineEnabled = config('reservation.online_enabled');
 
-        return view('reservation.public.create', compact('defaultDate', 'minDate', 'maxDate'));
+        return view('reservation.public.create', compact('defaultDate', 'minDate', 'maxDate', 'onlineEnabled'));
     }
 
     public function checkAvailability(Request $request)
     {
         $request->validate([
-            'reservation_date' => 'required|date|after_or_equal:today',
+            'reservation_date' => 'required|date|after:today',
             'arrival_time'     => 'required|date_format:H:i',
             'guest_count'      => 'required|integer|min:1|max:20',
         ]);
@@ -58,7 +60,7 @@ class ReservationController extends Controller
             'guest_phone'     => 'required|string|max:20',
             'guest_email'     => 'nullable|email',
             'guest_count'     => 'required|integer|min:1|max:20',
-            'reservation_date'=> 'required|date|after_or_equal:today',
+            'reservation_date'=> 'required|date|after:today',
             'arrival_time'    => 'required|date_format:H:i',
             'table_id'        => 'nullable|exists:tables,id',
             'special_requests'=> 'nullable|string|max:500',
@@ -115,12 +117,28 @@ class ReservationController extends Controller
 
         // Admin SMS bildirimi
         $notifyPhone = config('services.sms.notify_phone');
+        $adminNotificationText = "Yeni rezervasyon: {$reservation->guest_name}, {$reservation->guest_count} kisi, {$date} {$time}. Rez: {$rezNo}";
         if ($notifyPhone) {
             try {
                 app(SmsService::class)->send(
                     $notifyPhone,
-                    "Yeni rezervasyon: {$reservation->guest_name}, {$reservation->guest_count} kisi, {$date} {$time}. Rez: {$rezNo}"
+                    $adminNotificationText
                 );
+            } catch (\Throwable) {}
+        }
+
+        // Admin WhatsApp bildirimi
+        $whatsAppToken = config('services.whatsapp_bot.token');
+        $whatsAppNotifyJid = config('services.whatsapp_bot.notify_jid');
+        if ($whatsAppToken && $whatsAppNotifyJid) {
+            try {
+                Http::timeout(5)
+                    ->withHeaders(['x-admin-token' => $whatsAppToken])
+                    ->post(config('services.whatsapp_bot.url'), [
+                        'jid' => $whatsAppNotifyJid,
+                        'text' => $adminNotificationText,
+                        'purpose' => 'reservation_admin_notify',
+                    ]);
             } catch (\Throwable) {}
         }
 

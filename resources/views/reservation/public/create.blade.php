@@ -12,6 +12,20 @@
                 <div class="section-divider"></div>
             </div>
 
+            @if(!$onlineEnabled)
+                @php
+                    $whatsAppText = "Merhaba, rezervasyon talebinde bulunmak istiyorum.\nAd Soyad:\nTarih:\nSaat:\nKişi Sayısı:";
+                    $whatsAppUrl = 'https://wa.me/' . config('reservation.whatsapp_notify_number') . '?text=' . urlencode($whatsAppText);
+                @endphp
+                <div class="card border-0 shadow-sm mb-3" style="border-radius:16px;">
+                    <div class="card-body p-4 text-center">
+                        <p class="mb-4">Yoğunluk nedeniyle şu anda sadece WhatsApp üzerinden rezervasyon talebi alabiliyoruz.</p>
+                        <a href="{{ $whatsAppUrl }}" class="btn btn-lg w-100" style="background:var(--color-sea);color:#fff;border-radius:16px;font-weight:700;padding:14px;" target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-whatsapp me-1"></i>WhatsApp'tan Talep Et
+                        </a>
+                    </div>
+                </div>
+            @else
             @if($errors->any())
                 <div class="alert alert-danger mb-3">
                     @foreach($errors->all() as $error)
@@ -113,6 +127,7 @@
                     {{ __('reservation.confirm') }} <i class="bi bi-check-circle ms-1"></i>
                 </button>
             </form>
+            @endif
 
             <p class="text-center text-muted small mt-3">
                 <i class="bi bi-telephone me-1"></i>
@@ -125,6 +140,7 @@
 @endsection
 
 @push('scripts')
+@if($onlineEnabled)
 <script>
 document.getElementById('checkAvailability').addEventListener('click', async () => {
     const date  = document.querySelector('[name="reservation_date"]').value;
@@ -165,4 +181,5 @@ document.getElementById('checkAvailability').addEventListener('click', async () 
     }
 });
 </script>
+@endif
 @endpush
