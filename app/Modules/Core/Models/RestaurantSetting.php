@@ -18,6 +18,7 @@ class RestaurantSetting extends Model
         'open_time', 'close_time',
         'season_open_date', 'season_close_date',
         'is_open_override',
+        'reservation_online_enabled',
         'max_advance_days',
         'sms_provider', 'sms_api_key', 'sms_sender_name',
         'spotify_access_token', 'spotify_refresh_token', 'spotify_token_expires_at',
@@ -29,6 +30,7 @@ class RestaurantSetting extends Model
 
     protected $casts = [
         'is_open_override'          => 'boolean',
+        'reservation_online_enabled' => 'boolean',
         'lat'                       => 'decimal:7',
         'lng'                       => 'decimal:7',
         'spotify_enabled'           => 'boolean',

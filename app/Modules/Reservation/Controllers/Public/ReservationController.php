@@ -22,7 +22,7 @@ class ReservationController extends Controller
         $defaultDate = $now->copy()->addDay()->format('Y-m-d');
         $minDate     = $now->copy()->addDay()->format('Y-m-d');
         $maxDate     = $now->copy()->addDays(30)->format('Y-m-d');
-        $onlineEnabled = config('reservation.online_enabled');
+        $onlineEnabled = \App\Modules\Core\Models\RestaurantSetting::current()->reservation_online_enabled;
 
         return view('reservation.public.create', compact('defaultDate', 'minDate', 'maxDate', 'onlineEnabled'));
     }

@@ -67,6 +67,13 @@
                                 <option value="0" @selected($settings->is_open_override === false)>Her zaman kapalı</option>
                             </select>
                         </div>
+                        <div class="col-sm-4">
+                            <label class="form-label">Web Rezervasyon Formu</label>
+                            <select name="reservation_online_enabled" class="form-select">
+                                <option value="1" @selected($settings->reservation_online_enabled === true)>Açık</option>
+                                <option value="0" @selected($settings->reservation_online_enabled === false)>Kapalı</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
