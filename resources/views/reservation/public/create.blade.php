@@ -20,8 +20,8 @@
                 <div class="card border-0 shadow-sm mb-3" style="border-radius:16px;">
                     <div class="card-body p-4 text-center">
                         <p class="mb-4">Yoğunluk nedeniyle şu anda sadece WhatsApp üzerinden rezervasyon talebi alabiliyoruz.</p>
-                        <a href="{{ $whatsAppUrl }}" class="btn btn-lg w-100" style="background:var(--color-sea);color:#fff;border-radius:16px;font-weight:700;padding:14px;" target="_blank" rel="noopener noreferrer">
-                            <i class="bi bi-whatsapp me-1"></i>WhatsApp'tan Talep Et
+                        <a href="{{ $whatsAppUrl }}" class="btn btn-lg w-100" style="background:#25D366;color:#fff;border-radius:16px;font-weight:700;padding:14px;" target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-whatsapp me-1"></i>WhatsApp'tan Rezervasyon Yapın
                         </a>
                     </div>
                 </div>
