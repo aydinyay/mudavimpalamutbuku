@@ -71,6 +71,29 @@ body {
     color: #fff;
 }
 
+/* Google yorum fotoğrafları arka plan slider'ı — .hero-content'in arkasında (z-index 0),
+   metin/logo her zaman üstte ve okunaklı kalır. Opaklık ::before ile aynı (0.35). */
+.hero-bg-slider {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.hero-bg-slide {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.8s ease-in-out;
+}
+
+.hero-bg-slide.is-active {
+    opacity: 0.35;
+}
+
 @media (min-width: 992px) {
     .hero-content > img:first-child {
         margin-top: 12px !important;

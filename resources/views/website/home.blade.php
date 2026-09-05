@@ -13,6 +13,28 @@
 
 {{-- Hero --}}
 <section class="hero-section">
+    @if(isset($heroReviewPhotos) && $heroReviewPhotos->isNotEmpty())
+    {{-- Misafirlerin Google yorumlarına eklediği en yüksek puanlı + en yeni 5 fotoğraf,
+         arka planda yavaşça geçiş yaparak gösterilir. Metin/logo (.hero-content) her zaman
+         üstte ve okunaklı kalır — bu katman sadece z-index:0 ile arkada durur. --}}
+    <div class="hero-bg-slider" aria-hidden="true">
+        @foreach($heroReviewPhotos as $i => $photoUrl)
+        <div class="hero-bg-slide{{ $i === 0 ? ' is-active' : '' }}" style="background-image:url('{{ $photoUrl }}');"></div>
+        @endforeach
+    </div>
+    <script>
+    (function () {
+        const slides = document.querySelectorAll('.hero-bg-slide');
+        if (slides.length < 2) return;
+        let current = 0;
+        setInterval(function () {
+            slides[current].classList.remove('is-active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('is-active');
+        }, 6000);
+    })();
+    </script>
+    @endif
     <div class="hero-content">
         <img src="{{ asset('images/logo-light.png') }}" alt="Müdavim Restaurant"
              style="height:140px;width:auto;display:block;margin:0 auto 18px;filter:drop-shadow(0 2px 12px rgba(0,0,0,.4));margin-top:clamp(0px, 4vw, 36px);">

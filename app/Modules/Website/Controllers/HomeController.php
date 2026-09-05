@@ -7,6 +7,7 @@ use App\Models\DailySpecial;
 use App\Models\GalleryPhoto;
 use App\Models\GoogleReview;
 use App\Models\InstagramPost;
+use App\Models\ReviewPhoto;
 use App\Modules\Core\Models\RestaurantSetting;
 use App\Modules\Menu\Models\MenuItem;
 use App\Modules\Reviews\Services\GoogleReviewService;
@@ -24,7 +25,7 @@ class HomeController extends Controller
             ->get();
 
         $reviewSummary = $reviewService->getSummary();
-        $reviews       = $reviewService->getVisibleReviews(6);
+        $reviews       = $reviewService->getVisibleReviews(12);
 
         $setting      = RestaurantSetting::current();
         $weather      = $this->getWeather();
@@ -34,7 +35,20 @@ class HomeController extends Controller
         } catch (\Throwable) {
             $todaySpecial = null;
         }
-        return view('website.home', compact('featured', 'reviewSummary', 'reviews', 'setting', 'weather', 'sea', 'todaySpecial'));
+
+        // Hero arka plan slider'ı: en yüksek puanlı + en yeni 5 Google yorum fotoğrafı
+        // (2026-09-05: her yorumun ilk fotoğrafı alınır, aynı yorumdan birden fazla
+        // görsel slider'a girip çeşitliliği azaltmasın diye).
+        $heroReviewPhotos = ReviewPhoto::where('active', true)
+            ->whereJsonLength('filenames', '>', 0)
+            ->orderByDesc('rating')
+            ->orderByDesc('review_time')
+            ->take(5)
+            ->get()
+            ->map(fn ($r) => asset('gallery/reviews/' . $r->filenames[0]))
+            ->values();
+
+        return view('website.home', compact('featured', 'reviewSummary', 'reviews', 'setting', 'weather', 'sea', 'todaySpecial', 'heroReviewPhotos'));
     }
 
     public function about()
@@ -149,12 +163,16 @@ class HomeController extends Controller
     {
         $photos = GalleryPhoto::where('active', true)->orderBy('sort_order')->orderBy('id')->get();
 
+        $reviewPhotos = ReviewPhoto::where('active', true)
+            ->orderByDesc('review_time')
+            ->get();
+
         $posts = InstagramPost::where('is_visible', true)
             ->whereIn('media_type', ['IMAGE', 'CAROUSEL_ALBUM'])
             ->orderByDesc('posted_at')
             ->limit(12)
             ->get();
 
-        return view('website.gallery', compact('photos', 'posts'));
+        return view('website.gallery', compact('photos', 'posts', 'reviewPhotos'));
     }
 }
