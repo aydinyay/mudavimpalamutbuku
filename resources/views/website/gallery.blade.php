@@ -3,7 +3,7 @@
 @section('title', 'Galeri')
 
 @push('styles')
-@if(isset($photos) && $photos->isNotEmpty())
+@if((isset($photos) && $photos->isNotEmpty()) || (isset($reviewPhotos) && $reviewPhotos->isNotEmpty()))
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 @endif
 <style>
@@ -101,12 +101,54 @@
         @endif
 
         @endif
+
+        @if(isset($reviewPhotos) && $reviewPhotos->isNotEmpty())
+        <div class="text-center mt-5 mb-4 pt-4" style="border-top:1px solid #eee;">
+            <h2 class="section-title" style="font-size:1.6rem;">Google Yorumlarda Sizlerden Gelenler</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="row g-3" id="review-photo-grid">
+            @foreach($reviewPhotos as $review)
+                @foreach($review->filenames as $file)
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="{{ asset('gallery/reviews/' . $file) }}"
+                       class="glightbox d-block gallery-thumb"
+                       data-gallery="review-photos"
+                       data-title="{{ $review->reviewer_name }} — {{ $review->stars() }}{{ $review->comment ? ' — ' . mb_substr($review->comment, 0, 120) : '' }}">
+                        <div style="aspect-ratio:1;overflow:hidden;border-radius:8px;background:#f0f0f0;position:relative;">
+                            <img src="{{ asset('gallery/reviews/' . $file) }}"
+                                 alt="{{ $review->reviewer_name }} tarafından paylaşılan fotoğraf"
+                                 loading="lazy"
+                                 style="width:100%;height:100%;object-fit:cover;">
+                            <div style="position:absolute;left:0;right:0;bottom:0;padding:8px 44px 8px 10px;background:linear-gradient(to top,rgba(0,0,0,.65),transparent);color:#fff;">
+                                <div style="font-size:.78rem;font-weight:600;">{{ $review->reviewer_name }}</div>
+                                <div style="font-size:.72rem;color:#f59e0b;">{{ $review->stars() }}</div>
+                            </div>
+                            @if($review->reviewer_photo)
+                            <img src="{{ $review->reviewer_photo }}"
+                                 alt="{{ $review->reviewer_name }}"
+                                 loading="lazy"
+                                 style="position:absolute;right:8px;bottom:8px;width:28px;height:28px;border-radius:6px;object-fit:cover;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);">
+                            @endif
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            @endforeach
+        </div>
+        <div class="text-center mt-4">
+            <a href="https://g.page/r/Cd4zYQe_40RuEBM/review" target="_blank" rel="noopener"
+               class="btn btn-outline-secondary" style="border-radius:20px;">
+                <i class="bi bi-google me-1"></i>Siz de Google'da yorum bırakın
+            </a>
+        </div>
+        @endif
     </div>
 </section>
 @endsection
 
 @push('scripts')
-@if(isset($photos) && $photos->isNotEmpty())
+@if((isset($photos) && $photos->isNotEmpty()) || (isset($reviewPhotos) && $reviewPhotos->isNotEmpty()))
 <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
 <script>GLightbox({ selector: '.glightbox' });</script>
 @endif
