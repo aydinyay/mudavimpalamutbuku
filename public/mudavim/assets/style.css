@@ -1,0 +1,281 @@
+/* ── MUDAVIM v4 — Custom UI ──────────────────────────────── */
+
+/* Renk paleti */
+:root {
+  --mud-dark:     #1a2332;
+  --mud-primary:  #0d6efd;
+  --mud-muted:    rgba(255,255,255,.45);
+  --mud-surface:  #f8f9fa;
+  --mud-border:   #dee2e6;
+  --touch-min:    64px;   /* Be Truly: yağlı el için min touch target */
+}
+
+/* Navbar */
+.bg-mud-dark  { background-color: var(--mud-dark) !important; }
+.text-mud-muted { color: var(--mud-muted) !important; }
+.bg-mud-role  { background-color: #495057; font-size: .65rem; letter-spacing: .08em; }
+
+/* Özet kartları */
+.summary-card {
+  background: #fff;
+  border: 1px solid var(--mud-border);
+  border-radius: .5rem;
+  padding: .5rem .25rem;
+  min-height: 60px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.summary-val { font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
+.summary-lbl { font-size: .65rem; color: #6c757d; text-transform: uppercase; letter-spacing: .06em; }
+
+/* Hızlı işlem butonları — Be Truly: min 64px touch target */
+.quick-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: .85rem .5rem;
+  border-radius: .75rem;
+  border: 2px solid transparent;
+  font-weight: 700;
+  font-size: .8rem;
+  transition: transform .1s, box-shadow .1s;
+  cursor: pointer;
+}
+.quick-btn:active { transform: scale(.97); }
+.quick-btn .quick-icon { font-size: 1.75rem; line-height: 1; }
+.quick-btn.suggested { box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.quick-btn.secondary { opacity: .8; min-height: 54px; padding: .6rem .5rem; }
+
+/* Büyük aksiyon butonu (modal footer) */
+.btn-action-lg {
+  min-height: 48px;
+  padding: .6rem 1.5rem;
+  font-weight: 700;
+}
+.btn-mud-primary { background: var(--mud-primary); color: #fff; border: none; }
+.btn-mud-primary:hover { background: #0b5ed7; color: #fff; }
+
+/* Autocomplete */
+.ac-dropdown {
+  position: absolute;
+  z-index: 1080;
+  width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--mud-border);
+  border-radius: .375rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  top: calc(100% + 2px);
+  left: 0;
+}
+.ac-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .65rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: .9rem;
+  min-height: 48px;  /* touch friendly */
+}
+.ac-item:last-child { border-bottom: none; }
+.ac-item:hover, .ac-item.active { background: #e9f0ff; }
+.ac-item .ac-name { font-weight: 600; }
+.ac-item .ac-stock { font-size: .75rem; color: #6c757d; }
+.ac-item .ac-stock.low { color: #dc3545; font-weight: 700; }
+
+/* Stok bilgisi (form altı) */
+#frmAction_stockInfo {
+  background: #f0f4ff;
+  border-left: 3px solid var(--mud-primary);
+  padding: .35rem .6rem;
+  border-radius: 0 .25rem .25rem 0;
+  font-size: .82rem;
+}
+
+/* Miktar stepper */
+.qty-dec, .qty-inc {
+  min-width: var(--touch-min) !important;
+  font-size: 1.2rem;
+}
+
+/* PIN */
+.pin-display {
+  display: flex;
+  justify-content: center;
+  gap: .75rem;
+}
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #6c757d;
+  background: transparent;
+  transition: background .15s;
+}
+.pin-dot.filled { background: #212529; border-color: #212529; }
+
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .5rem;
+  max-width: 240px;
+  margin: 0 auto;
+}
+.pin-key {
+  min-height: 56px;
+  border-radius: .5rem;
+  font-size: 1.4rem;
+}
+
+/* Uyarı kartı */
+.alert-stock-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .65rem .85rem;
+  border-radius: .5rem;
+  margin-bottom: .4rem;
+  background: #fff;
+  border: 1px solid var(--mud-border);
+  font-size: .88rem;
+}
+.alert-stock-item.critical { border-left: 4px solid #dc3545; }
+.alert-stock-item.low      { border-left: 4px solid #fd7e14; }
+.alert-stock-item.expiry   { border-left: 4px solid #ffc107; }
+.alert-stock-item .alert-icon { font-size: 1.2rem; flex-shrink: 0; }
+.alert-stock-item .alert-dismiss {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #adb5bd;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* Günlük hareket listesi */
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .55rem .85rem;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: .85rem;
+}
+.recent-item:last-child { border-bottom: none; }
+.recent-kind-badge {
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .15rem .4rem;
+  border-radius: .25rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  flex-shrink: 0;
+}
+.recent-item .recent-time { margin-left: auto; color: #adb5bd; font-size: .75rem; flex-shrink: 0; }
+
+/* Offline kuyruğu rengi */
+#offlineBanner { background: #fff3cd; border-color: #ffc107; }
+
+/* Genel yardımcılar */
+.fs-7 { font-size: .75rem !important; }
+.ls-1 { letter-spacing: .05em; }
+
+/* Kart sarıcı */
+.section-card {
+  background: #fff;
+  border: 1px solid var(--mud-border);
+  border-radius: .625rem;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+
+/* Offline gönderme spinner */
+#offlineSyncBtn .spinner-border { width:.85rem; height:.85rem; }
+
+/* ── DEMİRBAŞ ENVANTERİ ─────────────────────── */
+
+.asset-card {
+  background: #fff;
+  border: 1.5px solid var(--mud-border);
+  border-radius: .625rem;
+  padding: .75rem .5rem .6rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  transition: border-color .15s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.asset-card.has-loss { border-color: #ffc107; background: #fffbf0; }
+.asset-icon { font-size: 1.6rem; color: #495057; margin-bottom: .2rem; line-height: 1; }
+.asset-name { font-size: .72rem; font-weight: 700; color: #343a40; line-height: 1.2; margin-bottom: .25rem; }
+.asset-count { font-size: 1.5rem; font-weight: 800; color: #212529; line-height: 1; }
+.asset-sub   { font-size: .62rem; color: #6c757d; min-height: 1rem; margin-top: .15rem; }
+.asset-loss-btn { font-size: .72rem; padding: .25rem .4rem; border-radius: .375rem; }
+
+/* ── FİZİKSEL SAYIM ──────────────────────────── */
+
+.cnt-product-card { padding: .5rem 0; }
+
+/* Sayım kartı qty input — büyük, net */
+#cntQtyInput {
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -.02em;
+  border-width: 2px !important;
+  border-radius: .5rem 0 0 .5rem !important;
+}
+#cntUnitLabel {
+  font-size: 1.1rem;
+  min-width: 56px;
+  border-radius: 0 .5rem .5rem 0 !important;
+}
+.cnt-qty-dec, .cnt-qty-inc {
+  min-width: 52px !important;
+  border-radius: .5rem 0 0 .5rem !important;
+}
+
+/* Karşılaştırma kutuları (variance sayfası) */
+.cnt-compare-box { flex: 1; text-align: center; }
+.cnt-compare-box .fw-bold { font-size: 1.5rem; }
+
+/* Fark rozeti */
+.cnt-diff-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .5rem 1.2rem;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.cnt-diff-badge.shortage {
+  background: #fce8e8;
+  color: #c0392b;
+  border: 1.5px solid #e74c3c;
+}
+.cnt-diff-badge.surplus {
+  background: #e6f9ee;
+  color: #1a7a40;
+  border: 1.5px solid #27ae60;
+}
+
+/* Neden seçim butonları */
+.cnt-reason-btn {
+  min-height: 52px;
+  text-align: left;
+  font-size: .88rem;
+  border-radius: .5rem;
+  transition: background .15s, color .15s;
+}
+
+/* Özet satırı */
+#cntSummaryList .recent-item { min-height: 52px; }

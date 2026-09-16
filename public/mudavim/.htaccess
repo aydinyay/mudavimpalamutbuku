@@ -1,0 +1,25 @@
+Options -Indexes
+RewriteEngine On
+
+# API isteklerini api/index.php'ye yönlendir
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ api/index.php [QSA,L]
+
+# Doğrudan php olmayan dosyalara erişimi engelle
+<FilesMatch "\.(sql|log|lock|env|json|md)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# config klasörünü koru
+<DirectoryMatch "config">
+    Order allow,deny
+    Deny from all
+</DirectoryMatch>
+
+# core klasörünü koru
+<DirectoryMatch "core">
+    Order allow,deny
+    Deny from all
+</DirectoryMatch>
