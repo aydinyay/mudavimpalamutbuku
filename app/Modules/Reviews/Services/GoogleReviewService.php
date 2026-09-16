@@ -21,6 +21,21 @@ class GoogleReviewService
     }
 
     /**
+     * Google Places API, yorum zaten Türkçe olsa bile bazen orijinal metnin
+     * sonuna "(Translated by Google) ..." ve tekrar "(Original) ..." ekleyerek
+     * aynı yorumu iki dilde art arda döndürüyor (2026-09-05'te fark edildi —
+     * sitede çirkin/karışık görünüyordu). Sadece orijinal (ilk) kısmı tutuyoruz.
+     */
+    private function cleanComment(?string $text): ?string
+    {
+        if (! $text) return $text;
+
+        $cleaned = preg_replace('/\(Translated by Google\)[\s\S]*/u', '', $text);
+
+        return trim($cleaned) ?: null;
+    }
+
+    /**
      * Zamanlanmış görev tarafından çağrılır.
      * Google Places API'den yorumları çeker, filtreler, DB'ye yazar.
      */
@@ -54,7 +69,7 @@ class GoogleReviewService
                     'author_name'      => $review['author_name'],
                     'author_photo'     => $review['author_photo'] ?? null,
                     'rating'           => $rating,
-                    'comment'          => $review['text'] ?? null,
+                    'comment'          => $this->cleanComment($review['text'] ?? null),
                     'review_time'      => $review['time'],
                     'display_status'   => $status,
                     'admin_read'       => $status === 'visible',

@@ -48,7 +48,19 @@ class HomeController extends Controller
             ->map(fn ($r) => asset('gallery/reviews/' . $r->filenames[0]))
             ->values();
 
-        return view('website.home', compact('featured', 'reviewSummary', 'reviews', 'setting', 'weather', 'sea', 'todaySpecial', 'heroReviewPhotos'));
+        // "Misafirlerimiz Ne Diyor?" kartlarında, yorumcunun eklediği fotoğrafı
+        // göstermek için review_photos ↔ google_reviews eşlemesi (2026-09-05).
+        // İki tablo arasında ortak bir yabancı anahtar yok — Windsor.ai/Google'dan
+        // ayrı ayrı senkronize ediliyorlar — bu yüzden yorumcu adına göre eşleniyor.
+        // Aynı isim birden fazla kez yorum yapmışsa (nadir), ilk eşleşme kullanılır;
+        // bu görsel bir zenginleştirme, kritik bir veri bağı değil.
+        $reviewPhotoMap = ReviewPhoto::where('active', true)
+            ->whereJsonLength('filenames', '>', 0)
+            ->get()
+            ->keyBy(fn ($r) => mb_strtolower(trim($r->reviewer_name)))
+            ->map(fn ($r) => collect($r->filenames)->map(fn ($f) => asset('gallery/reviews/' . $f))->values());
+
+        return view('website.home', compact('featured', 'reviewSummary', 'reviews', 'setting', 'weather', 'sea', 'todaySpecial', 'heroReviewPhotos', 'reviewPhotoMap'));
     }
 
     public function about()
