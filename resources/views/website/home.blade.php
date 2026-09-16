@@ -366,8 +366,19 @@
                             "{{ mb_substr($review->comment, 0, 160) }}{{ mb_strlen($review->comment) > 160 ? '…' : '' }}"
                         </p>
                     </div>
-                    <div class="card-footer bg-transparent border-0 pt-0 px-4 pb-3">
+                    <div class="card-footer bg-transparent border-0 pt-0 px-4 pb-3 d-flex align-items-center justify-content-between">
                         <span class="text-muted" style="font-size:.72rem;">{{ $review->review_time->diffForHumans() }}</span>
+                        @php $reviewPhotoUrls = $reviewPhotoMap[mb_strtolower(trim($review->author_name))] ?? collect(); @endphp
+                        @if($reviewPhotoUrls->isNotEmpty())
+                            <div class="d-flex gap-1">
+                                @foreach($reviewPhotoUrls as $photoUrl)
+                                    <a href="{{ route('website.gallery', ['photo' => basename($photoUrl)]) }}#review-photo-grid">
+                                        <img src="{{ $photoUrl }}" width="38" height="38"
+                                             style="border-radius:6px;object-fit:cover;flex-shrink:0;" alt="{{ $review->author_name }} tarafından paylaşılan fotoğrafın büyük halini gör">
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
